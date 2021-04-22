@@ -1,1 +1,46 @@
-<mxfile host="app.diagrams.net" modified="2021-04-21T23:45:45.439Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36" version="14.4.2" etag="PAsI882s0p2VY1FutbYi" type="github"><diagram id="uPHaYSNWPnrEhaArCbUM">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-04-22T01:09:31.974Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36" etag="HN2ONbkzM1rzEv1JcI8g" version="14.4.2" type="github">
+  <diagram id="uPHaYSNWPnrEhaArCbUM" name="Page-1">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-1" value="Player 1:&lt;br&gt;Level:&lt;br&gt;Strength&lt;br&gt;Endurance&lt;br&gt;Speed" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="140" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-2" value="AI:&lt;br&gt;Strength&lt;br&gt;Endurance&lt;br&gt;Speed" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="140" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-3" value="Level 50&lt;br&gt;Strength:&lt;br&gt;Attack stat -&amp;nbsp; 10&lt;br&gt;Special attack stat - 20&lt;br&gt;Endurance:&lt;br&gt;Defense - 5&lt;br&gt;Special Defense - 10&lt;br&gt;&lt;br&gt;Speed - 20" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="135" y="290" width="120" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-4" value="Level 60&amp;nbsp;&lt;br&gt;Strength:&lt;br&gt;Attack stat -&amp;nbsp; 5&lt;br&gt;Special attack stat - 30&lt;br&gt;Endurance:&lt;br&gt;Defense - 15&lt;br&gt;Special Defense - 5&lt;br&gt;&lt;br&gt;Speed - 15" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="565" y="290" width="120" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-6" value="Type: Fire/Fighting" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="125" y="240" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-8" value="Type: Grass" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="555" y="240" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-9" value="Mathematic equations:&lt;br&gt;&lt;br&gt;Damage = (((((2 x Level) / 5) + 2) x Power x Attack / Defense) / 50) x Type x random&lt;br&gt;&lt;br&gt;If the player uses Fire Punch that has 60 power and is a physical attack.&lt;br&gt;Damage and that the effectiveness is 2x + a random factor of 0.8&lt;br&gt;(((((2 x 50) / 5) + 2) x 60 x (10 / 15)) / 50) x 2 x 0.8&lt;br&gt;= 28.16&lt;br&gt;&lt;br&gt;Who goes first:&lt;br&gt;If a players speed is higher than the other, that player will go first." style="whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="170" y="530" width="490" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-10" value="MoveSet:&lt;br&gt;Fire Punch (Fire)&lt;br&gt;Kick (Fighting)&lt;br&gt;Strike (Fighting)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="135" y="450" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-11" value="MoveSet:&lt;br&gt;Leaf Blade (Grass)&lt;br&gt;Natural Healing (Grass)&lt;br&gt;&amp;nbsp;Leaf Storm (Grass)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="565" y="450" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-12" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="320" as="sourcePoint" />
+            <mxPoint x="530" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8PLNNXn7ZWGu6NGu5lul-13" value="Player 1 Attacks AI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="290" width="120" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
