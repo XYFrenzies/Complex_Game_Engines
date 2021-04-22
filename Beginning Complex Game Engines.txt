@@ -1,6 +1,6 @@
 Scripts Needed:
 
-RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can 
+RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can attack more people.
 
 Entities: Needs to be modular so that it has a health bar (customisable) and level (min level 1 and max level 100).
 Multiple players can be added to the game.
@@ -60,13 +60,11 @@ Each Entity:
 [Type or resistence that they have]
 [Movesets they have]
 [Health]
-[Level]
-[Primary Stats][How the level influences the stats]
-[Secondary Stats][How the level influences the stats] [Influenced value and effort value points (EV and IV's)]
+[Level (Default "1")]
+[Primary Stats]
+[Secondary Stats][How the level influences the stats] [Influenced value and effort value points (EV and IV's) "Can be an addition as a pokemon game"]
 
-(Use pokemons determination of stats to find the inflences of stats over levels)
-Algorithm:
-((Original stats + influences values) x 2 + rounded value of(root of effort values / 4) x Level) (this is all rounded to the nearest full number) + 5
+
 
 Battle HUD:
 [Begin Sequence]
@@ -75,6 +73,11 @@ Battle HUD:
 [Winning Sequence]
 [Losing Sequence]
 
+
+
+(Use pokemons determination of stats to find the inflences of stats over levels)
+Algorithm:
+((Original stats + influences values) x 2 + rounded value of(root of effort values / 4) x Level) (this is all rounded to the nearest full number) + 5
 
 Status effects:
 
