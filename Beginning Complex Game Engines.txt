@@ -9,13 +9,13 @@ Items: A list of items that can be used within the game.
 
 Movesets: A array of different moves that can be used by the player and AI.
 
-BattleHUD: 
+BattleHUD: Displayed text for the player
 
-Status Effects:
+Status Effects: Types of status effects in the game as a result of the typesw and resistences
 
-Types and Resistences:
+Types and Resistences: Types and resistences and their counterparts.
 
-Stats:
+Stats: Primary and secondary stats within two different arrays (needs a default and has to have at least 1).
 
 
 Game Manager:
@@ -50,6 +50,7 @@ Movesets:
 [Power] - When determining the power and strength of the move, if the move is the same type as the player, it will increase the power of the move.
 [Accuracy]
 [Can it hit multiple targets]
+[Extra effects "Status effects?"]
 
 
 Entities:
@@ -59,15 +60,20 @@ Each Entity:
 [Type or resistence that they have]
 [Movesets they have]
 [Health]
-[Level][Influenced value and effort value points (EV and IV's)]
+[Level]
 [Primary Stats][How the level influences the stats]
-[Secondary Stats][How the level influences the stats]
+[Secondary Stats][How the level influences the stats] [Influenced value and effort value points (EV and IV's)]
 
 (Use pokemons determination of stats to find the inflences of stats over levels)
 Algorithm:
 ((Original stats + influences values) x 2 + rounded value of(root of effort values / 4) x Level) (this is all rounded to the nearest full number) + 5
 
-
+Battle HUD:
+[Begin Sequence]
+[Attack Sequence]
+[Defending Sequence]
+[Winning Sequence]
+[Losing Sequence]
 
 
 Status effects:
