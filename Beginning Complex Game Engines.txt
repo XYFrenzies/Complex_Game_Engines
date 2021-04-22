@@ -1,0 +1,80 @@
+Scripts Needed:
+
+RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can 
+
+Entities: Needs to be modular so that it has a health bar (customisable) and level (min level 1 and max level 100).
+Multiple players can be added to the game.
+
+Items: A list of items that can be used within the game.
+
+Movesets: A array of different moves that can be used by the player and AI.
+
+BattleHUD: 
+
+Status Effects:
+
+Types and Resistences:
+
+Stats:
+
+
+Game Manager:
+
+Primary stats:(Cant be less than one)(default a primary stat)
+[Array of stat names][Array of stat integers][Whether its a percentage or integer]
+
+Secondary stats:(Cant be less than one)(default a secondary stat)
+[Array of stat names][Array of stat integers]
+
+Secondary stats:
+[What influences its damage (primary or secondary) + original "Can have more than one influencing it"]
+
+Status Effects in game:
+[Array of status effect names][Status effect value as a integer or percentage][What it effects (secondary or primary in a positive or negative way)]
+
+Types and or Resistences In Game:
+[Array of Type name][Whether it is an amour resistence or type chart (or both "This equation will have to be looked into")]
+
+Typing weak and strong and immune:
+[What each type is strong to and weak to and what is immune to (can all be none and just be neutral damage)]
+
+Items available:
+[Item names][Value of the item][Percentage or Integer]
+[Benefits of the item (can be none these can be for the enemy or the player)][Benefits against the item (can be none these can be for the enemy or player)]
+(These can use status effects)
+
+Movesets:
+[Name]
+[Type of each move (if there isnt a type, make it neutral)]
+[Desription]
+[Power] - When determining the power and strength of the move, if the move is the same type as the player, it will increase the power of the move.
+[Accuracy]
+[Can it hit multiple targets]
+
+
+Entities:
+[Number of Entities in Scene]
+Each Entity:
+[Name]
+[Type or resistence that they have]
+[Movesets they have]
+[Health]
+[Level][Influenced value and effort value points (EV and IV's)]
+[Primary Stats][How the level influences the stats]
+[Secondary Stats][How the level influences the stats]
+
+(Use pokemons determination of stats to find the inflences of stats over levels)
+Algorithm:
+((Original stats + influences values) x 2 + rounded value of(root of effort values / 4) x Level) (this is all rounded to the nearest full number) + 5
+
+
+
+
+Status effects:
+
+When attacking the equation will be:
+Strength or Special Attack (% or +) / Defense or Special Defense * (level + 2)/5 * Type advantage * status inflicted (if you are weakened by a status).
+|
+|
+v
+(((((2 x Level) / 5) + 2) x Power of attack x Attack (attack or special attack) / Defense or sp defense) / 50) x Type x if its the same type x status inflicted (if its a weakened status)
