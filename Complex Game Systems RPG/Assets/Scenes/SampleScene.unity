@@ -215,6 +215,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1956544347}
+  - component: {fileID: 1956544348}
+  - component: {fileID: 1956544349}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -236,3 +238,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1956544348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_primaryStatistic:
+  - name: Agility
+    stats: 1
+    isIntOrPercent: 0
+  - name: ghkhgkhgk
+    stats: 10
+    isIntOrPercent: 0
+  m_secondaryStatistic:
+  - name: Damage
+    stats: 1
+    isIntOrPercent: 0
+--- !u!114 &1956544349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deeaf170e4ab1cf44825cf247e535606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_primaryStatistic: []
+  m_secondaryStatistic: []
+  entities:
+  - m_name: Ben
+    amountOfEntities: 10
+    m_object: {fileID: 0}
+    m_health: 0
+    m_primaryStats:
+    - name: Agility
+      stats: 1
+      isIntOrPercent: 0
+    - name: ghkhgkhgk
+      stats: 10
+      isIntOrPercent: 0
+    m_secondaryStats:
+    - name: Damage
+      stats: 1
+      isIntOrPercent: 0
+  - m_name: 
+    amountOfEntities: 1
+    m_object: {fileID: 0}
+    m_health: 0
+    m_primaryStats:
+    - name: Agility
+      stats: 1
+      isIntOrPercent: 0
+    - name: ghkhgkhgk
+      stats: 10
+      isIntOrPercent: 0
+    m_secondaryStats:
+    - name: Damage
+      stats: 1
+      isIntOrPercent: 0

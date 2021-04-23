@@ -87,3 +87,9 @@ Strength or Special Attack (% or +) / Defense or Special Defense * (level + 2)/5
 |
 v
 (((((2 x Level) / 5) + 2) x Power of attack x Attack (attack or special attack) / Defense or sp defense) / 50) x Type x if its the same type x status inflicted (if its a weakened status)
+
+round = round to the nearest number.
+
+//Pokemon calc to find attack, defense, special attack, special defense and speed value
+Stat change = round(round(2 x base stats + individual values + Effort values ) x Level / 100 + 5) * natural value 
+
