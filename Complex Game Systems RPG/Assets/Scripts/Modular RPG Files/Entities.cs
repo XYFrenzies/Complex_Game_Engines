@@ -14,12 +14,13 @@ public class Entity
     public SecStatistic[] m_secondaryStats;
 }
 
+[RequireComponent(typeof(Stats))]
 [ExecuteInEditMode]
 public class Entities : Stats
 {
     [Tooltip("NEEDS A OBJECT FOR THIS TO WORK")]
     public Entity[] entities;
-    private void Update()
+    private void LateUpdate()
     {
         if (!Application.isPlaying && entities == null)
         {

@@ -23,7 +23,8 @@ public class CustomEditorStats : Editor
 
     }
 }
-
+[CustomEditor(typeof(Entities))]
+[CanEditMultipleObjects]
 public class CustomEditorEntities : Editor
 {
     SerializedProperty m_entity;
@@ -35,6 +36,74 @@ public class CustomEditorEntities : Editor
     {
         serializedObject.Update();
         EditorGUILayout.PropertyField(m_entity, true);
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+[CustomEditor(typeof(StatusEffects))]
+[CanEditMultipleObjects]
+public class CustomEditorStatus : Editor
+{
+    SerializedProperty m_status;
+    private void OnEnable()
+    {
+        m_status = serializedObject.FindProperty("m_statusEffects");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(m_status, true);
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+
+[CustomEditor(typeof(MoveSets))]
+[CanEditMultipleObjects]
+public class CustomEditorMoveSets : Editor
+{
+    SerializedProperty m_moveSets;
+    private void OnEnable()
+    {
+        m_moveSets = serializedObject.FindProperty("m_moveSets");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(m_moveSets, true);
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+[CustomEditor(typeof(TypeChart))]
+[CanEditMultipleObjects]
+public class CustomEditorTypeChart : Editor
+{
+    SerializedProperty m_types;
+    SerializedProperty m_typeAttackVsDefend;
+
+    private void OnEnable()
+    {
+        m_types = serializedObject.FindProperty("m_typing");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(m_types, true);
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+[CustomEditor(typeof(TypesEffected))]
+[CanEditMultipleObjects]
+public class CustomEditorTypesEffected : Editor
+{
+    SerializedProperty m_types;
+
+    private void OnEnable()
+    {
+        m_types = serializedObject.FindProperty("m_typeAttackVsDefend");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(m_types, true);
         serializedObject.ApplyModifiedProperties();
     }
 }
