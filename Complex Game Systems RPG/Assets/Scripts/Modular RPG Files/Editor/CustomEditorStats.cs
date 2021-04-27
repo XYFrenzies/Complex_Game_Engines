@@ -134,6 +134,8 @@ public class CustomEditorItems : Editor
 {
     private int lengthValue = 1;
     private int lengthValueProperties = 1;
+    private bool showItem = false;
+
     SerializedProperty m_items;
     private void OnEnable()
     {
@@ -146,64 +148,69 @@ public class CustomEditorItems : Editor
         GUILayout.Space(20f);
         GUILayout.Label("Items", EditorStyles.boldLabel);
         GUILayout.Space(10f);
-        GUILayout.Label("Item Description");
+
 
         for (int i = 0; i < m_items.arraySize; i++)
         {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Player Name", GUILayout.Width(150));
-            script.m_items[i].name = GUILayout.TextField(script.m_items[i].name);
-            GUILayout.EndHorizontal();
+            showItem = EditorGUILayout.Foldout(showItem, "Item " + script.m_items[i].name, true);
+            if (showItem)
+            {
+                GUILayout.Label("Item Description");
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Player Name", GUILayout.Width(150));
+                script.m_items[i].name = GUILayout.TextField(script.m_items[i].name);
+                GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Item Value", GUILayout.Width(150));
-            script.m_items[i].valueOfItem = EditorGUILayout.IntField(script.m_items[i].valueOfItem);
-            GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Item Value", GUILayout.Width(150));
+                script.m_items[i].valueOfItem = EditorGUILayout.IntField(script.m_items[i].valueOfItem);
+                GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Is it a Percentage or Integer", GUILayout.Width(150));
-            script.m_items[i].isAPercentage = EditorGUILayout.Toggle(script.m_items[i].isAPercentage);
-            GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Is it a Percentage or Integer", GUILayout.Width(150));
+                script.m_items[i].isAPercentage = EditorGUILayout.Toggle(script.m_items[i].isAPercentage);
+                GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Item Properties", GUILayout.Width(150));
-            for (int j = 0; j < lengthValueProperties; j++)
-            {
-                script.m_items[i].properties = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Item Properties", GUILayout.Width(150));
+                for (int j = 0; j < lengthValueProperties; j++)
+                {
+                    script.m_items[i].properties = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More Properties"))
+                {
+                    lengthValueProperties += 1;
+                }
+                if (GUILayout.Button("Delete More Properties"))
+                {
+                    if (lengthValueProperties > 1)
+                        lengthValueProperties -= 1;
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Typing");
+                for (int j = 0; j < lengthValue; j++)
+                {
+                    script.indexValue = EditorGUILayout.Popup(script.indexValue, script.m_items[i].m_typeVariation.ToArray());
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More Types"))
+                {
+                    lengthValue += 1;
+                }
+                if (GUILayout.Button("Delete More Types"))
+                {
+                    if (lengthValue > 1)
+                        lengthValue -= 1;
+                }
+                GUILayout.EndHorizontal();
             }
-            GUILayout.EndHorizontal();
-            GUILayout.Space(10f);
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Add More Properties"))
-            {
-                lengthValueProperties += 1;
-            }
-            if (GUILayout.Button("Delete More Properties"))
-            {
-                if (lengthValueProperties > 1)
-                    lengthValueProperties -= 1;
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.Space(10f);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Typing");
-            for (int j = 0; j < lengthValue; j++)
-            {
-                script.indexValue = EditorGUILayout.Popup(script.indexValue, script.m_items[i].m_typeVariation.ToArray());
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.Space(10f);
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Add More Types"))
-            {
-                lengthValue += 1;
-            }
-            if (GUILayout.Button("Delete More Types"))
-            {
-                if (lengthValue > 1)
-                    lengthValue -= 1;
-            }
-            GUILayout.EndHorizontal();
         }
         GUILayout.Space(10f);
         GUILayout.BeginHorizontal();
