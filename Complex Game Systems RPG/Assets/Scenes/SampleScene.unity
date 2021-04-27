@@ -217,9 +217,11 @@ GameObject:
   - component: {fileID: 1956544347}
   - component: {fileID: 1956544353}
   - component: {fileID: 1956544350}
+  - component: {fileID: 1956544354}
   - component: {fileID: 1956544351}
   - component: {fileID: 1956544349}
   - component: {fileID: 1956544348}
+  - component: {fileID: 1956544352}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -253,19 +255,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_typing:
-  - name: None
-  m_typeAttackVsDefend:
-  - typeAttacking:
-    - name: None
-    typeDefending:
-    - name: None
-    effect: 0
-  - typeAttacking:
-    - name: None
-    typeDefending:
-    - name: None
-    effect: 0
+  m_nameOfType:
+  - None
+  nameAttack:
+  - None
+  - Dark
+  - Light
+  nameDefense:
+  - None
+  - Dark
+  - Light
+  effect: 0
+  indexValue: 2
 --- !u!114 &1956544349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,9 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_typing:
-  - name: None
-  - name: darl
+  m_nameOfType:
+  - None
+  - Dark
+  - Light
 --- !u!114 &1956544350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,10 +315,10 @@ MonoBehaviour:
     - name: Strength
       stats: 1
       isIntOrPercent: 0
-    - name: Strength
+    m_secondaryStats:
+    - name: Damage
       stats: 1
       isIntOrPercent: 0
-    m_secondaryStats:
     - name: Damage
       stats: 1
       isIntOrPercent: 0
@@ -328,10 +330,10 @@ MonoBehaviour:
     - name: Strength
       stats: 1
       isIntOrPercent: 0
-    - name: Strength
+    m_secondaryStats:
+    - name: Damage
       stats: 1
       isIntOrPercent: 0
-    m_secondaryStats:
     - name: Damage
       stats: 1
       isIntOrPercent: 0
@@ -356,6 +358,23 @@ MonoBehaviour:
     valueToChange: 1
     effectiveness: 
     isAPercentage: 0
+  - name: Toxic
+    valueToChange: 1
+    effectiveness: 
+    isAPercentage: 0
+--- !u!114 &1956544352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_items: []
 --- !u!114 &1956544353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,3 +398,21 @@ MonoBehaviour:
   - name: Damage
     stats: 1
     isIntOrPercent: 0
+--- !u!114 &1956544354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moveSets:
+  - name: 
+    stat: 1
+    isItAPercentage: 0
+    Accuracy: 100
+    type: 0

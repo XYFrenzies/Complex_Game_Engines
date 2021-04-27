@@ -77,11 +77,11 @@ public class CustomEditorMoveSets : Editor
 public class CustomEditorTypeChart : Editor
 {
     SerializedProperty m_types;
-    SerializedProperty m_typeAttackVsDefend;
+
 
     private void OnEnable()
     {
-        m_types = serializedObject.FindProperty("m_typing");
+        m_types = serializedObject.FindProperty("m_nameOfType");
     }
     public override void OnInspectorGUI()
     {
@@ -94,16 +94,53 @@ public class CustomEditorTypeChart : Editor
 [CanEditMultipleObjects]
 public class CustomEditorTypesEffected : Editor
 {
-    SerializedProperty m_types;
+    private int lengthValue = 1;
+    SerializedProperty m_effectiveness;
 
     private void OnEnable()
     {
-        m_types = serializedObject.FindProperty("m_typeAttackVsDefend");
+        m_effectiveness = serializedObject.FindProperty("effect");
     }
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.PropertyField(m_types, true);
+        TypesEffected script = (TypesEffected)target;
+        for (int i = 0; i < lengthValue; i++)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Attacking");
+            script.indexValue = EditorGUILayout.Popup(script.indexValue, script.nameAttack.ToArray());
+            GUILayout.Label("Defending");
+            script.indexValue = EditorGUILayout.Popup(script.indexValue, script.nameDefense.ToArray());
+            GUILayout.EndHorizontal();
+            EditorGUILayout.PropertyField(m_effectiveness, true);
+        }
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("More Matchups"))
+        {
+            lengthValue += 1;
+        }
+        if (GUILayout.Button("Delete Recent Matchup"))
+        {
+            lengthValue -= 1;
+        }
+        GUILayout.EndHorizontal();
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+[CustomEditor(typeof(Items))]
+[CanEditMultipleObjects]
+public class CustomEditorItems : Editor
+{
+    SerializedProperty m_items;
+    private void OnEnable()
+    {
+        m_items = serializedObject.FindProperty("m_items");
+    }
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(m_items, true);
         serializedObject.ApplyModifiedProperties();
     }
 }

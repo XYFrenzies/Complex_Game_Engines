@@ -10,51 +10,39 @@ public enum Effectiveness
     notVeryEffective,
     Immune
 }
-[Serializable]
-public class TypeEffectiveness
-{
-    public TypingBasis[] typeAttacking;
-    public TypingBasis[] typeDefending;
-    public Effectiveness effect;
-}
 [RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
 public class TypesEffected : TypeChart
 {
-    public TypeEffectiveness[] m_typeAttackVsDefend;
-
+    public List<string> nameAttack;
+    public List<string> nameDefense;
+    public Effectiveness effect;
+    public int indexValue = 0;
     private void LateUpdate()
     {
-        if (!Application.isPlaying && m_typeAttackVsDefend == null)
+        if (!Application.isPlaying && (nameAttack == null || nameDefense == null))
         {
-            m_typeAttackVsDefend = new TypeEffectiveness[1];
-            for (int i = 0; i < m_typeAttackVsDefend.Length; i++)
-            {
-                m_typeAttackVsDefend[i] = new TypeEffectiveness();
-            }
-            
-            for (int i = 0; i < m_typeAttackVsDefend.Length; i++)
-            {
-                NewType(i);
-            }
+            nameAttack = new List<string>();
+            nameDefense = new List<string>();
+            nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
+            nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
+            nameAttack = chart.m_nameOfType;
+            nameDefense = chart.m_nameOfType;
         }
-        if (m_typeAttackVsDefend.Length < 1)
+        if (nameAttack.Count != chart.m_nameOfType.Count)
         {
-            for (int i = 0; i < m_typeAttackVsDefend.Length; i++)
-            {
-                m_typeAttackVsDefend[i] = new TypeEffectiveness();
-                NewType(i);
-            }
+            nameAttack.Clear();
+            nameDefense.Clear();
+            nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
+            nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
+            nameAttack = chart.m_nameOfType;
+            nameDefense = chart.m_nameOfType;
         }
     }
-    void NewType(int Parameter)
+    public void EffectivenessCalc() 
     {
-        for (int i = 0; i < chart.m_typing.Length; i++)
-        {
-            m_typeAttackVsDefend[Parameter].typeAttacking = chart.m_typing;
-            m_typeAttackVsDefend[Parameter].typeDefending = chart.m_typing;
-            m_typeAttackVsDefend[Parameter].typeAttacking.CopyTo(chart.m_typing, 0);
-            m_typeAttackVsDefend[Parameter].typeDefending.CopyTo(chart.m_typing, 0);
-        }
+//Returns the value of which the attack is damaging the defender.
     }
+    public List<string> GetAttack() { return nameAttack; }
+    public List<string> GetDefense() { return nameDefense; }
 }
