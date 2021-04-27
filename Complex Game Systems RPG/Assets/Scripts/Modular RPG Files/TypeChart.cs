@@ -14,7 +14,7 @@ public class TypeChart : MonoBehaviour
         if (!Application.isPlaying && m_nameOfType == null)
         {
            m_nameOfType = new List<string>();
-           m_nameOfType[0] = "None";
+           m_nameOfType.Add("None");
         }
         ////////////////////////////////////
         if (m_nameOfType.Count < 1)

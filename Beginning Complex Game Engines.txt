@@ -1,3 +1,7 @@
+Links:
+https://www.raywenderlich.com/7751-unity-custom-inspectors-tutorial-getting-started
+
+
 Scripts Needed:
 
 RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can attack more people.

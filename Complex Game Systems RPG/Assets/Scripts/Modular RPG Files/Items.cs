@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 [Serializable]
-public enum ItemProperties 
+public enum ItemProperties
 {
     None,
     IncreaseStats,
@@ -16,43 +16,65 @@ public class ItemID
     public string name;
     public int valueOfItem;
     public bool isAPercentage;
-    public ItemProperties[] properties;
+    [Tooltip("Max size is 4!")]
+    public ItemProperties properties;
     public List<string> m_typeVariation = new List<string>();
-    public ItemID() 
+    public ItemID()
     {
         name = "Default";
         valueOfItem = 1;
         isAPercentage = false;
+        properties = new ItemProperties();
+        properties = ItemProperties.None;
     }
-    public ItemID(string a_name, int a_valueOfItem, bool a_isAPercentage) 
+    public ItemID(string a_name, int a_valueOfItem, bool a_isAPercentage, int a_propertiesSize,
+        ItemProperties a_properties)
     {
         name = a_name;
         valueOfItem = a_valueOfItem;
         isAPercentage = a_isAPercentage;
+        properties = a_properties;
     }
 }
+[ExecuteInEditMode]
 public class Items : MonoBehaviour
 {
-    public ItemID[] m_items;
-
-    private void Update()
+    public List<ItemID> m_items;
+    public int indexValue = 0;
+    private void LateUpdate()
     {
         if (!Application.isPlaying && m_items == null)
         {
-            m_items = new ItemID[1];
-            for (int i = 0; i < m_items.Length; i++)
-            {
-                m_items[i] = new ItemID();
-                m_items[i].m_typeVariation = TypeChart.chart.m_nameOfType;
-            }
+            m_items = new List<ItemID>();
+            m_items.Add(new ItemID());
+            m_items[0].m_typeVariation.CopyTo(TypeChart.chart.m_nameOfType.ToArray(), 0);
+            m_items[0].m_typeVariation = TypeChart.chart.m_nameOfType;
         }
-        for (int i = 0; i < m_items.Length; i++)
+        for (int i = 0; i < m_items.Count; i++)
         {
-            if (m_items[i].properties.Length > 4)
+            for (int j = 0; j < m_items[i].m_typeVariation.Count; j++)
             {
-                m_items[i].properties = new ItemProperties[1];
-                m_items[i].properties[0] = new ItemProperties();
+                if (m_items[i].m_typeVariation[j] != TypeChart.chart.m_nameOfType[j])
+                    NewList();
             }
+            if (m_items[i].m_typeVariation.Count != TypeChart.chart.m_nameOfType.Count)
+                NewList();
+        }   
+        if (m_items.Count < 1)
+        {
+            m_items = new List<ItemID>();
+            m_items.Add(new ItemID());
         }
+    }
+    public void AddToList()
+    {
+        m_items.Add(new ItemID());
+    }
+    public void NewList() 
+    {
+        m_items = new List<ItemID>();
+        m_items.Add(new ItemID());
+        m_items[0].m_typeVariation.CopyTo(TypeChart.chart.m_nameOfType.ToArray(), 0);
+        m_items[0].m_typeVariation = TypeChart.chart.m_nameOfType;
     }
 }

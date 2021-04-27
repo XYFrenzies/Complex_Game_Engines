@@ -259,14 +259,14 @@ MonoBehaviour:
   - None
   nameAttack:
   - None
-  - Dark
+  - d
   - Light
   nameDefense:
   - None
-  - Dark
+  - d
   - Light
   effect: 0
-  indexValue: 2
+  indexValue: 1
 --- !u!114 &1956544349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_nameOfType:
   - None
-  - Dark
+  - d
   - Light
 --- !u!114 &1956544350
 MonoBehaviour:
@@ -315,10 +315,10 @@ MonoBehaviour:
     - name: Strength
       stats: 1
       isIntOrPercent: 0
-    m_secondaryStats:
-    - name: Damage
+    - name: Strength
       stats: 1
       isIntOrPercent: 0
+    m_secondaryStats:
     - name: Damage
       stats: 1
       isIntOrPercent: 0
@@ -330,10 +330,10 @@ MonoBehaviour:
     - name: Strength
       stats: 1
       isIntOrPercent: 0
-    m_secondaryStats:
-    - name: Damage
+    - name: Strength
       stats: 1
       isIntOrPercent: 0
+    m_secondaryStats:
     - name: Damage
       stats: 1
       isIntOrPercent: 0
@@ -374,7 +374,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_items: []
+  m_items:
+  - name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 1
+    m_typeVariation:
+    - None
+    - d
+    - Light
+  - name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 0
+    m_typeVariation: []
+  - name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 0
+    m_typeVariation: []
+  - name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 0
+    m_typeVariation: []
+  indexValue: 1
 --- !u!114 &1956544353
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,12 +14,14 @@ public enum Effectiveness
 [ExecuteInEditMode]
 public class TypesEffected : TypeChart
 {
+    public static TypesEffected effected;
     public List<string> nameAttack;
     public List<string> nameDefense;
     public Effectiveness effect;
     public int indexValue = 0;
     private void LateUpdate()
     {
+        effected = this;
         if (!Application.isPlaying && (nameAttack == null || nameDefense == null))
         {
             nameAttack = new List<string>();
@@ -30,19 +32,31 @@ public class TypesEffected : TypeChart
             nameDefense = chart.m_nameOfType;
         }
         if (nameAttack.Count != chart.m_nameOfType.Count)
+            Recreate();
+        for (int i = 0; i < nameAttack.Count; i++)
         {
-            nameAttack.Clear();
-            nameDefense.Clear();
-            nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
-            nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
-            nameAttack = chart.m_nameOfType;
-            nameDefense = chart.m_nameOfType;
+            if (nameAttack[i] != chart.m_nameOfType[i])
+                Recreate();
         }
     }
+
+
+    public void Recreate()
+    {
+        nameAttack.Clear();
+        nameDefense.Clear();
+        nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
+        nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
+        nameAttack = chart.m_nameOfType;
+        nameDefense = chart.m_nameOfType;
+    }
+
     public void EffectivenessCalc() 
     {
 //Returns the value of which the attack is damaging the defender.
     }
     public List<string> GetAttack() { return nameAttack; }
     public List<string> GetDefense() { return nameDefense; }
+
+
 }
