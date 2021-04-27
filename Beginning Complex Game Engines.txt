@@ -1,6 +1,10 @@
 Links:
+
+Good for layout of inspector display
 https://www.raywenderlich.com/7751-unity-custom-inspectors-tutorial-getting-started
 
+Layout for the dropdown:
+https://docs.unity3d.com/ScriptReference/EditorGUILayout.Foldout.html
 
 Scripts Needed:
 
