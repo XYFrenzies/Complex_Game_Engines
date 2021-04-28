@@ -216,11 +216,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1956544347}
   - component: {fileID: 1956544353}
-  - component: {fileID: 1956544352}
   - component: {fileID: 1956544354}
+  - component: {fileID: 1956544352}
   - component: {fileID: 1956544351}
-  - component: {fileID: 1956544349}
   - component: {fileID: 1956544350}
+  - component: {fileID: 1956544349}
   - component: {fileID: 1956544348}
   m_Layer: 0
   m_Name: Game Manager
@@ -261,30 +261,9 @@ MonoBehaviour:
     valueOfItem: 1
     isAPercentage: 0
     properties: 0
-    m_typeVariation:
-    - None
-    - Dark
-    - Light
-    - Bright
-  indexValue: 3
+    m_typeVariation: []
+  indexValue: 0
 --- !u!114 &1956544349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_nameOfType:
-  - None
-  - Dark
-  - Light
-  - Bright
---- !u!114 &1956544350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -300,14 +279,28 @@ MonoBehaviour:
   - None
   - Dark
   - Light
-  - Bright
   nameDefense:
   - None
   - Dark
   - Light
-  - Bright
   effect: 0
   indexValue: 0
+--- !u!114 &1956544350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameOfType:
+  - None
+  - Dark
+  - Light
 --- !u!114 &1956544351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,19 +314,61 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_statusEffects:
-  - name: Healing
-    valueToChange: 1
-    effectiveness: 0000000002000000
-    isAPercentage: 0
   - name: Toxic
-    valueToChange: 1
-    effectiveness: 
+    valueToChange: 200
+    effectiveness: 0100000003000000
     isAPercentage: 0
-  - name: Toxic
+  - name: 
     valueToChange: 1
     effectiveness: 
     isAPercentage: 0
 --- !u!114 &1956544352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moveSets:
+  - name: 
+    stat: 1
+    isItAPercentage: 0
+    Accuracy: 1
+    type: 0
+--- !u!114 &1956544353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_primaryStatistic:
+  - name: Strength
+    isItAPercent: 1
+    stats: 432142314321
+    showItem: 1
+  - name: Strength
+    isItAPercent: 0
+    stats: 1
+    showItem: 0
+  m_secondaryStatistic:
+  - name: Damage
+    isItAPercent: 1
+    stats: 1
+    showItem: 0
+  showItemPrim: 0
+  showItemSec: 0
+--- !u!114 &1956544354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -355,84 +390,60 @@ MonoBehaviour:
     isItAPercent: 0
     stats: 1
     showItem: 0
+  showItemPrim: 0
+  showItemSec: 0
   entities:
-  - m_name: 
-    amountOfEntities: 1
-    m_object: {fileID: 0}
-    m_health: 0
+  - m_name: Ben
+    m_health: 1
+    m_stats: {fileID: 1956544353}
     m_primaryStats:
-    - name: 
-      isItAPercent: 0
-      stats: 0
+    - name: Strength
+      isItAPercent: 1
+      stats: 432142314321
       showItem: 1
     - name: Strength
       isItAPercent: 0
-      stats: 0
+      stats: 1
       showItem: 0
     m_secondaryStats:
     - name: Damage
-      isItAPercent: 0
+      isItAPercent: 1
       stats: 1
       showItem: 0
-  - m_name: 
-    amountOfEntities: 1
-    m_object: {fileID: 0}
-    m_health: 0
-    m_primaryStats:
-    - name: 
-      isItAPercent: 0
-      stats: 0
-      showItem: 1
-    - name: Strength
-      isItAPercent: 0
-      stats: 0
-      showItem: 0
-    m_secondaryStats:
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
---- !u!114 &1956544353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_primaryStatistic:
-  - name: 
-    isItAPercent: 0
-    stats: 0
     showItem: 1
-  - name: Strength
-    isItAPercent: 0
-    stats: 0
+  - m_name: Name
+    m_health: 1
+    m_stats: {fileID: 1956544353}
+    m_primaryStats:
+    - name: Strength
+      isItAPercent: 1
+      stats: 432142314321
+      showItem: 1
+    - name: Strength
+      isItAPercent: 0
+      stats: 1
+      showItem: 0
+    m_secondaryStats:
+    - name: Damage
+      isItAPercent: 1
+      stats: 1
+      showItem: 0
+    showItem: 1
+  - m_name: Name
+    m_health: 1
+    m_stats: {fileID: 1956544353}
+    m_primaryStats:
+    - name: Strength
+      isItAPercent: 1
+      stats: 432142314321
+      showItem: 1
+    - name: Strength
+      isItAPercent: 0
+      stats: 1
+      showItem: 0
+    m_secondaryStats:
+    - name: Damage
+      isItAPercent: 1
+      stats: 1
+      showItem: 0
     showItem: 0
-  m_secondaryStatistic:
-  - name: Damage
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
---- !u!114 &1956544354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_moveSets:
-  - name: 
-    stat: 1
-    isItAPercentage: 0
-    Accuracy: 100
-    type: 0

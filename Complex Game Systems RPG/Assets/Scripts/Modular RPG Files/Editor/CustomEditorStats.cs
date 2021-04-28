@@ -9,17 +9,31 @@ public class CustomEditorStats : Editor
 {
     SerializedProperty m_primStats;
     SerializedProperty m_secStats;
+    private string percentage = "Percentage";
     private void OnEnable()
     {
         m_primStats = serializedObject.FindProperty("m_primaryStatistic");
         m_secStats = serializedObject.FindProperty("m_secondaryStatistic");
     }
-    public void IntOrPercentageConvert(Stats a_script, int a_parameter, bool isPercent) 
+    public void IntOrPercentageConvertPrim(Stats a_script, int a_parameter, bool isPercent) 
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Item Value", GUILayout.Width(150));
-        a_script.m_primaryStatistic[a_parameter].stats = EditorGUILayout.DoubleField(a_script.m_primaryStatistic[a_parameter].stats);
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        a_script.m_primaryStatistic[a_parameter].stats = EditorGUILayout.DoubleField(
+            a_script.m_primaryStatistic[a_parameter].stats);
         if(isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
+    public void IntOrPercentageConvertSec(Stats a_script, int a_parameter, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        a_script.m_secondaryStatistic[a_parameter].stats = EditorGUILayout.DoubleField(
+            a_script.m_secondaryStatistic[a_parameter].stats);
+        if (isPercent)
             GUILayout.Label("%", GUILayout.Width(150));
         else
             GUILayout.Label("Units", GUILayout.Width(150));
@@ -27,10 +41,10 @@ public class CustomEditorStats : Editor
     }
     public override void OnInspectorGUI()
     {
-        
         serializedObject.Update();
         Stats script = (Stats)target;
         GUILayout.Space(20f);
+        #region PrimaryStats
         //Primary Stats
         GUILayout.Label("Primary Stats", EditorStyles.boldLabel);
         GUILayout.Space(10f);
@@ -40,9 +54,9 @@ public class CustomEditorStats : Editor
             script.m_primaryStatistic[i].showItem = EditorGUILayout.Foldout(script.m_primaryStatistic[i].showItem, script.m_primaryStatistic[i].name, true);
             if (script.m_primaryStatistic[i].showItem)
             {
-                GUILayout.Label("Item Description");
+                GUILayout.Label("Stat Description");
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Player Name", GUILayout.Width(150));
+                GUILayout.Label("Stat Name", GUILayout.Width(150));
                 script.m_primaryStatistic[i].name = GUILayout.TextField(script.m_primaryStatistic[i].name);
                 GUILayout.EndHorizontal();
                 //Determining if its a percentage or integer it is effecting.
@@ -51,62 +65,280 @@ public class CustomEditorStats : Editor
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 //Button for converting to a percentage
-                if (GUILayout.Button("Percentage"))
+                if (GUILayout.Button(percentage, GUILayout.Width(250)))
                 {
-                    script.m_primaryStatistic[i].isItAPercent = true;
-                }
-                //Button to convert to an integer
-                if (GUILayout.Button("Whole Number"))
-                {
-                    script.m_primaryStatistic[i].isItAPercent = false;
+                    if (script.m_primaryStatistic[i].isItAPercent == true)
+                    {
+                        percentage = "Percentage";
+                        script.m_primaryStatistic[i].isItAPercent = false;
+                    }
+                    else if (script.m_primaryStatistic[i].isItAPercent == false)
+                    {
+                        percentage = "Whole Number";
+                        script.m_primaryStatistic[i].isItAPercent = true;
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 if (script.m_primaryStatistic[i].isItAPercent)
                 {
-                    IntOrPercentageConvert(script, i, script.m_primaryStatistic[i].isItAPercent);
+                    IntOrPercentageConvertPrim(script, i, script.m_primaryStatistic[i].isItAPercent);
                 }
                 else if (!script.m_primaryStatistic[i].isItAPercent)
                 {
-                    IntOrPercentageConvert(script, i, script.m_primaryStatistic[i].isItAPercent);
+                    IntOrPercentageConvertPrim(script, i, script.m_primaryStatistic[i].isItAPercent);
                 }
                 GUILayout.EndHorizontal();
             }
         }
+        GUILayout.Space(20f);
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Add More Primary Stats"))
         {
             script.AddToPrimaryArray();
         }
-        if (GUILayout.Button("Delete More Types"))
+        if (GUILayout.Button("Delete More Stats"))
         {
             if (script.m_primaryStatistic.Count > 1)
                 script.m_primaryStatistic.RemoveAt(script.m_primaryStatistic.Count - 1);
         }
         GUILayout.EndHorizontal();
-    }
+        #endregion
+        #region SecondaryStats
+        GUILayout.Space(20f);
+        GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
+        GUILayout.Space(10f);
 
-        //Secondary Stats
-
-        //EditorGUILayout.PropertyField(m_primStats, true);
-        //EditorGUILayout.PropertyField(m_secStats, true);
-        //serializedObject.ApplyModifiedProperties();
-
-    
+        for (int i = 0; i < m_secStats.arraySize; i++)
+        {
+            script.m_secondaryStatistic[i].showItem = EditorGUILayout.Foldout(script.m_secondaryStatistic[i].showItem, script.m_secondaryStatistic[i].name, true);
+            if (script.m_secondaryStatistic[i].showItem)
+            {
+                GUILayout.Label("Stat Description");
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Stat Name", GUILayout.Width(150));
+                script.m_secondaryStatistic[i].name = GUILayout.TextField(script.m_secondaryStatistic[i].name);
+                GUILayout.EndHorizontal();
+                //Determining if its a percentage or integer it is effecting.
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                //Button for converting to a percentage
+                if (GUILayout.Button(percentage, GUILayout.Width(250)))
+                {
+                    if (script.m_secondaryStatistic[i].isItAPercent == true)
+                    {
+                        percentage = "Percentage";
+                        script.m_secondaryStatistic[i].isItAPercent = false;
+                    }
+                    else if (script.m_secondaryStatistic[i].isItAPercent == false)
+                    {
+                        percentage = "Whole Number";
+                        script.m_secondaryStatistic[i].isItAPercent = true;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (script.m_secondaryStatistic[i].isItAPercent)
+                {
+                    IntOrPercentageConvertSec(script, i, script.m_secondaryStatistic[i].isItAPercent);
+                }
+                else if (!script.m_secondaryStatistic[i].isItAPercent)
+                {
+                    IntOrPercentageConvertSec(script, i, script.m_secondaryStatistic[i].isItAPercent);
+                }
+                GUILayout.EndHorizontal();
+            }
+        }
+        GUILayout.Space(20f);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Secondary Stats"))
+        {
+            script.AddToSecondaryArray();
+        }
+        if (GUILayout.Button("Delete More Stats"))
+        {
+            if (script.m_secondaryStatistic.Count > 1)
+                script.m_secondaryStatistic.RemoveAt(script.m_secondaryStatistic.Count - 1);
+        }
+        GUILayout.EndHorizontal();
+        #endregion
+    }    
 }
 [CustomEditor(typeof(Entities))]
 [CanEditMultipleObjects]
 public class CustomEditorEntities : Editor
 {
     SerializedProperty m_entity;
+    private string percentage = "Percentage";
     private void OnEnable()
     {
         m_entity = serializedObject.FindProperty("entities");
     }
+    public void IntOrPercentageConvertPrim(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
+    a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
+    public void IntOrPercentageConvertSec(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
+            a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.PropertyField(m_entity, true);
+        Entities script = (Entities)target;
+        
+        GUILayout.Space(20f);
+        GUILayout.Label("Entities:", EditorStyles.boldLabel);
+        GUILayout.Space(10f);
+        for (int i = 0; i < m_entity.arraySize; i++)
+        {
+            script.entities[i].showItem = EditorGUILayout.Foldout(script.entities[i].showItem, script.entities[i].m_name, true);
+            if (script.entities[i].showItem)
+            {
+                #region EntityStart
+                GUILayout.Label("Entity Description");
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Entity Name", GUILayout.Width(150));
+                script.entities[i].m_name = GUILayout.TextField(script.entities[i].m_name);
+                GUILayout.EndHorizontal();
+                //Asking the developer to put in a gameobject.
+
+                GUILayout.BeginHorizontal();
+                //GUILayout.Label("GameObject", GUILayout.Width(150));
+                //script.entities[i].m_object = (GameObject)EditorGUILayout.ObjectField(script.entities[i].m_object, script.entities[i].m_object.GetType(), true, GUILayout.Width(150));
+                 GUILayout.Label("Health", GUILayout.Width(150));
+                script.entities[i].m_health = EditorGUILayout.FloatField(script.entities[i].m_health, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
+                #endregion
+                #region PrimaryStats
+                GUILayout.Label(script.entities[i].m_name + "'s Primary Stats", EditorStyles.boldLabel);
+                GUILayout.Space(10f);
+
+                for (int j = 0; j < script.entities[i].m_primaryStats.Count; j++)
+                {
+                    script.entities[i].m_primaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_primaryStats[j].showItem,
+                        script.entities[i].m_primaryStats[j].name, true);
+                    if (script.entities[i].m_primaryStats[j].showItem)
+                    {
+                        GUILayout.Label("Stat Description");
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Stat Name", GUILayout.Width(150));
+                        script.entities[i].m_primaryStats[j].name = GUILayout.TextField(script.entities[i].m_primaryStats[j].name);
+                        GUILayout.EndHorizontal();
+                        //Determining if its a percentage or integer it is effecting.
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        //Button for converting to a percentage
+                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
+                        {
+                            if (script.entities[i].m_primaryStats[j].isItAPercent == true)
+                            {
+                                percentage = "Percentage";
+                                script.entities[i].m_primaryStats[j].isItAPercent = false;
+                            }
+                            else if (script.entities[i].m_primaryStats[j].isItAPercent == false)
+                            {
+                                percentage = "Whole Number";
+                                script.entities[i].m_primaryStats[j].isItAPercent = true;
+                            }
+                        }
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        if (script.entities[i].m_primaryStats[j].isItAPercent)
+                        {
+                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
+                        }
+                        else if (!script.entities[i].m_primaryStats[j].isItAPercent)
+                        {
+                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
+                        }
+                        GUILayout.EndHorizontal();
+                    }
+                }
+                #endregion
+                #region SecondaryStats
+                GUILayout.Space(20f);
+                GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
+                GUILayout.Space(10f);
+
+                for (int j = 0; j < script.entities[i].m_secondaryStats.Count; j++)
+                {
+                    script.entities[i].m_secondaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_secondaryStats[j].showItem,
+                        script.entities[i].m_secondaryStats[j].name, true);
+                    if (script.entities[i].m_secondaryStats[j].showItem)
+                    {
+                        GUILayout.Label("Stat Description");
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Stat Name", GUILayout.Width(150));
+                        script.entities[i].m_secondaryStats[j].name = GUILayout.TextField(script.entities[i].m_secondaryStats[j].name);
+                        GUILayout.EndHorizontal();
+                        //Determining if its a percentage or integer it is effecting.
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        //Button for converting to a percentage
+                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
+                        {
+                            if (script.entities[i].m_secondaryStats[j].isItAPercent == true)
+                            {
+                                percentage = "Percentage";
+                                script.entities[i].m_secondaryStats[j].isItAPercent = false;
+                            }
+                            else if (script.entities[i].m_secondaryStats[j].isItAPercent == false)
+                            {
+                                percentage = "Whole Number";
+                                script.entities[i].m_secondaryStats[j].isItAPercent = true;
+                            }
+                        }
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        if (script.entities[i].m_secondaryStats[j].isItAPercent)
+                        {
+                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
+                        }
+                        else if (!script.m_secondaryStatistic[i].isItAPercent)
+                        {
+                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
+                        }
+                        GUILayout.EndHorizontal();
+                    }
+                }
+                #endregion
+            }
+        }
+        GUILayout.Space(20f);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Secondary Entities"))
+        {
+            script.AddEntity();
+        }
+        if (GUILayout.Button("Delete More Entities"))
+        {
+            if (script.entities.Count > 1)
+                script.entities.RemoveAt(script.entities.Count - 1);
+        }
+        GUILayout.EndHorizontal();
         serializedObject.ApplyModifiedProperties();
     }
 }

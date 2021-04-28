@@ -7,17 +7,18 @@ using System;
 public class Entity
 {
     public string m_name;
-    public int amountOfEntities;
-    public GameObject m_object;
+    //public GameObject m_object;
     public float m_health;
+    public Stats m_stats;
     public List<PrimStatisic> m_primaryStats;
     public List<SecStatistic> m_secondaryStats;
+    [HideInInspector] public bool showItem;
     public Entity() 
     {
-        m_name = "";
-        amountOfEntities = 1;
-        m_object = null;
-        m_health = 0;
+        m_name = "Name";
+        m_health = 1;
+        showItem = false;
+        m_stats = new Stats();
     }
 }
 
@@ -28,20 +29,19 @@ public class Entities : Stats
     [Tooltip("NEEDS A OBJECT FOR THIS TO WORK")]
     public List<Entity> entities;
     private Stats stat;
-    private void Awake()
-    {
-        stat = GetComponent<Stats>();
-    }
     private void LateUpdate()
     {
         if (!Application.isPlaying && entities == null)
         {
+            stat = GetComponent<Stats>();
             entities = new List<Entity>();
             entities.Add(new Entity());
+            
             for (int i = 0; i < entities.Count; i++)
             {
-                AddNewStatisticsPrimary(i);
-                AddNewStatisticsSecondary(i);
+                entities[i].m_stats = GetComponent<Stats>();
+                CreateNew(i);
+                CopyTo(i);
             }
         }
         else if (entities.Count >= 1)
@@ -52,7 +52,7 @@ public class Entities : Stats
                 {
                     entities[i] = new Entity();
                     CreateNew(i);
-                    CopyTo(i);
+                    //CopyTo(i);
                 }
             }
             for (int i = 0; i < entities.Count; i++)
@@ -109,5 +109,15 @@ public class Entities : Stats
     {
         entities[parameter].m_secondaryStats = GetComponent<Stats>().m_secondaryStatistic;
         entities[parameter].m_secondaryStats.CopyTo(GetComponent<Stats>().m_secondaryStatistic.ToArray(), 0);
+    }
+    public void AddEntity() 
+    {
+        entities.Add(new Entity());
+        for (int i = 0; i < entities.Count; i++)
+        {
+            entities[i].m_stats = GetComponent<Stats>();
+            AddNewStatisticsPrimary(i);
+            AddNewStatisticsSecondary(i);
+        }
     }
 }

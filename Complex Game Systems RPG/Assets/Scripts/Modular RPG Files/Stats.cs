@@ -18,6 +18,12 @@ public class PrimStatisic
         isItAPercent = false;
         showItem = false;
     }
+    public PrimStatisic(string a_name, bool a_isItAPercent, double a_stats) 
+    {
+        name = a_name;
+        isItAPercent = a_isItAPercent;
+        stats = a_stats;
+    }
 }
 [Serializable]
 public class SecStatistic
@@ -42,6 +48,8 @@ public class Stats : MonoBehaviour
     public List<PrimStatisic> m_primaryStatistic;
     [Tooltip("Default")]
     public List<SecStatistic> m_secondaryStatistic;
+    [HideInInspector]public bool showItemPrim = false;
+    [HideInInspector]public bool showItemSec = false;
     //Defaults
     private void Update()
     {
@@ -89,4 +97,20 @@ public class Stats : MonoBehaviour
     {
         //In this either make another function that adds the percentage by the integer or in this function
     }
+
+    public void SetPrimaryStat(PrimStatisic a_primStat, string a_string, bool a_isAPercent, double a_value) 
+    {
+        PrimStatisic a_temp = a_primStat;
+        m_primaryStatistic.Remove(a_primStat);
+        a_temp = new PrimStatisic(a_string, a_isAPercent, a_value);
+        m_primaryStatistic.Add(a_temp);
+    }
+    public void SetSecondaryStat(SecStatistic a_sec ,string a_string, bool a_isAPercent, double a_value) 
+    {
+        PrimStatisic a_temp = a_primStat;
+        m_primaryStatistic.Remove(a_primStat);
+        a_temp = new PrimStatisic(a_string, a_isAPercent, a_value);
+        m_primaryStatistic.Add(a_temp);
+    }
+
 }
