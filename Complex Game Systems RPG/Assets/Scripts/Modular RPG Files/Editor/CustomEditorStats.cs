@@ -14,14 +14,85 @@ public class CustomEditorStats : Editor
         m_primStats = serializedObject.FindProperty("m_primaryStatistic");
         m_secStats = serializedObject.FindProperty("m_secondaryStatistic");
     }
+    public void IntOrPercentageConvert(Stats a_script, int a_parameter, bool isPercent) 
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Item Value", GUILayout.Width(150));
+        a_script.m_primaryStatistic[a_parameter].stats = EditorGUILayout.DoubleField(a_script.m_primaryStatistic[a_parameter].stats);
+        if(isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
     public override void OnInspectorGUI()
     {
+        
         serializedObject.Update();
-        EditorGUILayout.PropertyField(m_primStats, true);
-        EditorGUILayout.PropertyField(m_secStats, true);
-        serializedObject.ApplyModifiedProperties();
+        Stats script = (Stats)target;
+        GUILayout.Space(20f);
+        //Primary Stats
+        GUILayout.Label("Primary Stats", EditorStyles.boldLabel);
+        GUILayout.Space(10f);
 
+        for (int i = 0; i < m_primStats.arraySize; i++)
+        {
+            script.m_primaryStatistic[i].showItem = EditorGUILayout.Foldout(script.m_primaryStatistic[i].showItem, script.m_primaryStatistic[i].name, true);
+            if (script.m_primaryStatistic[i].showItem)
+            {
+                GUILayout.Label("Item Description");
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Player Name", GUILayout.Width(150));
+                script.m_primaryStatistic[i].name = GUILayout.TextField(script.m_primaryStatistic[i].name);
+                GUILayout.EndHorizontal();
+                //Determining if its a percentage or integer it is effecting.
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                //Button for converting to a percentage
+                if (GUILayout.Button("Percentage"))
+                {
+                    script.m_primaryStatistic[i].isItAPercent = true;
+                }
+                //Button to convert to an integer
+                if (GUILayout.Button("Whole Number"))
+                {
+                    script.m_primaryStatistic[i].isItAPercent = false;
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (script.m_primaryStatistic[i].isItAPercent)
+                {
+                    IntOrPercentageConvert(script, i, script.m_primaryStatistic[i].isItAPercent);
+                }
+                else if (!script.m_primaryStatistic[i].isItAPercent)
+                {
+                    IntOrPercentageConvert(script, i, script.m_primaryStatistic[i].isItAPercent);
+                }
+                GUILayout.EndHorizontal();
+            }
+        }
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Primary Stats"))
+        {
+            script.AddToPrimaryArray();
+        }
+        if (GUILayout.Button("Delete More Types"))
+        {
+            if (script.m_primaryStatistic.Count > 1)
+                script.m_primaryStatistic.RemoveAt(script.m_primaryStatistic.Count - 1);
+        }
+        GUILayout.EndHorizontal();
     }
+
+        //Secondary Stats
+
+        //EditorGUILayout.PropertyField(m_primStats, true);
+        //EditorGUILayout.PropertyField(m_secStats, true);
+        //serializedObject.ApplyModifiedProperties();
+
+    
 }
 [CustomEditor(typeof(Entities))]
 [CanEditMultipleObjects]
@@ -85,8 +156,20 @@ public class CustomEditorTypeChart : Editor
     }
     public override void OnInspectorGUI()
     {
+        TypeChart script = (TypeChart)target;
+
         serializedObject.Update();
         EditorGUILayout.PropertyField(m_types, true);
+        GUILayout.Space(10f);
+        if (GUILayout.Button("Add More Types"))
+        {
+            script.AddType();
+        }
+        if (GUILayout.Button("Delete More Types"))
+        {
+            if (script.m_nameOfType.Count > 1)
+                script.m_nameOfType.RemoveAt(script.m_nameOfType.Count - 1);
+        }
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -134,7 +217,6 @@ public class CustomEditorItems : Editor
 {
     private int lengthValue = 1;
     private int lengthValueProperties = 1;
-    private bool showItem = false;
 
     SerializedProperty m_items;
     private void OnEnable()
@@ -152,8 +234,8 @@ public class CustomEditorItems : Editor
 
         for (int i = 0; i < m_items.arraySize; i++)
         {
-            showItem = EditorGUILayout.Foldout(showItem, "Item " + script.m_items[i].name, true);
-            if (showItem)
+            script.m_items[i].showItem = EditorGUILayout.Foldout(script.m_items[i].showItem, "Item " + script.m_items[i].name, true);
+            if (script.m_items[i].showItem)
             {
                 GUILayout.Label("Item Description");
                 GUILayout.BeginHorizontal();

@@ -13,6 +13,7 @@ public enum ItemProperties
 [Serializable]
 public class ItemID
 {
+    [HideInInspector] public bool showItem;
     public string name;
     public int valueOfItem;
     public bool isAPercentage;
@@ -26,6 +27,7 @@ public class ItemID
         isAPercentage = false;
         properties = new ItemProperties();
         properties = ItemProperties.None;
+        showItem = false;
     }
     public ItemID(string a_name, int a_valueOfItem, bool a_isAPercentage, int a_propertiesSize,
         ItemProperties a_properties)
@@ -34,6 +36,7 @@ public class ItemID
         valueOfItem = a_valueOfItem;
         isAPercentage = a_isAPercentage;
         properties = a_properties;
+        showItem = false;
     }
 }
 [ExecuteInEditMode]
@@ -41,24 +44,34 @@ public class Items : MonoBehaviour
 {
     public List<ItemID> m_items;
     public int indexValue = 0;
+    private TypeChart type;
+    private void Awake()
+    {
+        type = GetComponent<TypeChart>();
+    }
     private void LateUpdate()
     {
         if (!Application.isPlaying && m_items == null)
         {
             m_items = new List<ItemID>();
             m_items.Add(new ItemID());
-            m_items[0].m_typeVariation.CopyTo(TypeChart.chart.m_nameOfType.ToArray(), 0);
-            m_items[0].m_typeVariation = TypeChart.chart.m_nameOfType;
+            m_items[0].m_typeVariation.CopyTo(type.m_nameOfType.ToArray(), 0);
+            m_items[0].m_typeVariation = type.m_nameOfType;
         }
         for (int i = 0; i < m_items.Count; i++)
         {
+            if (m_items[i].m_typeVariation.Count != type.ValueOfArray().Count)
+            {
+                NewList();
+                return;
+            }
+
             for (int j = 0; j < m_items[i].m_typeVariation.Count; j++)
             {
-                if (m_items[i].m_typeVariation[j] != TypeChart.chart.m_nameOfType[j])
+                if (m_items[i].m_typeVariation[j] != type.ValueOfArray()[j])
                     NewList();
             }
-            if (m_items[i].m_typeVariation.Count != TypeChart.chart.m_nameOfType.Count)
-                NewList();
+
         }   
         if (m_items.Count < 1)
         {
@@ -74,7 +87,7 @@ public class Items : MonoBehaviour
     {
         m_items = new List<ItemID>();
         m_items.Add(new ItemID());
-        m_items[0].m_typeVariation.CopyTo(TypeChart.chart.m_nameOfType.ToArray(), 0);
-        m_items[0].m_typeVariation = TypeChart.chart.m_nameOfType;
+        m_items[0].m_typeVariation.CopyTo(type.m_nameOfType.ToArray(), 0);
+        m_items[0].m_typeVariation = type.m_nameOfType;
     }
 }

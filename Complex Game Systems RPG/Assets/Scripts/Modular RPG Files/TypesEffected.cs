@@ -12,13 +12,18 @@ public enum Effectiveness
 }
 [RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
-public class TypesEffected : TypeChart
+public class TypesEffected : MonoBehaviour
 {
     public static TypesEffected effected;
     public List<string> nameAttack;
     public List<string> nameDefense;
     public Effectiveness effect;
     public int indexValue = 0;
+    private TypeChart type;
+    private void Awake()
+    {
+        type = GetComponent<TypeChart>();
+    }
     private void LateUpdate()
     {
         effected = this;
@@ -26,16 +31,17 @@ public class TypesEffected : TypeChart
         {
             nameAttack = new List<string>();
             nameDefense = new List<string>();
-            nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
-            nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
-            nameAttack = chart.m_nameOfType;
-            nameDefense = chart.m_nameOfType;
+            nameAttack = type.m_nameOfType;
+            nameDefense = type.m_nameOfType;
+            nameAttack.CopyTo(type.m_nameOfType.ToArray(), 0);
+            nameDefense.CopyTo(type.m_nameOfType.ToArray(), 0);
+
         }
-        if (nameAttack.Count != chart.m_nameOfType.Count)
+        if (nameAttack.Count != type.m_nameOfType.Count)
             Recreate();
         for (int i = 0; i < nameAttack.Count; i++)
         {
-            if (nameAttack[i] != chart.m_nameOfType[i])
+            if (nameAttack[i] != type.m_nameOfType[i])
                 Recreate();
         }
     }
@@ -45,10 +51,10 @@ public class TypesEffected : TypeChart
     {
         nameAttack.Clear();
         nameDefense.Clear();
-        nameAttack.CopyTo(chart.m_nameOfType.ToArray(), 0);
-        nameDefense.CopyTo(chart.m_nameOfType.ToArray(), 0);
-        nameAttack = chart.m_nameOfType;
-        nameDefense = chart.m_nameOfType;
+        nameAttack.CopyTo(type.m_nameOfType.ToArray(), 0);
+        nameDefense.CopyTo(type.m_nameOfType.ToArray(), 0);
+        nameAttack = type.m_nameOfType;
+        nameDefense = type.m_nameOfType;
     }
 
     public void EffectivenessCalc() 

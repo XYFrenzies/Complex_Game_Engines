@@ -7,26 +7,31 @@ using System;
 public class PrimStatisic
 {
     public string name;
-    public float stats;//Can be base stat or additive stat
-    public bool isIntOrPercent;
+    public bool isItAPercent;
+    public double stats;//Can be base stat or additive stat
+    [HideInInspector] public bool showItem = false;
+
     public PrimStatisic() 
     {
         name = "Strength";
         stats = 1;
-        isIntOrPercent = false;
+        isItAPercent = false;
+        showItem = false;
     }
 }
 [Serializable]
 public class SecStatistic
 {
     public string name;
-    public float stats;//This is influenced stat
-    public bool isIntOrPercent;
+    public bool isItAPercent;
+    public double stats;//This is influenced stat
+    [HideInInspector] public bool showItem = false;
     public SecStatistic()
     {
         name = "Damage";
         stats = 1;
-        isIntOrPercent = false;
+        isItAPercent = false;
+        showItem = false;
     }
 }
 [ExecuteInEditMode]
@@ -34,9 +39,9 @@ public class Stats : MonoBehaviour
 {
     public static Stats statsForObjects;
     [Tooltip("Default")]
-    public PrimStatisic[] m_primaryStatistic;
+    public List<PrimStatisic> m_primaryStatistic;
     [Tooltip("Default")]
-    public SecStatistic[] m_secondaryStatistic;
+    public List<SecStatistic> m_secondaryStatistic;
     //Defaults
     private void Update()
     {
@@ -44,28 +49,35 @@ public class Stats : MonoBehaviour
         if (!Application.isPlaying && m_primaryStatistic == null
             && m_secondaryStatistic == null)
         {
-            m_primaryStatistic = new PrimStatisic[2];
-            m_secondaryStatistic = new SecStatistic[1];
-
-            for (int i = 0; i < m_primaryStatistic.Length; i++)
-            {
-                m_primaryStatistic[i] = new PrimStatisic();
-            }
-            for (int i = 0; i < m_secondaryStatistic.Length; i++)
-            {
-                m_secondaryStatistic[i] = new SecStatistic();
-            }
+            m_primaryStatistic = new List<PrimStatisic>();
+            m_secondaryStatistic = new List<SecStatistic>();
+            m_primaryStatistic.Add(new PrimStatisic());
+            m_secondaryStatistic.Add(new SecStatistic());
         }
         else
         {
-            if (m_primaryStatistic.Length < 1)
+            
+            if (m_primaryStatistic.Count < 1)
             {
-                m_primaryStatistic = new PrimStatisic[1];
-                m_primaryStatistic[0] = new PrimStatisic();
-                m_primaryStatistic[0].name = "Strength";
-                m_secondaryStatistic[0].name = "Damage";
+                m_primaryStatistic = new List<PrimStatisic>();
+                m_primaryStatistic.Add(new PrimStatisic());
             }
+            if (m_secondaryStatistic.Count < 1)
+            {
+                m_secondaryStatistic = new List<SecStatistic>();
+                m_secondaryStatistic.Add(new SecStatistic());
+                return;
+            }
+
         }
+    }
+    public void AddToPrimaryArray() 
+    {
+        m_primaryStatistic.Add(new PrimStatisic());
+    }
+    public void AddToSecondaryArray()
+    {
+        m_secondaryStatistic.Add(new SecStatistic());
     }
     //Function to add primary stat with secondary stat
     public void AddPrimWithSecStats(float a_primStat, float a_secStat) 

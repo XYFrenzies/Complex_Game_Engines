@@ -23,5 +23,12 @@ public class TypeChart : MonoBehaviour
             m_nameOfType.Add("None");
         }
     }
-
+    public List<string> ValueOfArray() 
+    {
+        return m_nameOfType;
+    }
+    public void AddType() 
+    {
+        m_nameOfType.Add("None");
+    }
 }
