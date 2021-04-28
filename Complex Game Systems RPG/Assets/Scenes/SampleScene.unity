@@ -217,8 +217,8 @@ GameObject:
   - component: {fileID: 1956544347}
   - component: {fileID: 1956544353}
   - component: {fileID: 1956544354}
-  - component: {fileID: 1956544352}
   - component: {fileID: 1956544351}
+  - component: {fileID: 1956544352}
   - component: {fileID: 1956544350}
   - component: {fileID: 1956544349}
   - component: {fileID: 1956544348}
@@ -256,12 +256,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_items:
-  - showItem: 1
+  - showItem: 0
     name: Default
     valueOfItem: 1
     isAPercentage: 0
     properties: 0
-    m_typeVariation: []
+    m_typeVariation:
+    - None
+    - Dark
+    - Light
   indexValue: 0
 --- !u!114 &1956544349
 MonoBehaviour:
@@ -284,7 +287,7 @@ MonoBehaviour:
   - Dark
   - Light
   effect: 0
-  indexValue: 0
+  indexValue: 3
 --- !u!114 &1956544350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,20 +357,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_primaryStatistic:
   - name: Strength
-    isItAPercent: 1
-    stats: 432142314321
-    showItem: 1
-  - name: Strength
     isItAPercent: 0
-    stats: 1
+    stats: 0
+    showItem: 1
+  - name: Field
+    isItAPercent: 0
+    stats: 123321
     showItem: 0
   m_secondaryStatistic:
   - name: Damage
-    isItAPercent: 1
+    isItAPercent: 0
     stats: 1
     showItem: 0
-  showItemPrim: 0
-  showItemSec: 0
 --- !u!114 &1956544354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,60 +391,40 @@ MonoBehaviour:
     isItAPercent: 0
     stats: 1
     showItem: 0
-  showItemPrim: 0
-  showItemSec: 0
   entities:
-  - m_name: Ben
-    m_health: 1
-    m_stats: {fileID: 1956544353}
-    m_primaryStats:
-    - name: Strength
-      isItAPercent: 1
-      stats: 432142314321
-      showItem: 1
-    - name: Strength
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
-    m_secondaryStats:
-    - name: Damage
-      isItAPercent: 1
-      stats: 1
-      showItem: 0
-    showItem: 1
   - m_name: Name
     m_health: 1
     m_stats: {fileID: 1956544353}
     m_primaryStats:
     - name: Strength
-      isItAPercent: 1
-      stats: 432142314321
-      showItem: 1
-    - name: Strength
       isItAPercent: 0
-      stats: 1
+      stats: 0
+      showItem: 1
+    - name: Field
+      isItAPercent: 0
+      stats: 123321
       showItem: 0
     m_secondaryStats:
     - name: Damage
-      isItAPercent: 1
+      isItAPercent: 0
       stats: 1
       showItem: 0
-    showItem: 1
+    showItem: 0
   - m_name: Name
     m_health: 1
     m_stats: {fileID: 1956544353}
     m_primaryStats:
     - name: Strength
-      isItAPercent: 1
-      stats: 432142314321
-      showItem: 1
-    - name: Strength
       isItAPercent: 0
-      stats: 1
+      stats: 0
+      showItem: 1
+    - name: Field
+      isItAPercent: 0
+      stats: 123321
       showItem: 0
     m_secondaryStats:
     - name: Damage
-      isItAPercent: 1
+      isItAPercent: 0
       stats: 1
       showItem: 0
     showItem: 0

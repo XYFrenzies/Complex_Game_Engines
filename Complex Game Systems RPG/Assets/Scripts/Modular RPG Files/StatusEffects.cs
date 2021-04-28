@@ -21,6 +21,7 @@ public class Status
     public int valueToChange = 1; //Can be a int or a percent
     public HowItEffects[] effectiveness;
     public bool isAPercentage = false;
+    public bool showItem = false;
 }
 [ExecuteInEditMode]
 public class StatusEffects : MonoBehaviour

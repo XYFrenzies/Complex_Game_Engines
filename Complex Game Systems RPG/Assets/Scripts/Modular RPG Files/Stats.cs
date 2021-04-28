@@ -39,6 +39,12 @@ public class SecStatistic
         isItAPercent = false;
         showItem = false;
     }
+    public SecStatistic(string a_name, bool a_isItAPercent, double a_stats)
+    {
+        name = a_name;
+        isItAPercent = a_isItAPercent;
+        stats = a_stats;
+    }
 }
 [ExecuteInEditMode]
 public class Stats : MonoBehaviour
@@ -48,8 +54,6 @@ public class Stats : MonoBehaviour
     public List<PrimStatisic> m_primaryStatistic;
     [Tooltip("Default")]
     public List<SecStatistic> m_secondaryStatistic;
-    [HideInInspector]public bool showItemPrim = false;
-    [HideInInspector]public bool showItemSec = false;
     //Defaults
     private void Update()
     {
@@ -107,10 +111,10 @@ public class Stats : MonoBehaviour
     }
     public void SetSecondaryStat(SecStatistic a_sec ,string a_string, bool a_isAPercent, double a_value) 
     {
-        PrimStatisic a_temp = a_primStat;
-        m_primaryStatistic.Remove(a_primStat);
-        a_temp = new PrimStatisic(a_string, a_isAPercent, a_value);
-        m_primaryStatistic.Add(a_temp);
+        SecStatistic a_temp = a_sec;
+        m_secondaryStatistic.Remove(a_sec);
+        a_temp = new SecStatistic(a_string, a_isAPercent, a_value);
+        m_secondaryStatistic.Add(a_temp);
     }
 
 }

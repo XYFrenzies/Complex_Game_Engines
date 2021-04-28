@@ -45,18 +45,17 @@ public class Items : MonoBehaviour
     public List<ItemID> m_items;
     public int indexValue = 0;
     private TypeChart type;
-    private void Awake()
-    {
-        type = GetComponent<TypeChart>();
-    }
     private void LateUpdate()
     {
+        if (type == null)
+            type = GetComponent<TypeChart>();
         if (!Application.isPlaying && m_items == null)
         {
             m_items = new List<ItemID>();
             m_items.Add(new ItemID());
             m_items[0].m_typeVariation.CopyTo(type.m_nameOfType.ToArray(), 0);
             m_items[0].m_typeVariation = type.m_nameOfType;
+            type = GetComponent<TypeChart>();
         }
         for (int i = 0; i < m_items.Count; i++)
         {
@@ -77,6 +76,7 @@ public class Items : MonoBehaviour
         {
             m_items = new List<ItemID>();
             m_items.Add(new ItemID());
+            type = GetComponent<TypeChart>();
         }
     }
     public void AddToList()

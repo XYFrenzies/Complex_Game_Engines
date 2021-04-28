@@ -13,12 +13,11 @@ public class Entity
     public List<PrimStatisic> m_primaryStats;
     public List<SecStatistic> m_secondaryStats;
     [HideInInspector] public bool showItem;
-    public Entity() 
+    public Entity()
     {
         m_name = "Name";
         m_health = 1;
         showItem = false;
-        m_stats = new Stats();
     }
 }
 
@@ -33,12 +32,14 @@ public class Entities : Stats
     {
         if (!Application.isPlaying && entities == null)
         {
+
             stat = GetComponent<Stats>();
             entities = new List<Entity>();
             entities.Add(new Entity());
-            
+           
             for (int i = 0; i < entities.Count; i++)
             {
+                entities[i].m_stats = new Stats();
                 entities[i].m_stats = GetComponent<Stats>();
                 CreateNew(i);
                 CopyTo(i);
@@ -52,7 +53,6 @@ public class Entities : Stats
                 {
                     entities[i] = new Entity();
                     CreateNew(i);
-                    //CopyTo(i);
                 }
             }
             for (int i = 0; i < entities.Count; i++)
@@ -60,7 +60,7 @@ public class Entities : Stats
                 if (stat.m_primaryStatistic.Count != entities[i].m_primaryStats.Count)
                     AddNewStatisticsPrimary(i);
 
-                if(stat.m_secondaryStatistic.Count != entities[i].m_secondaryStats.Count)
+                if (stat.m_secondaryStatistic.Count != entities[i].m_secondaryStats.Count)
                     AddNewStatisticsSecondary(i);
 
                 for (int j = 0; j < stat.m_primaryStatistic.Count; j++)
@@ -75,22 +75,20 @@ public class Entities : Stats
                 }
             }
         }
-        else
+        if (entities.Count < 1)
         {
-            if (entities.Count < 1)
+            entities = new List<Entity>();
+            entities.Add(new Entity());
+            for (int i = 0; i < entities.Count; i++)
             {
-                entities = new List<Entity>();
-                entities.Add(new Entity());
-                for (int i = 0; i < entities.Count; i++)
-                {
-                    CreateNew(i);
-                    CopyTo(i);
-                }
+                CreateNew(i);
+                CopyTo(i);
             }
         }
     }
 
-    void CopyTo(int parameter) 
+
+    void CopyTo(int parameter)
     {
         entities[parameter].m_primaryStats.CopyTo(GetComponent<Stats>().m_primaryStatistic.ToArray(), 0);
         entities[parameter].m_secondaryStats.CopyTo(GetComponent<Stats>().m_secondaryStatistic.ToArray(), 0);
@@ -100,7 +98,7 @@ public class Entities : Stats
         entities[parameter].m_primaryStats = GetComponent<Stats>().m_primaryStatistic;
         entities[parameter].m_secondaryStats = GetComponent<Stats>().m_secondaryStatistic;
     }
-    void AddNewStatisticsPrimary(int parameter) 
+    void AddNewStatisticsPrimary(int parameter)
     {
         entities[parameter].m_primaryStats = GetComponent<Stats>().m_primaryStatistic;
         entities[parameter].m_primaryStats.CopyTo(GetComponent<Stats>().m_primaryStatistic.ToArray(), 0);
@@ -110,7 +108,7 @@ public class Entities : Stats
         entities[parameter].m_secondaryStats = GetComponent<Stats>().m_secondaryStatistic;
         entities[parameter].m_secondaryStats.CopyTo(GetComponent<Stats>().m_secondaryStatistic.ToArray(), 0);
     }
-    public void AddEntity() 
+    public void AddEntity()
     {
         entities.Add(new Entity());
         for (int i = 0; i < entities.Count; i++)
