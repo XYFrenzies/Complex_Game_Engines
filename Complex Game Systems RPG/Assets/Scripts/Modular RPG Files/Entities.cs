@@ -6,20 +6,24 @@ using System;
 [Serializable]
 public class Entity
 {
+    public int indexEntity;
     public string m_name;
     //public GameObject m_object;
     public float m_health;
     public Stats m_stats;
-    public List<string> m_typeEffectiveness;
+    public List<TypeVariation> m_typeEffectiveness;
     public List<PrimStatisic> m_primaryStats;
     public List<SecStatistic> m_secondaryStats;
     [HideInInspector] public bool showItem;
     public Entity()
     {
-        m_typeEffectiveness = new List<string>();
+        m_typeEffectiveness = new List<TypeVariation>();
+        m_typeEffectiveness.Add(new TypeVariation());
+        m_stats = new Stats();
         m_name = "Name";
         m_health = 1;
         showItem = false;
+        indexEntity = 0;
     }
 }
 
@@ -32,6 +36,7 @@ public class Entities : Stats
     private Stats stat;
     private void LateUpdate()
     {
+        
         if (!Application.isPlaying && entities == null)
         {
 
@@ -41,8 +46,7 @@ public class Entities : Stats
            
             for (int i = 0; i < entities.Count; i++)
             {
-                entities[i].m_typeEffectiveness = TypeChart.chart.m_types;
-                entities[i].m_typeEffectiveness.CopyTo(TypeChart.chart.m_types.ToArray());
+
                 entities[i].m_stats = new Stats();
                 entities[i].m_stats = GetComponent<Stats>();
                 CreateNew(i);
@@ -88,8 +92,8 @@ public class Entities : Stats
             {
                 CreateNew(i);
                 CopyTo(i);
-                entities[i].m_typeEffectiveness = TypeChart.chart.m_types;
-                entities[i].m_typeEffectiveness.CopyTo(TypeChart.chart.m_types.ToArray());
+                entities[i].m_typeEffectiveness = new List<TypeVariation>();
+                entities[i].m_typeEffectiveness.Add(new TypeVariation());
             }
         }
     }

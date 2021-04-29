@@ -38,8 +38,6 @@ public class StatusEffects : MonoBehaviour
     [Tooltip("Can be on its own.")]
     //Make functions that interact with the status.
     public List<Status> m_statusEffects;
-
-
     private void Update()
     {
         if (!Application.isPlaying && m_statusEffects == null)

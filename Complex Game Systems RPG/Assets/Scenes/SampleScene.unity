@@ -217,9 +217,10 @@ GameObject:
   - component: {fileID: 1956544347}
   - component: {fileID: 1956544352}
   - component: {fileID: 1956544349}
-  - component: {fileID: 1956544353}
   - component: {fileID: 1956544348}
   - component: {fileID: 1956544351}
+  - component: {fileID: 1956544354}
+  - component: {fileID: 1956544353}
   - component: {fileID: 1956544350}
   m_Layer: 0
   m_Name: Game Manager
@@ -258,9 +259,7 @@ MonoBehaviour:
   - asdf
   - vcxz
   - vcxa
-  - trew
-  - eb
-  - mnb
+  - gdfs
   indexValue: 0
 --- !u!114 &1956544349
 MonoBehaviour:
@@ -277,108 +276,10 @@ MonoBehaviour:
   m_statusEffects:
   - name: Toxic
     valueToChange: 1
-    effectiveness: 010000000000000003000000
+    effectiveness: 01000000000000000300000000000000
     isAPercentage: 0
-    showItem: 1
+    showItem: 0
 --- !u!114 &1956544350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_items:
-  - itemIndex: 0
-    showItem: 1
-    name: Default
-    valueOfItem: 1
-    isAPercentage: 0
-    properties: 0
-    variation: []
-  indexValue: 0
---- !u!114 &1956544351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  typeEffective:
-  - nameAttack:
-    - asdf
-    - vcxz
-    - vcxa
-    - trew
-    - eb
-    - mnb
-    nameDefense:
-    - asdf
-    - vcxz
-    - vcxa
-    - trew
-    - eb
-    - mnb
-    effect: 3
-    indexValueAtt: 1
-    indexValueDef: 2
-  - nameAttack:
-    - asdf
-    - vcxz
-    - vcxa
-    - trew
-    - eb
-    - mnb
-    nameDefense:
-    - asdf
-    - vcxz
-    - vcxa
-    - trew
-    - eb
-    - mnb
-    effect: 0
-    indexValueAtt: 1
-    indexValueDef: 3
---- !u!114 &1956544352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_primaryStatistic:
-  - name: Strength
-    isItAPercent: 1
-    stats: 3456
-    showItem: 0
-  - name: Strength
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
-  m_secondaryStatistic:
-  - name: Damage
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
-  - name: Damage
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
---- !u!114 &1956544353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -401,47 +302,129 @@ MonoBehaviour:
     stats: 1
     showItem: 0
   entities:
-  - m_name: Name
+  - indexEntity: 2
+    m_name: Name
     m_health: 1
     m_stats: {fileID: 1956544352}
+    m_typeEffectiveness:
+    - m_typeVariation:
+      - asdf
+      - vcxz
+      - vcxa
+      - gdfs
+    - m_typeVariation:
+      - asdf
+      - vcxz
+      - vcxa
+      - gdfs
     m_primaryStats:
     - name: Strength
       isItAPercent: 1
       stats: 3456
-      showItem: 0
-    - name: Strength
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
+      showItem: 1
     m_secondaryStats:
     - name: Damage
       isItAPercent: 0
       stats: 1
       showItem: 0
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
+    showItem: 1
+--- !u!114 &1956544351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeEffective:
+  - nameAttack:
+    - asdf
+    - vcxz
+    - vcxa
+    - gdfs
+    nameDefense:
+    - asdf
+    - vcxz
+    - vcxa
+    - gdfs
+    effect: 3
+    indexValueAtt: 1
+    indexValueDef: 2
+  - nameAttack:
+    - asdf
+    - vcxz
+    - vcxa
+    - gdfs
+    nameDefense:
+    - asdf
+    - vcxz
+    - vcxa
+    - gdfs
+    effect: 0
+    indexValueAtt: 3
+    indexValueDef: 0
+--- !u!114 &1956544352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_primaryStatistic:
+  - name: Strength
+    isItAPercent: 1
+    stats: 3456
+    showItem: 1
+  m_secondaryStatistic:
+  - name: Damage
+    isItAPercent: 0
+    stats: 1
     showItem: 0
-  - m_name: Name
-    m_health: 1
-    m_stats: {fileID: 1956544352}
-    m_primaryStats:
-    - name: Strength
-      isItAPercent: 1
-      stats: 3456
-      showItem: 0
-    - name: Strength
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
-    m_secondaryStats:
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
+--- !u!114 &1956544353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moveSets:
+  - name: 
+    stat: 1
+    isItAPercentage: 0
+    Accuracy: 100
+    type: 0
+--- !u!114 &1956544354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_items:
+  - itemIndex: 0
     showItem: 0
+    name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 0
+    variation: []
+  indexValue: 0

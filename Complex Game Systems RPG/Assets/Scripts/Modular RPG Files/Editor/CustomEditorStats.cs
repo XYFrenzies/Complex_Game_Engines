@@ -252,6 +252,26 @@ public class CustomEditorEntities : Editor
                     }
                 }
                 #endregion
+                GUILayout.Label("Typing");
+                for (int k = 0; k < script.entities[i].m_typeEffectiveness.Count; k++)
+                {
+                    GUILayout.BeginHorizontal();
+                    script.entities[i].indexEntity = EditorGUILayout.Popup(
+                        script.entities[i].indexEntity, script.entities[i].m_typeEffectiveness[k].m_typeVariation.ToArray());
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More Types"))
+                {
+                    script.entities[i].m_typeEffectiveness.Add(new TypeVariation());
+                }
+                if (GUILayout.Button("Delete Recent Type"))
+                {
+                    if (script.entities[i].m_typeEffectiveness.Count > 1)
+                        script.entities[i].m_typeEffectiveness.RemoveAt(script.entities[i].m_typeEffectiveness.Count - 1);
+                }
+                GUILayout.EndHorizontal();
             }
         }
         GUILayout.Space(20f);
