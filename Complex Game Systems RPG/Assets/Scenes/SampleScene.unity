@@ -215,13 +215,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1956544347}
-  - component: {fileID: 1956544353}
-  - component: {fileID: 1956544354}
-  - component: {fileID: 1956544351}
   - component: {fileID: 1956544352}
-  - component: {fileID: 1956544350}
   - component: {fileID: 1956544349}
+  - component: {fileID: 1956544353}
   - component: {fileID: 1956544348}
+  - component: {fileID: 1956544351}
+  - component: {fileID: 1956544350}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -252,59 +251,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1956544346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_items:
-  - showItem: 0
-    name: Default
-    valueOfItem: 1
-    isAPercentage: 0
-    properties: 0
-    m_typeVariation:
-    - None
-    - Dark
-    - Light
-  indexValue: 0
---- !u!114 &1956544349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameAttack:
-  - None
-  - Dark
-  - Light
-  nameDefense:
-  - None
-  - Dark
-  - Light
-  effect: 0
-  indexValue: 3
---- !u!114 &1956544350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_nameOfType:
-  - None
-  - Dark
-  - Light
---- !u!114 &1956544351
+  m_types:
+  - asdf
+  - vcxz
+  - vcxa
+  - trew
+  - eb
+  - mnb
+  indexValue: 0
+--- !u!114 &1956544349
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,14 +276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_statusEffects:
   - name: Toxic
-    valueToChange: 200
-    effectiveness: 0100000003000000
-    isAPercentage: 0
-  - name: 
     valueToChange: 1
-    effectiveness: 
+    effectiveness: 010000000000000003000000
     isAPercentage: 0
---- !u!114 &1956544352
+    showItem: 1
+--- !u!114 &1956544350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -334,16 +289,66 @@ MonoBehaviour:
   m_GameObject: {fileID: 1956544346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
+  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSets:
-  - name: 
-    stat: 1
-    isItAPercentage: 0
-    Accuracy: 1
-    type: 0
---- !u!114 &1956544353
+  m_items:
+  - itemIndex: 0
+    showItem: 1
+    name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    properties: 0
+    variation: []
+  indexValue: 0
+--- !u!114 &1956544351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956544346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeEffective:
+  - nameAttack:
+    - asdf
+    - vcxz
+    - vcxa
+    - trew
+    - eb
+    - mnb
+    nameDefense:
+    - asdf
+    - vcxz
+    - vcxa
+    - trew
+    - eb
+    - mnb
+    effect: 3
+    indexValueAtt: 1
+    indexValueDef: 2
+  - nameAttack:
+    - asdf
+    - vcxz
+    - vcxa
+    - trew
+    - eb
+    - mnb
+    nameDefense:
+    - asdf
+    - vcxz
+    - vcxa
+    - trew
+    - eb
+    - mnb
+    effect: 0
+    indexValueAtt: 1
+    indexValueDef: 3
+--- !u!114 &1956544352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -357,19 +362,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_primaryStatistic:
   - name: Strength
+    isItAPercent: 1
+    stats: 3456
+    showItem: 0
+  - name: Strength
     isItAPercent: 0
-    stats: 0
-    showItem: 1
-  - name: Field
-    isItAPercent: 0
-    stats: 123321
+    stats: 1
     showItem: 0
   m_secondaryStatistic:
   - name: Damage
     isItAPercent: 0
     stats: 1
     showItem: 0
---- !u!114 &1956544354
+  - name: Damage
+    isItAPercent: 0
+    stats: 1
+    showItem: 0
+--- !u!114 &1956544353
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -394,17 +403,21 @@ MonoBehaviour:
   entities:
   - m_name: Name
     m_health: 1
-    m_stats: {fileID: 1956544353}
+    m_stats: {fileID: 1956544352}
     m_primaryStats:
     - name: Strength
+      isItAPercent: 1
+      stats: 3456
+      showItem: 0
+    - name: Strength
       isItAPercent: 0
-      stats: 0
-      showItem: 1
-    - name: Field
-      isItAPercent: 0
-      stats: 123321
+      stats: 1
       showItem: 0
     m_secondaryStats:
+    - name: Damage
+      isItAPercent: 0
+      stats: 1
+      showItem: 0
     - name: Damage
       isItAPercent: 0
       stats: 1
@@ -412,17 +425,21 @@ MonoBehaviour:
     showItem: 0
   - m_name: Name
     m_health: 1
-    m_stats: {fileID: 1956544353}
+    m_stats: {fileID: 1956544352}
     m_primaryStats:
     - name: Strength
+      isItAPercent: 1
+      stats: 3456
+      showItem: 0
+    - name: Strength
       isItAPercent: 0
-      stats: 0
-      showItem: 1
-    - name: Field
-      isItAPercent: 0
-      stats: 123321
+      stats: 1
       showItem: 0
     m_secondaryStats:
+    - name: Damage
+      isItAPercent: 0
+      stats: 1
+      showItem: 0
     - name: Damage
       isItAPercent: 0
       stats: 1

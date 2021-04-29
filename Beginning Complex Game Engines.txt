@@ -1,5 +1,8 @@
 Links:
 
+Look into this for the convertion of values to the inspector for arrays!
+https://forum.unity.com/threads/display-a-list-class-with-a-custom-editor-script.227847/
+
 Good for layout of inspector display
 https://www.raywenderlich.com/7751-unity-custom-inspectors-tutorial-getting-started
 

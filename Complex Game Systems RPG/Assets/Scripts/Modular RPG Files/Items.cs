@@ -13,15 +13,17 @@ public enum ItemProperties
 [Serializable]
 public class ItemID
 {
+    public int itemIndex = 0;
     [HideInInspector] public bool showItem;
     public string name;
     public int valueOfItem;
     public bool isAPercentage;
     [Tooltip("Max size is 4!")]
     public ItemProperties properties;
-    public List<string> m_typeVariation = new List<string>();
+    public List<TypeVariation> variation;
     public ItemID()
     {
+        variation = new List<TypeVariation>();
         name = "Default";
         valueOfItem = 1;
         isAPercentage = false;
@@ -37,8 +39,21 @@ public class ItemID
         isAPercentage = a_isAPercentage;
         properties = a_properties;
         showItem = false;
+        variation = new List<TypeVariation>();
     }
 }
+[Serializable]
+public class TypeVariation
+{
+    public List<string> m_typeVariation;
+    public TypeVariation()
+    {
+        m_typeVariation = new List<string>();
+        m_typeVariation = TypeChart.chart.m_types;
+        m_typeVariation.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
+    }
+}
+[RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
 public class Items : MonoBehaviour
 {
@@ -53,25 +68,20 @@ public class Items : MonoBehaviour
         {
             m_items = new List<ItemID>();
             m_items.Add(new ItemID());
-            m_items[0].m_typeVariation.CopyTo(type.m_nameOfType.ToArray(), 0);
-            m_items[0].m_typeVariation = type.m_nameOfType;
-            type = GetComponent<TypeChart>();
         }
         for (int i = 0; i < m_items.Count; i++)
         {
-            if (m_items[i].m_typeVariation.Count != type.ValueOfArray().Count)
+            for (int j = 0; j < m_items[i].variation.Count; j++)
             {
-                NewList();
-                return;
-            }
-
-            for (int j = 0; j < m_items[i].m_typeVariation.Count; j++)
-            {
-                if (m_items[i].m_typeVariation[j] != type.ValueOfArray()[j])
+                if (m_items[i].variation[j].m_typeVariation.Count != type.ValueOfArray().Count)
+                {
+                    NewList();
+                    return;
+                }
+                if (m_items[i].variation[j].m_typeVariation != type.ValueOfArray())
                     NewList();
             }
-
-        }   
+        }
         if (m_items.Count < 1)
         {
             m_items = new List<ItemID>();
@@ -83,11 +93,11 @@ public class Items : MonoBehaviour
     {
         m_items.Add(new ItemID());
     }
-    public void NewList() 
+    public void NewList()
     {
         m_items = new List<ItemID>();
         m_items.Add(new ItemID());
-        m_items[0].m_typeVariation.CopyTo(type.m_nameOfType.ToArray(), 0);
-        m_items[0].m_typeVariation = type.m_nameOfType;
+        m_items[0].variation[0].m_typeVariation.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
+        m_items[0].variation[0].m_typeVariation = TypeChart.chart.m_types;
     }
 }
