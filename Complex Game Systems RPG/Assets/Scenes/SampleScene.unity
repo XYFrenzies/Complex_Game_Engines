@@ -215,10 +215,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1956544347}
-  - component: {fileID: 1956544352}
-  - component: {fileID: 1956544349}
   - component: {fileID: 1956544348}
   - component: {fileID: 1956544351}
+  - component: {fileID: 1956544352}
+  - component: {fileID: 1956544349}
   - component: {fileID: 1956544354}
   - component: {fileID: 1956544353}
   - component: {fileID: 1956544350}
@@ -276,9 +276,9 @@ MonoBehaviour:
   m_statusEffects:
   - name: Toxic
     valueToChange: 1
-    effectiveness: 01000000000000000300000000000000
+    effectiveness: 01000000
     isAPercentage: 0
-    showItem: 0
+    showItem: 1
 --- !u!114 &1956544350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,10 +403,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSets:
   - name: 
-    stat: 1
+    power: 100
     isItAPercentage: 0
     Accuracy: 100
-    type: 0
+    type: 01000000
+    showItem: 1
 --- !u!114 &1956544354
 MonoBehaviour:
   m_ObjectHideFlags: 0

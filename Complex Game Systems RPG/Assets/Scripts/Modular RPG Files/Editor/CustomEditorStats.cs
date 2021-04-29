@@ -415,6 +415,20 @@ public class CustomEditorStatus : Editor
 public class CustomEditorMoveSets : Editor
 {
     SerializedProperty m_moveSets;
+    private string percentage = "Percentage";
+    public void IntOrPercentageConvert(MoveSets a_script, int a_parameterEntity, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Moveset Power", GUILayout.Width(150));
+        a_script.m_moveSets[a_parameterEntity].power = EditorGUILayout.DoubleField(
+            a_script.m_moveSets[a_parameterEntity].power);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
+
     private void OnEnable()
     {
         m_moveSets = serializedObject.FindProperty("m_moveSets");
@@ -422,7 +436,92 @@ public class CustomEditorMoveSets : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.PropertyField(m_moveSets, true);
+
+        MoveSets script = (MoveSets)target;
+        GUILayout.Label("Moves", EditorStyles.boldLabel);
+        GUILayout.Space(10f);
+
+
+        for (int i = 0; i < m_moveSets.arraySize; i++)
+        {
+            script.m_moveSets[i].showItem = EditorGUILayout.Foldout(script.m_moveSets[i].showItem, 
+                "Item " + script.m_moveSets[i].name, true);
+            if (script.m_moveSets[i].showItem)
+            {
+                GUILayout.Label("Move Description");
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Move Name", GUILayout.Width(150));
+                script.m_moveSets[i].name = GUILayout.TextField(script.m_moveSets[i].name);
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                //Button for converting to a percentage
+                if (GUILayout.Button(percentage, GUILayout.Width(250)))
+                {
+                    if (script.m_moveSets[i].isItAPercentage == true)
+                    {
+                        percentage = "Percentage";
+                        script.m_moveSets[i].isItAPercentage = false;
+                    }
+                    else if (script.m_moveSets[i].isItAPercentage == false)
+                    {
+                        percentage = "Whole Number";
+                        script.m_moveSets[i].isItAPercentage = true;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (script.m_moveSets[i].isItAPercentage)
+                {
+                    IntOrPercentageConvert(script, i, script.m_moveSets[i].isItAPercentage);
+                }
+                else if (!script.m_moveSets[i].isItAPercentage)
+                {
+                    IntOrPercentageConvert(script, i, script.m_moveSets[i].isItAPercentage);
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Accuracy", GUILayout.Width(150));
+                script.m_moveSets[i].power = EditorGUILayout.IntSlider(script.m_moveSets[i].Accuracy, 1, 100);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Item Properties", GUILayout.Width(150));
+
+                for (int j = 0; j < script.m_moveSets[i].type.Count; j++)
+                {
+                    script.m_moveSets[i].type[j] = (Type)EditorGUILayout.EnumPopup(
+                        script.m_moveSets[i].type[j]);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More effectiveness"))
+                {
+                    if (script.m_moveSets[i].type.Count < 6)
+                        script.m_moveSets[i].type.Add(new Type());
+                }
+                if (GUILayout.Button("Delete Recent Effectiveness"))
+                {
+                    if (script.m_moveSets[i].type.Count > 1)
+                        script.m_moveSets[i].type.RemoveAt(script.m_moveSets[i].type.Count - 1);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More Moves"))
+                {
+                    if (script.m_moveSets.Count < 3)
+                        script.m_moveSets.Add(new Moves());
+                }
+                if (GUILayout.Button("Delete More Moves"))
+                {
+                    if (script.m_moveSets.Count > 1)
+                        script.m_moveSets.RemoveAt(script.m_moveSets.Count - 1);
+                }
+                GUILayout.EndHorizontal();
+            }
+        }
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -522,7 +621,7 @@ public class CustomEditorItems : Editor
             {
                 GUILayout.Label("Item Description");
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Player Name", GUILayout.Width(150));
+                GUILayout.Label("Item Name", GUILayout.Width(150));
                 script.m_items[i].name = GUILayout.TextField(script.m_items[i].name);
                 GUILayout.EndHorizontal();
 

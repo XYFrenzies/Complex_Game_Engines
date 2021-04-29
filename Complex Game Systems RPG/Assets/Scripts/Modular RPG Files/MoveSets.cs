@@ -6,33 +6,42 @@ using System;
 [Serializable]
 public enum Type
 {
+    None,
     Attack,
     Defend,
     Status
 }
 [Serializable]
-public class Moves 
+public class Moves
 {
-    public string name = "";
-    public int stat = 1;
-    public bool isItAPercentage = false;
+    public string name;
+    public double power;
+    public bool isItAPercentage;
     [Range(1, 100)]
-    public int Accuracy = 100;
-    public Type type;
+    public int Accuracy;
+    public List<Type> type;
+    public bool showItem;
+    public Moves()
+    {
+        name = "None";
+        type = new List<Type>();
+        type.Add(Type.None);
+        power = 1;
+        isItAPercentage = false;
+        Accuracy = 100;
+        showItem = false;
+    }
 }
 [ExecuteInEditMode]
 public class MoveSets : MonoBehaviour
 {
-    public Moves[] m_moveSets;
+    public List<Moves> m_moveSets;
     void Update()
     {
         if (!Application.isPlaying && m_moveSets == null)
         {
-            m_moveSets = new Moves[1];
-            for (int i = 0; i < m_moveSets.Length; i++)
-            {
-                m_moveSets[i] = new Moves();
-            }
+            m_moveSets = new List<Moves>();
+            m_moveSets.Add(new Moves());
         }
     }
 }
