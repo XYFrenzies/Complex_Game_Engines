@@ -206,6 +206,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!115 &1871125476
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 5
+  m_Script: 
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_ExecutionOrder: 0
+  m_ClassName: TypingEffectiveness
+  m_Namespace: 
 --- !u!1 &1956544346
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,12 +230,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1956544347}
   - component: {fileID: 1956544348}
-  - component: {fileID: 1956544351}
   - component: {fileID: 1956544352}
   - component: {fileID: 1956544349}
   - component: {fileID: 1956544354}
   - component: {fileID: 1956544353}
   - component: {fileID: 1956544350}
+  - component: {fileID: 1956544351}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -256,11 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_types:
-  - asdf
-  - vcxz
-  - vcxa
-  - gdfs
-  indexValue: 0
+  - None
 --- !u!114 &1956544349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,16 +317,8 @@ MonoBehaviour:
     m_health: 1
     m_stats: {fileID: 1956544352}
     m_typeEffectiveness:
-    - m_typeVariation:
-      - asdf
-      - vcxz
-      - vcxa
-      - gdfs
-    - m_typeVariation:
-      - asdf
-      - vcxz
-      - vcxa
-      - gdfs
+    - {fileID: 0}
+    - {fileID: 0}
     m_primaryStats:
     - name: Strength
       isItAPercent: 1
@@ -337,36 +339,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1956544346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
+  m_Script: {fileID: 1871125476}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeEffective:
-  - nameAttack:
-    - asdf
-    - vcxz
-    - vcxa
-    - gdfs
-    nameDefense:
-    - asdf
-    - vcxz
-    - vcxa
-    - gdfs
-    effect: 3
-    indexValueAtt: 1
-    indexValueDef: 2
-  - nameAttack:
-    - asdf
-    - vcxz
-    - vcxa
-    - gdfs
-    nameDefense:
-    - asdf
-    - vcxz
-    - vcxa
-    - gdfs
-    effect: 0
-    indexValueAtt: 3
-    indexValueDef: 0
+  m_types:
+  - None
+  nameAttack: []
+  nameDefense: []
+  effect: 0
+  indexValueAtt: 0
+  indexValueDef: 0
 --- !u!114 &1956544352
 MonoBehaviour:
   m_ObjectHideFlags: 0

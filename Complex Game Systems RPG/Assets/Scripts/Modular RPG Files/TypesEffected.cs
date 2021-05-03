@@ -14,12 +14,12 @@ public enum Effectiveness
 [Serializable]
 public class TypingEffectiveness
 {
-    public List<string> nameAttack;
-    public List<string> nameDefense;
-    public Effectiveness effect;
-    [HideInInspector] public int indexValueAtt = 0;
-    [HideInInspector] public int indexValueDef = 0;
-    public TypingEffectiveness()    
+    [HideInInspector]public List<string> nameAttack;
+    [HideInInspector]public List<string> nameDefense;
+    [HideInInspector]public Effectiveness effect;
+    [HideInInspector]public int indexValueAtt = 0;
+    [HideInInspector]public int indexValueDef = 0;
+    public TypingEffectiveness()
     {
         nameAttack = new List<string>();
         nameDefense = new List<string>();
@@ -32,13 +32,14 @@ public class TypingEffectiveness
 }
 [RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
-public class TypesEffected : MonoBehaviour
+public class TypesEffected : TypeChart
 {
     public List<TypingEffectiveness> typeEffective;
     public static TypesEffected effected;
     private void LateUpdate()
     {
-        effected = this;
+        if (effected != this)
+            effected = this;
         if (!Application.isPlaying && typeEffective == null)
         {
             typeEffective = new List<TypingEffectiveness>();
@@ -47,34 +48,39 @@ public class TypesEffected : MonoBehaviour
         }
         for (int i = 0; i < typeEffective.Count; i++)
         {
-            if (typeEffective[i].nameAttack.Count != TypeChart.chart.m_types.Count)
-                Recreate();
+            if (typeEffective[i] == null)
+            {
+                typeEffective = new List<TypingEffectiveness>();
+                typeEffective.Add(new TypingEffectiveness());
+                Recreate(i);
+            }
+            if (typeEffective[i].nameAttack.Count != chart.m_types.Count)
+            {
+                Recreate(i);
+                return;
+            }
+
             for (int j = 0; j < typeEffective[i].nameAttack.Count; j++)
             {
-                if (typeEffective[i].nameAttack[j] != TypeChart.chart.m_types[j])
-                    Recreate();
+                if (typeEffective[i].nameAttack[j] != chart.m_types[j])
+                    Recreate(i);
             }
         }
     }
-    public void Recreate()
+    public void Recreate(int parameter)
     {
-        for (int i = 0; i < typeEffective.Count; i++)
-        {
-            typeEffective[i].nameAttack.Clear();
-            typeEffective[i].nameDefense.Clear();
-            typeEffective[i].nameAttack.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
-            typeEffective[i].nameDefense.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
-            typeEffective[i].nameAttack = TypeChart.chart.m_types;
-            typeEffective[i].nameDefense = TypeChart.chart.m_types;
-        }
-
+        typeEffective[parameter].nameAttack.Clear();
+        typeEffective[parameter].nameDefense.Clear();
+        typeEffective[parameter].nameAttack.CopyTo(chart.m_types.ToArray(), 0);
+        typeEffective[parameter].nameDefense.CopyTo(chart.m_types.ToArray(), 0);
+        typeEffective[parameter].nameAttack = chart.m_types;
+        typeEffective[parameter].nameDefense = chart.m_types;
     }
-
-    public void EffectivenessCalc() 
+    public void EffectivenessCalc()
     {
-//Returns the value of which the attack is damaging the defender.
+        //Returns the value of which the attack is damaging the defender.
     }
-    public void AddNewTypeEffect() 
+    public void AddNewTypeEffect()
     {
         typeEffective.Add(new TypingEffectiveness());
     }

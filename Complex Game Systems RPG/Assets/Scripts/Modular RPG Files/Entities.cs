@@ -18,8 +18,6 @@ public class Entity
     public Entity()
     {
         m_typeEffectiveness = new List<TypeVariation>();
-        m_typeEffectiveness.Add(new TypeVariation());
-        m_stats = new Stats();
         m_name = "Name";
         m_health = 1;
         showItem = false;
@@ -36,19 +34,18 @@ public class Entities : Stats
     private Stats stat;
     private void LateUpdate()
     {
-        
+        if(stat == null)
+            stat = GetComponent<Stats>();
         if (!Application.isPlaying && entities == null)
         {
-
-            stat = GetComponent<Stats>();
             entities = new List<Entity>();
             entities.Add(new Entity());
            
             for (int i = 0; i < entities.Count; i++)
             {
-
                 entities[i].m_stats = new Stats();
-                entities[i].m_stats = GetComponent<Stats>();
+                entities[i].m_stats = GetComponent<Stats>(); 
+                entities[i].m_typeEffectiveness.Add(new TypeVariation());               
                 CreateNew(i);
                 CopyTo(i);
             }
@@ -125,8 +122,13 @@ public class Entities : Stats
         for (int i = 0; i < entities.Count; i++)
         {
             entities[i].m_stats = GetComponent<Stats>();
+            entities[i].m_typeEffectiveness.Add(new TypeVariation());
             AddNewStatisticsPrimary(i);
             AddNewStatisticsSecondary(i);
         }
+    }
+    public void NewType(int parameter) 
+    {
+       entities[parameter].m_typeEffectiveness.Add(new TypeVariation());
     }
 }

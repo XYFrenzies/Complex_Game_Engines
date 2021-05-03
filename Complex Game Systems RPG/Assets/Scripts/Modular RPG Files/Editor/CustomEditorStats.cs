@@ -264,7 +264,7 @@ public class CustomEditorEntities : Editor
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More Types"))
                 {
-                    script.entities[i].m_typeEffectiveness.Add(new TypeVariation());
+                    script.NewType(i);
                 }
                 if (GUILayout.Button("Delete Recent Type"))
                 {
