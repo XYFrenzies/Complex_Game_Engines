@@ -9,6 +9,8 @@ public class GetIntoBattle : MonoBehaviour
     [SerializeField] private int maxRange = 1;
     [SerializeField] private int minRange = 0;
     [SerializeField] private int numToGet = 1;
+    [SerializeField] private Animator m_anim = null;
+
     private int randRange = 0;
     private int saveRange = 0;
     public void OnTriggerStay2D(Collider2D collision)
@@ -27,7 +29,8 @@ public class GetIntoBattle : MonoBehaviour
 
     private void BattleStage()
     {
-        m_battleScene.SetActive(false);
-        m_mainScene.SetActive(false);
+        randRange = -1;
+        m_anim.SetTrigger("FadeOut");
+        Time.timeScale = 0;
     }
 }

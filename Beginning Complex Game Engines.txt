@@ -11,6 +11,26 @@ https://docs.unity3d.com/ScriptReference/EditorGUILayout.Foldout.html
 
 Scripts Needed:
 
+Effecting Stats:
+Primary Stats effecting secondary stats
+secondary stats effecting secondary stats.
+int to percentage;
+
+Entities:
+Primary Stats
+Secondary Stats
+Type
+Current Level
+Max Level
+MaxExp
+//Have it so they have a set moveset or moveset per level
+Moveset
+Moveset Per Level
+
+
+
+
+
 RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can attack more people.
 
 Entities: Needs to be modular so that it has a health bar (customisable) and level (min level 1 and max level 100).
