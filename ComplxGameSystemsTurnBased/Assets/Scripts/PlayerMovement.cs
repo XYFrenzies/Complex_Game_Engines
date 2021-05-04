@@ -7,12 +7,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float m_moveSpeed = 5.0f;
     private Vector2 m_movement = Vector2.zero;
     private Rigidbody2D m_rb = null;
-    private Animator m_anim = null;
+    [HideInInspector]public Animator m_anim = null;
+    public static PlayerMovement m_player;
     // Start is called before the first frame update
     private void Awake()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_anim = GetComponent<Animator>();
+        m_player = this;
     }
 
     // Update is called once per frame
