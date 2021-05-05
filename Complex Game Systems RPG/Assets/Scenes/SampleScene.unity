@@ -206,21 +206,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!115 &1871125476
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 5
-  m_Script: 
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_ExecutionOrder: 0
-  m_ClassName: TypingEffectiveness
-  m_Namespace: 
---- !u!1 &1956544346
+--- !u!1 &1094056707
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,74 +214,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1956544347}
-  - component: {fileID: 1956544348}
-  - component: {fileID: 1956544352}
-  - component: {fileID: 1956544349}
-  - component: {fileID: 1956544354}
-  - component: {fileID: 1956544353}
-  - component: {fileID: 1956544350}
-  - component: {fileID: 1956544351}
+  - component: {fileID: 1094056711}
+  - component: {fileID: 1094056710}
+  - component: {fileID: 1094056709}
+  - component: {fileID: 1094056708}
+  - component: {fileID: 1094056712}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1956544347
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1956544348
+--- !u!114 &1094056708
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_types:
-  - None
---- !u!114 &1956544349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e435c54afbde5c34a846614dbe7fb93e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_statusEffects:
-  - name: Toxic
-    valueToChange: 1
-    effectiveness: 01000000
-    isAPercentage: 0
-    showItem: 1
---- !u!114 &1956544350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
+  m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: deeaf170e4ab1cf44825cf247e535606, type: 3}
@@ -312,17 +249,14 @@ MonoBehaviour:
     stats: 1
     showItem: 0
   entities:
-  - indexEntity: 2
+  - indexEntity: 1
     m_name: Name
     m_health: 1
-    m_stats: {fileID: 1956544352}
-    m_typeEffectiveness:
-    - {fileID: 0}
-    - {fileID: 0}
+    m_stats: {fileID: 1094056710}
     m_primaryStats:
     - name: Strength
-      isItAPercent: 1
-      stats: 3456
+      isItAPercent: 0
+      stats: 1
       showItem: 1
     m_secondaryStats:
     - name: Damage
@@ -330,32 +264,44 @@ MonoBehaviour:
       stats: 1
       showItem: 0
     showItem: 1
---- !u!114 &1956544351
+  - indexEntity: 0
+    m_name: Name
+    m_health: 1
+    m_stats: {fileID: 1094056710}
+    m_primaryStats:
+    - name: Strength
+      isItAPercent: 0
+      stats: 1
+      showItem: 1
+    m_secondaryStats:
+    - name: Damage
+      isItAPercent: 0
+      stats: 1
+      showItem: 0
+    showItem: 0
+--- !u!114 &1094056709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
+  m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1871125476}
+  m_Script: {fileID: 11500000, guid: b0dd70368ae3d5f43a5ec0ea87443a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_types:
+  - cbx
+  - gsdf
   - None
-  nameAttack: []
-  nameDefense: []
-  effect: 0
-  indexValueAtt: 0
-  indexValueDef: 0
---- !u!114 &1956544352
+--- !u!114 &1094056710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
+  m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20dc8a60cacc59b4f9b1ec0943a4ac84, type: 3}
@@ -363,51 +309,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_primaryStatistic:
   - name: Strength
-    isItAPercent: 1
-    stats: 3456
+    isItAPercent: 0
+    stats: 1
     showItem: 1
   m_secondaryStatistic:
   - name: Damage
     isItAPercent: 0
     stats: 1
     showItem: 0
---- !u!114 &1956544353
+--- !u!4 &1094056711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094056707}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.49235272, y: 0.19235283, z: -0.044982385}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1094056712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
+  m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdf4af71600fa66438dc24f558efd610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSets:
-  - name: 
+  - itemIndex: 2
+    name: None
     power: 100
     isItAPercentage: 0
     Accuracy: 100
-    type: 01000000
+    type: 00000000
     showItem: 1
---- !u!114 &1956544354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956544346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_items:
-  - itemIndex: 0
-    showItem: 0
-    name: Default
-    valueOfItem: 1
-    isAPercentage: 0
-    properties: 0
-    variation: []
-  indexValue: 0

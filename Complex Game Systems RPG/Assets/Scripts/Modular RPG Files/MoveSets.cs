@@ -14,6 +14,7 @@ public enum Type
 [Serializable]
 public class Moves
 {
+    public int itemIndex = 0;
     public string name;
     public double power;
     public bool isItAPercentage;
@@ -21,8 +22,10 @@ public class Moves
     public int Accuracy;
     public List<Type> type;
     public bool showItem;
+    public List<TypeVariation> m_typeEffectiveness;
     public Moves()
     {
+        m_typeEffectiveness = new List<TypeVariation>();
         name = "None";
         type = new List<Type>();
         type.Add(Type.None);
@@ -30,8 +33,10 @@ public class Moves
         isItAPercentage = false;
         Accuracy = 100;
         showItem = false;
+        
     }
 }
+[RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
 public class MoveSets : MonoBehaviour
 {
@@ -42,6 +47,10 @@ public class MoveSets : MonoBehaviour
         {
             m_moveSets = new List<Moves>();
             m_moveSets.Add(new Moves());
+            for (int i = 0; i < m_moveSets.Count; i++)
+            {
+                m_moveSets[i].m_typeEffectiveness.Add(new TypeVariation());
+            }
         }
     }
 }

@@ -8,8 +8,10 @@ public class Entity
 {
     public int indexEntity;
     public string m_name;
-    //public GameObject m_object;
     public float m_health;
+    public int level;
+    public int maxLevel;
+    public float maxEXP;
     public Stats m_stats;
     public List<TypeVariation> m_typeEffectiveness;
     public List<PrimStatisic> m_primaryStats;
@@ -17,7 +19,12 @@ public class Entity
     [HideInInspector] public bool showItem;
     public Entity()
     {
+        level = 1;
+        maxLevel = 2;
+        maxEXP = 1;
         m_typeEffectiveness = new List<TypeVariation>();
+        m_primaryStats = new List<PrimStatisic>();
+        m_secondaryStats = new List<SecStatistic>();
         m_name = "Name";
         m_health = 1;
         showItem = false;
@@ -25,6 +32,7 @@ public class Entity
     }
 }
 
+[RequireComponent(typeof(TypeChart))]
 [RequireComponent(typeof(Stats))]
 [ExecuteInEditMode]
 public class Entities : Stats
@@ -34,20 +42,20 @@ public class Entities : Stats
     private Stats stat;
     private void LateUpdate()
     {
-        if(stat == null)
+        if (stat == null)
             stat = GetComponent<Stats>();
         if (!Application.isPlaying && entities == null)
         {
             entities = new List<Entity>();
             entities.Add(new Entity());
-           
+
             for (int i = 0; i < entities.Count; i++)
             {
-                entities[i].m_stats = new Stats();
-                entities[i].m_stats = GetComponent<Stats>(); 
-                entities[i].m_typeEffectiveness.Add(new TypeVariation());               
-                CreateNew(i);
-                CopyTo(i);
+                //entities[i].m_stats = new Stats();
+                entities[i].m_stats = stat;
+                entities[i].m_typeEffectiveness.Add(new TypeVariation());
+                AddNewStatisticsPrimary(i);
+                AddNewStatisticsSecondary(i);
             }
         }
         else if (entities.Count >= 1)
@@ -57,15 +65,16 @@ public class Entities : Stats
                 for (int i = 0; i < statsForObjects.m_primaryStatistic.Count; i++)
                 {
                     entities[i] = new Entity();
-                    CreateNew(i);
+                    AddNewStatisticsPrimary(i);
+                    AddNewStatisticsSecondary(i);
                 }
             }
             for (int i = 0; i < entities.Count; i++)
             {
-                if (stat.m_primaryStatistic.Count != entities[i].m_primaryStats.Count)
+                if (entities[i].m_primaryStats == null || stat.m_primaryStatistic.Count != entities[i].m_primaryStats.Count)
                     AddNewStatisticsPrimary(i);
 
-                if (stat.m_secondaryStatistic.Count != entities[i].m_secondaryStats.Count)
+                if (entities[i].m_secondaryStats == null || stat.m_secondaryStatistic.Count != entities[i].m_secondaryStats.Count)
                     AddNewStatisticsSecondary(i);
 
                 for (int j = 0; j < stat.m_primaryStatistic.Count; j++)
@@ -87,24 +96,12 @@ public class Entities : Stats
 
             for (int i = 0; i < entities.Count; i++)
             {
-                CreateNew(i);
-                CopyTo(i);
+                AddNewStatisticsPrimary(i);
+                AddNewStatisticsSecondary(i);
                 entities[i].m_typeEffectiveness = new List<TypeVariation>();
                 entities[i].m_typeEffectiveness.Add(new TypeVariation());
             }
         }
-    }
-
-
-    void CopyTo(int parameter)
-    {
-        entities[parameter].m_primaryStats.CopyTo(GetComponent<Stats>().m_primaryStatistic.ToArray(), 0);
-        entities[parameter].m_secondaryStats.CopyTo(GetComponent<Stats>().m_secondaryStatistic.ToArray(), 0);
-    }
-    void CreateNew(int parameter)
-    {
-        entities[parameter].m_primaryStats = GetComponent<Stats>().m_primaryStatistic;
-        entities[parameter].m_secondaryStats = GetComponent<Stats>().m_secondaryStatistic;
     }
     void AddNewStatisticsPrimary(int parameter)
     {
@@ -127,8 +124,8 @@ public class Entities : Stats
             AddNewStatisticsSecondary(i);
         }
     }
-    public void NewType(int parameter) 
+    public void NewType(int parameter)
     {
-       entities[parameter].m_typeEffectiveness.Add(new TypeVariation());
+        entities[parameter].m_typeEffectiveness.Add(new TypeVariation());
     }
 }

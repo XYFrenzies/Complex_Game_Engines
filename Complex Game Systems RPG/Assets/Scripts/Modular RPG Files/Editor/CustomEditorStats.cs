@@ -160,6 +160,18 @@ public class CustomEditorEntities : Editor
                 GUILayout.Label("Health", GUILayout.Width(150));
                 script.entities[i].m_health = EditorGUILayout.FloatField(script.entities[i].m_health, GUILayout.Width(150));
                 GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Current Level", GUILayout.Width(150));
+                script.entities[i].level = EditorGUILayout.IntField(script.entities[i].level, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Max Level", GUILayout.Width(150));
+                script.entities[i].maxLevel = EditorGUILayout.IntField(script.entities[i].maxLevel, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Max EXP", GUILayout.Width(150));
+                script.entities[i].maxEXP = EditorGUILayout.FloatField(script.entities[i].maxEXP, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
                 #endregion
                 #region PrimaryStats
                 GUILayout.Label(script.entities[i].m_name + "'s Primary Stats", EditorStyles.boldLabel);
@@ -498,7 +510,7 @@ public class CustomEditorMoveSets : Editor
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More effectiveness"))
                 {
-                    if (script.m_moveSets[i].type.Count < 6)
+                    if (script.m_moveSets[i].type.Count < 3)
                         script.m_moveSets[i].type.Add(new Type());
                 }
                 if (GUILayout.Button("Delete Recent Effectiveness"))
@@ -508,20 +520,46 @@ public class CustomEditorMoveSets : Editor
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
+
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Add More Moves"))
+                GUILayout.Label("Typing");
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                for (int j = 0; j < script.m_moveSets[i].m_typeEffectiveness.Count; j++)
                 {
-                    if (script.m_moveSets.Count < 3)
-                        script.m_moveSets.Add(new Moves());
-                }
-                if (GUILayout.Button("Delete More Moves"))
-                {
-                    if (script.m_moveSets.Count > 1)
-                        script.m_moveSets.RemoveAt(script.m_moveSets.Count - 1);
+                    script.m_moveSets[i].itemIndex =
+                    EditorGUILayout.Popup(script.m_moveSets[i].itemIndex,
+                    script.m_moveSets[i].m_typeEffectiveness[j].m_typeVariation.ToArray(), GUILayout.Width(150));
                 }
                 GUILayout.EndHorizontal();
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More Types"))
+                {
+                    if(script.m_moveSets[i].m_typeEffectiveness.Count < 3)
+                        script.m_moveSets[i].m_typeEffectiveness.Add(new TypeVariation());
+                }
+                if (GUILayout.Button("Delete More Types"))
+                {
+                    if (script.m_moveSets[i].m_typeEffectiveness.Count > 1)
+                        script.m_moveSets[i].m_typeEffectiveness.RemoveAt(script.m_moveSets[i].m_typeEffectiveness.Count - 1);
+                }
+                GUILayout.EndHorizontal();
+
             }
         }
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Moves"))
+        {
+            if (script.m_moveSets.Count < 3)
+                script.m_moveSets.Add(new Moves());
+        }
+        if (GUILayout.Button("Delete More Moves"))
+        {
+            if (script.m_moveSets.Count > 1)
+                script.m_moveSets.RemoveAt(script.m_moveSets.Count - 1);
+        }
+        GUILayout.EndHorizontal();
         serializedObject.ApplyModifiedProperties();
     }
 }

@@ -7,14 +7,10 @@ using System;
 [ExecuteInEditMode]
 public class BattleCalc : MonoBehaviour
 {
-    private Stats m_primStats;
-    private Stats m_secStats;
-
-
     //[HideInInspector]public 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //public void AttackToDefenceCalc(Moves m_move, ) 
+    //{
+
+    //}
 }

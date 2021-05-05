@@ -3,18 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 //This will have the types of effectiveness and how they will effect each other.
-[Serializable]
-public class TypeVariation : TypeChart
-{
-    public List<string> m_typeVariation;
-    public TypeVariation()
-    {
-        m_typeVariation = new List<string>();
-        m_typeVariation = chart.m_types;
-        m_typeVariation.CopyTo(chart.m_types.ToArray(), 0);
 
-    }
-}
 [ExecuteInEditMode]
 public class TypeChart : MonoBehaviour
 {
