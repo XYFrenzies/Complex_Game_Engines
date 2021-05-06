@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using System;
 [CustomEditor(typeof(Stats))]
 [CanEditMultipleObjects]
 public class CustomEditorStats : Editor
@@ -604,20 +604,24 @@ public class CustomEditorTypesEffected : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        for (int i = 0; i < script.typeEffective.Count; i++)
+        if (script.typeEffective != null)
         {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Attack");
-            script.typeEffective[i].indexValueAtt = EditorGUILayout.Popup(
-                script.typeEffective[i].indexValueAtt, script.typeEffective[i].nameAttack.ToArray());
-            GUILayout.Label("Defense");
-            script.typeEffective[i].indexValueDef = EditorGUILayout.Popup(
-                script.typeEffective[i].indexValueDef, script.typeEffective[i].nameDefense.ToArray());
-            GUILayout.EndHorizontal();
-            GUILayout.Label("Effectiveness");
-            script.typeEffective[i].effect =
-                    (Effectiveness)EditorGUILayout.EnumPopup(script.typeEffective[i].effect, GUILayout.Width(150));
+            for (int i = 0; i < script.typeEffective.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Attack");
+                script.typeEffective[i].indexValueAtt = EditorGUILayout.Popup(
+                    script.typeEffective[i].indexValueAtt, script.typeEffective[i].nameAttack.ToArray());
+                GUILayout.Label("Defense");
+                script.typeEffective[i].indexValueDef = EditorGUILayout.Popup(
+                    script.typeEffective[i].indexValueDef, script.typeEffective[i].nameDefense.ToArray());
+                GUILayout.EndHorizontal();
+                GUILayout.Label("Effectiveness");
+                script.typeEffective[i].effect =
+                        (Effectiveness)EditorGUILayout.EnumPopup(script.typeEffective[i].effect, GUILayout.Width(150));
+            }
         }
+        
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("More Matchups"))
         {
@@ -632,6 +636,17 @@ public class CustomEditorTypesEffected : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+//[CustomPropertyDrawer(typeof(TypeChart))]
+//public class Items : PropertyDrawer
+//{
+//    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+//    {
+//        property = property.FindPropertyRelative("m_types");
+//        EditorGUI.BeginChangeCheck();
+//        int selectedIndex = Array.IndexOf(property, property.stringValue);
+
+//    }
+//}
 [CustomEditor(typeof(Items))]
 [CanEditMultipleObjects]
 public class CustomEditorItems : Editor
@@ -650,7 +665,6 @@ public class CustomEditorItems : Editor
         Items script = (Items)target;
         GUILayout.Label("Items", EditorStyles.boldLabel);
         GUILayout.Space(10f);
-
 
         for (int i = 0; i < m_items.arraySize; i++)
         {
@@ -696,19 +710,26 @@ public class CustomEditorItems : Editor
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Typing");
-
+                GUILayout.EndHorizontal();
+                EditorGUI.BeginChangeCheck();
                 for (int j = 0; j < script.m_items[i].variation.Count; j++)
                 {
+
                     script.m_items[i].itemIndex =
                     EditorGUILayout.Popup(script.m_items[i].itemIndex,
-                    script.m_items[i].variation[j].m_typeVariation.ToArray(), GUILayout.Width(150));
+                    script.m_items[i].variation[j].m_types.ToArray(), GUILayout.Width(150));
+                    if (EditorGUI.EndChangeCheck())
+                    {
+
+                        //script.m_items[i].itemIndex = script.m_items[i].variation[j].m_types[script.m_items[i].itemIndex];
+                    }
                 }
-                GUILayout.EndHorizontal();
+
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More Types"))
                 {
-                    script.m_items[i].variation.Add(new TypeVariation());
+                    script.AddNewTyping(i);
                 }
                 if (GUILayout.Button("Delete More Types"))
                 {
@@ -722,7 +743,7 @@ public class CustomEditorItems : Editor
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Add More Items"))
         {
-            script.AddToList();
+            script.AddNewItem();
         }
         if (GUILayout.Button("Delete More Items"))
         {
