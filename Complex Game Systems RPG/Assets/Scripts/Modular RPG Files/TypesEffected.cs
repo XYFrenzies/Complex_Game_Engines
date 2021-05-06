@@ -46,10 +46,7 @@ public class TypesEffected : MonoBehaviour
     {
         typeEffective[parameter].nameAttack.Clear();
         typeEffective[parameter].nameDefense.Clear();
-        typeEffective[parameter].nameAttack.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
-        typeEffective[parameter].nameDefense.CopyTo(TypeChart.chart.m_types.ToArray(), 0);
-        typeEffective[parameter].nameAttack = TypeChart.chart.m_types;
-        typeEffective[parameter].nameDefense = TypeChart.chart.m_types;
+        typeEffective[parameter].AddNew();
     }
     public void EffectivenessCalc()
     {

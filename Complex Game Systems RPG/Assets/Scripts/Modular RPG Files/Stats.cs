@@ -101,20 +101,4 @@ public class Stats : MonoBehaviour
     {
         //In this either make another function that adds the percentage by the integer or in this function
     }
-
-    public void SetPrimaryStat(PrimStatisic a_primStat, string a_string, bool a_isAPercent, double a_value) 
-    {
-        PrimStatisic a_temp = a_primStat;
-        m_primaryStatistic.Remove(a_primStat);
-        a_temp = new PrimStatisic(a_string, a_isAPercent, a_value);
-        m_primaryStatistic.Add(a_temp);
-    }
-    public void SetSecondaryStat(SecStatistic a_sec ,string a_string, bool a_isAPercent, double a_value) 
-    {
-        SecStatistic a_temp = a_sec;
-        m_secondaryStatistic.Remove(a_sec);
-        a_temp = new SecStatistic(a_string, a_isAPercent, a_value);
-        m_secondaryStatistic.Add(a_temp);
-    }
-
 }

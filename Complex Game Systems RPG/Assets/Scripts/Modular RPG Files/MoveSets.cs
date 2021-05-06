@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using System.Linq;
 [Serializable]
 public enum Type
 {
@@ -22,10 +22,12 @@ public class Moves
     public int Accuracy;
     public List<Type> type;
     public bool showItem;
-    public List<TypeVariation> m_typeEffectiveness;
+    public List<TypeChart> m_typeEffectiveness;
+    public bool isTypeChartNull;
     public Moves()
     {
-        m_typeEffectiveness = new List<TypeVariation>();
+        m_typeEffectiveness = new List<TypeChart>();
+        m_typeEffectiveness.Add(new TypeChart());
         name = "None";
         type = new List<Type>();
         type.Add(Type.None);
@@ -33,7 +35,17 @@ public class Moves
         isItAPercentage = false;
         Accuracy = 100;
         showItem = false;
-        
+        if (TypeChart.chart == null)
+            isTypeChartNull = true;
+        else
+            for (int j = 0; j < m_typeEffectiveness.Count; j++)
+            {
+                m_typeEffectiveness[j].m_types = new List<string>();
+                foreach (var item in TypeChart.chart.m_types)
+                {
+                    m_typeEffectiveness[j].m_types.Add(item);
+                }
+            }
     }
 }
 [RequireComponent(typeof(TypeChart))]
@@ -47,9 +59,61 @@ public class MoveSets : MonoBehaviour
         {
             m_moveSets = new List<Moves>();
             m_moveSets.Add(new Moves());
-            for (int i = 0; i < m_moveSets.Count; i++)
+        }
+        for (int i = 0; i < m_moveSets.Count; i++)
+        {
+            if (TypeChart.chart == null || m_moveSets[i].isTypeChartNull)
             {
-                m_moveSets[i].m_typeEffectiveness.Add(new TypeVariation());
+                AddToTypes(i);
+                return;
+            }
+            for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
+            {
+                if (m_moveSets[i].m_typeEffectiveness[j].m_types.Count != TypeChart.chart.m_types.Count)
+                {
+                    NewList(i, j);
+                }
+                if (!m_moveSets[i].m_typeEffectiveness[j].m_types.SequenceEqual(TypeChart.chart.m_types))
+                {
+                    NewList(i, j);
+                }
+            }
+        }
+        if (m_moveSets.Count < 1)
+        {
+            m_moveSets = new List<Moves>();
+            m_moveSets.Add(new Moves());
+        }
+    }
+    private void AddToTypes(int i)
+    {
+        for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
+        {
+            m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
+            foreach (var item in TypeChart.chart.m_types)
+            {
+                m_moveSets[i].m_typeEffectiveness[j].m_types.Add(item);
+            }
+        }
+    }
+    private void NewList(int itemPara, int variationPara)
+    {
+        foreach (var item in TypeChart.chart.m_types)
+        {
+            m_moveSets[itemPara].m_typeEffectiveness[variationPara].m_types.Add(item);
+        }
+    }
+    public void AddNewTyping(int i)
+    {
+        m_moveSets[i].m_typeEffectiveness.Add(new TypeChart());
+
+        foreach (var item in TypeChart.chart.m_types)
+        {
+            for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
+            {
+                if (m_moveSets[i].m_typeEffectiveness[j].m_types == null)
+                    m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
+                m_moveSets[i].m_typeEffectiveness[j].m_types.Add(item);
             }
         }
     }

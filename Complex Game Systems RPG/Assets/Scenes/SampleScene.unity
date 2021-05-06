@@ -217,8 +217,10 @@ GameObject:
   - component: {fileID: 1094056711}
   - component: {fileID: 1094056710}
   - component: {fileID: 1094056709}
-  - component: {fileID: 1094056708}
   - component: {fileID: 1094056712}
+  - component: {fileID: 1094056714}
+  - component: {fileID: 1094056713}
+  - component: {fileID: 1094056708}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -235,50 +237,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deeaf170e4ab1cf44825cf247e535606, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_primaryStatistic:
-  - name: Strength
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
-  m_secondaryStatistic:
-  - name: Damage
-    isItAPercent: 0
-    stats: 1
-    showItem: 0
-  entities:
-  - indexEntity: 1
-    m_name: Name
-    m_health: 1
-    m_stats: {fileID: 1094056710}
-    m_primaryStats:
-    - name: Strength
-      isItAPercent: 0
-      stats: 1
-      showItem: 1
-    m_secondaryStats:
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
-    showItem: 1
-  - indexEntity: 0
-    m_name: Name
-    m_health: 1
-    m_stats: {fileID: 1094056710}
-    m_primaryStats:
-    - name: Strength
-      isItAPercent: 0
-      stats: 1
-      showItem: 1
-    m_secondaryStats:
-    - name: Damage
-      isItAPercent: 0
-      stats: 1
-      showItem: 0
-    showItem: 0
 --- !u!114 &1094056709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,6 +256,10 @@ MonoBehaviour:
   - cbx
   - gsdf
   - None
+  - cbx
+  - k
+  - gdfsg
+  typeIndex: 0
 --- !u!114 &1094056710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +276,7 @@ MonoBehaviour:
   - name: Strength
     isItAPercent: 0
     stats: 1
-    showItem: 1
+    showItem: 0
   m_secondaryStatistic:
   - name: Damage
     isItAPercent: 0
@@ -344,10 +309,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSets:
-  - itemIndex: 2
+  - itemIndex: 0
     name: None
-    power: 100
+    power: 1
     isItAPercentage: 0
     Accuracy: 100
     type: 00000000
-    showItem: 1
+    showItem: 0
+    m_typeEffectiveness:
+    - {fileID: 0}
+    isTypeChartNull: 0
+--- !u!114 &1094056713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094056707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e435c54afbde5c34a846614dbe7fb93e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_statusEffects:
+  - name: Toxic
+    valueToChange: 1
+    effectiveness: 01000000
+    isAPercentage: 0
+    showItem: 0
+--- !u!114 &1094056714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094056707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_items:
+  - itemIndex: 0
+    showItem: 0
+    name: Default
+    valueOfItem: 1
+    isAPercentage: 0
+    isTypeChartNull: 0
+    isDurability: 0
+    durability: 1
+    properties: 00000000
+    variation:
+    - {fileID: 0}

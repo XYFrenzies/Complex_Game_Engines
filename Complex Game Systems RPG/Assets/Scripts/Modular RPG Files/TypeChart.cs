@@ -8,8 +8,9 @@ using System;
 public class TypeChart : MonoBehaviour
 {
     public List<string> m_types;
-    public int itemIndex = 0;
+    public int typeIndex = 0;
     public static TypeChart chart;
+    
     void Update()
     {
         if (chart != this)

@@ -29,4 +29,15 @@ public class TypingEffectiveness
             nameDefense.Add(item);
         }
     }
+    public void AddNew() 
+    {
+        if (nameAttack != null && nameDefense != null)
+        {
+            foreach (var item in TypeChart.chart.m_types)
+            {
+                nameAttack.Add(item);
+                nameDefense.Add(item);
+            }
+        }
+    }
 }

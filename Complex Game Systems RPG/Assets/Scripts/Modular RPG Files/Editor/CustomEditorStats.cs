@@ -101,206 +101,206 @@ public class CustomEditorStats : Editor
         #endregion
     }
 }
-[CustomEditor(typeof(Entities))]
-[CanEditMultipleObjects]
-public class CustomEditorEntities : Editor
-{
-    SerializedProperty m_entity;
-    private string percentage = "Percentage";
-    private void OnEnable()
-    {
-        m_entity = serializedObject.FindProperty("entities");
-    }
-    public void IntOrPercentageConvertPrim(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Stat Value", GUILayout.Width(150));
-        a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
-    a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats);
-        if (isPercent)
-            GUILayout.Label("%", GUILayout.Width(150));
-        else
-            GUILayout.Label("Units", GUILayout.Width(150));
-        GUILayout.EndHorizontal();
-    }
-    public void IntOrPercentageConvertSec(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Stat Value", GUILayout.Width(150));
-        a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
-            a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats);
-        if (isPercent)
-            GUILayout.Label("%", GUILayout.Width(150));
-        else
-            GUILayout.Label("Units", GUILayout.Width(150));
-        GUILayout.EndHorizontal();
-    }
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-        Entities script = (Entities)target;
+//[CustomEditor(typeof(Entities))]
+//[CanEditMultipleObjects]
+//public class CustomEditorEntities : Editor
+//{
+//    SerializedProperty m_entity;
+//    private string percentage = "Percentage";
+//    private void OnEnable()
+//    {
+//        m_entity = serializedObject.FindProperty("entities");
+//    }
+//    public void IntOrPercentageConvertPrim(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
+//    {
+//        GUILayout.BeginHorizontal();
+//        GUILayout.Label("Stat Value", GUILayout.Width(150));
+//        a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
+//    a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats);
+//        if (isPercent)
+//            GUILayout.Label("%", GUILayout.Width(150));
+//        else
+//            GUILayout.Label("Units", GUILayout.Width(150));
+//        GUILayout.EndHorizontal();
+//    }
+//    public void IntOrPercentageConvertSec(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
+//    {
+//        GUILayout.BeginHorizontal();
+//        GUILayout.Label("Stat Value", GUILayout.Width(150));
+//        a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
+//            a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats);
+//        if (isPercent)
+//            GUILayout.Label("%", GUILayout.Width(150));
+//        else
+//            GUILayout.Label("Units", GUILayout.Width(150));
+//        GUILayout.EndHorizontal();
+//    }
+//    public override void OnInspectorGUI()
+//    {
+//        serializedObject.Update();
+//        Entities script = (Entities)target;
 
-        GUILayout.Space(20f);
-        GUILayout.Label("Entities:", EditorStyles.boldLabel);
-        GUILayout.Space(10f);
-        for (int i = 0; i < m_entity.arraySize; i++)
-        {
-            script.entities[i].showItem = EditorGUILayout.Foldout(script.entities[i].showItem, script.entities[i].m_name, true);
-            if (script.entities[i].showItem)
-            {
-                #region EntityStart
-                GUILayout.Label("Entity Description");
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Entity Name", GUILayout.Width(150));
-                script.entities[i].m_name = GUILayout.TextField(script.entities[i].m_name);
-                GUILayout.EndHorizontal();
-                //Asking the developer to put in a gameobject.
+//        GUILayout.Space(20f);
+//        GUILayout.Label("Entities:", EditorStyles.boldLabel);
+//        GUILayout.Space(10f);
+//        for (int i = 0; i < m_entity.arraySize; i++)
+//        {
+//            script.entities[i].showItem = EditorGUILayout.Foldout(script.entities[i].showItem, script.entities[i].m_name, true);
+//            if (script.entities[i].showItem)
+//            {
+//                #region EntityStart
+//                GUILayout.Label("Entity Description");
+//                GUILayout.BeginHorizontal();
+//                GUILayout.Label("Entity Name", GUILayout.Width(150));
+//                script.entities[i].m_name = GUILayout.TextField(script.entities[i].m_name);
+//                GUILayout.EndHorizontal();
+//                //Asking the developer to put in a gameobject.
 
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Health", GUILayout.Width(150));
-                script.entities[i].m_health = EditorGUILayout.FloatField(script.entities[i].m_health, GUILayout.Width(150));
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Current Level", GUILayout.Width(150));
-                script.entities[i].level = EditorGUILayout.IntField(script.entities[i].level, GUILayout.Width(150));
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Max Level", GUILayout.Width(150));
-                script.entities[i].maxLevel = EditorGUILayout.IntField(script.entities[i].maxLevel, GUILayout.Width(150));
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Max EXP", GUILayout.Width(150));
-                script.entities[i].maxEXP = EditorGUILayout.FloatField(script.entities[i].maxEXP, GUILayout.Width(150));
-                GUILayout.EndHorizontal();
-                #endregion
-                #region PrimaryStats
-                GUILayout.Label(script.entities[i].m_name + "'s Primary Stats", EditorStyles.boldLabel);
-                GUILayout.Space(10f);
+//                GUILayout.BeginHorizontal();
+//                GUILayout.Label("Health", GUILayout.Width(150));
+//                script.entities[i].m_health = EditorGUILayout.FloatField(script.entities[i].m_health, GUILayout.Width(150));
+//                GUILayout.EndHorizontal();
+//                GUILayout.BeginHorizontal();
+//                GUILayout.Label("Current Level", GUILayout.Width(150));
+//                script.entities[i].level = EditorGUILayout.IntField(script.entities[i].level, GUILayout.Width(150));
+//                GUILayout.EndHorizontal();
+//                GUILayout.BeginHorizontal();
+//                GUILayout.Label("Max Level", GUILayout.Width(150));
+//                script.entities[i].maxLevel = EditorGUILayout.IntField(script.entities[i].maxLevel, GUILayout.Width(150));
+//                GUILayout.EndHorizontal();
+//                GUILayout.BeginHorizontal();
+//                GUILayout.Label("Max EXP", GUILayout.Width(150));
+//                script.entities[i].maxEXP = EditorGUILayout.FloatField(script.entities[i].maxEXP, GUILayout.Width(150));
+//                GUILayout.EndHorizontal();
+//                #endregion
+//                #region PrimaryStats
+//                GUILayout.Label(script.entities[i].m_name + "'s Primary Stats", EditorStyles.boldLabel);
+//                GUILayout.Space(10f);
 
-                for (int j = 0; j < script.entities[i].m_primaryStats.Count; j++)
-                {
-                    script.entities[i].m_primaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_primaryStats[j].showItem,
-                        script.entities[i].m_primaryStats[j].name, true);
-                    if (script.entities[i].m_primaryStats[j].showItem)
-                    {
-                        GUILayout.Label("Stat Description");
-                        GUILayout.Label(script.entities[i].m_primaryStats[j].name + " Stat", GUILayout.Width(150));
-                        //Determining if its a percentage or integer it is effecting.
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
-                        GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal();
-                        //Button for converting to a percentage
-                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
-                        {
-                            if (script.entities[i].m_primaryStats[j].isItAPercent == true)
-                            {
-                                percentage = "Percentage";
-                                script.entities[i].m_primaryStats[j].isItAPercent = false;
-                            }
-                            else if (script.entities[i].m_primaryStats[j].isItAPercent == false)
-                            {
-                                percentage = "Whole Number";
-                                script.entities[i].m_primaryStats[j].isItAPercent = true;
-                            }
-                        }
-                        GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal();
-                        if (script.entities[i].m_primaryStats[j].isItAPercent)
-                        {
-                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
-                        }
-                        else if (!script.entities[i].m_primaryStats[j].isItAPercent)
-                        {
-                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
-                        }
-                        GUILayout.EndHorizontal();
-                    }
-                }
-                #endregion
-                #region SecondaryStats
-                GUILayout.Space(20f);
-                GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
-                GUILayout.Space(10f);
+//                for (int j = 0; j < script.entities[i].m_primaryStats.Count; j++)
+//                {
+//                    script.entities[i].m_primaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_primaryStats[j].showItem,
+//                        script.entities[i].m_primaryStats[j].name, true);
+//                    if (script.entities[i].m_primaryStats[j].showItem)
+//                    {
+//                        GUILayout.Label("Stat Description");
+//                        GUILayout.Label(script.entities[i].m_primaryStats[j].name + " Stat", GUILayout.Width(150));
+//                        //Determining if its a percentage or integer it is effecting.
+//                        GUILayout.BeginHorizontal();
+//                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+//                        GUILayout.EndHorizontal();
+//                        GUILayout.BeginHorizontal();
+//                        //Button for converting to a percentage
+//                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
+//                        {
+//                            if (script.entities[i].m_primaryStats[j].isItAPercent == true)
+//                            {
+//                                percentage = "Percentage";
+//                                script.entities[i].m_primaryStats[j].isItAPercent = false;
+//                            }
+//                            else if (script.entities[i].m_primaryStats[j].isItAPercent == false)
+//                            {
+//                                percentage = "Whole Number";
+//                                script.entities[i].m_primaryStats[j].isItAPercent = true;
+//                            }
+//                        }
+//                        GUILayout.EndHorizontal();
+//                        GUILayout.BeginHorizontal();
+//                        if (script.entities[i].m_primaryStats[j].isItAPercent)
+//                        {
+//                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
+//                        }
+//                        else if (!script.entities[i].m_primaryStats[j].isItAPercent)
+//                        {
+//                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
+//                        }
+//                        GUILayout.EndHorizontal();
+//                    }
+//                }
+//                #endregion
+//                #region SecondaryStats
+//                GUILayout.Space(20f);
+//                GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
+//                GUILayout.Space(10f);
 
-                for (int j = 0; j < script.entities[i].m_secondaryStats.Count; j++)
-                {
-                    script.entities[i].m_secondaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_secondaryStats[j].showItem,
-                        script.entities[i].m_secondaryStats[j].name, true);
-                    if (script.entities[i].m_secondaryStats[j].showItem)
-                    {
-                        GUILayout.Label("Stat Description");
-                        GUILayout.Label(script.entities[i].m_secondaryStats[j].name + " Stat", GUILayout.Width(150));
-                        //Determining if its a percentage or integer it is effecting.
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
-                        GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal();
-                        //Button for converting to a percentage
-                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
-                        {
-                            if (script.entities[i].m_secondaryStats[j].isItAPercent == true)
-                            {
-                                percentage = "Percentage";
-                                script.entities[i].m_secondaryStats[j].isItAPercent = false;
-                            }
-                            else if (script.entities[i].m_secondaryStats[j].isItAPercent == false)
-                            {
-                                percentage = "Whole Number";
-                                script.entities[i].m_secondaryStats[j].isItAPercent = true;
-                            }
-                        }
-                        GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal();
-                        if (script.entities[i].m_secondaryStats[j].isItAPercent)
-                        {
-                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
-                        }
-                        else if (!script.entities[i].m_secondaryStats[j].isItAPercent)
-                        {
-                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
-                        }
-                        GUILayout.EndHorizontal();
-                    }
-                }
-                #endregion
-                GUILayout.Label("Typing");
-                for (int k = 0; k < script.entities[i].m_typeEffectiveness.Count; k++)
-                {
-                    GUILayout.BeginHorizontal();
-                    script.entities[i].indexEntity = EditorGUILayout.Popup(
-                        script.entities[i].indexEntity, script.entities[i].m_typeEffectiveness[k].m_typeVariation.ToArray());
-                    GUILayout.EndHorizontal();
-                }
-                GUILayout.Space(10f);
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Add More Types"))
-                {
-                    script.NewType(i);
-                }
-                if (GUILayout.Button("Delete Recent Type"))
-                {
-                    if (script.entities[i].m_typeEffectiveness.Count > 1)
-                        script.entities[i].m_typeEffectiveness.RemoveAt(script.entities[i].m_typeEffectiveness.Count - 1);
-                }
-                GUILayout.EndHorizontal();
-            }
-        }
-        GUILayout.Space(20f);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add More Entities"))
-        {
-            script.AddEntity();
-        }
-        if (GUILayout.Button("Delete More Entities"))
-        {
-            if (script.entities.Count > 1)
-                script.entities.RemoveAt(script.entities.Count - 1);
-        }
-        GUILayout.EndHorizontal();
-        serializedObject.ApplyModifiedProperties();
-    }
-}
+//                for (int j = 0; j < script.entities[i].m_secondaryStats.Count; j++)
+//                {
+//                    script.entities[i].m_secondaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_secondaryStats[j].showItem,
+//                        script.entities[i].m_secondaryStats[j].name, true);
+//                    if (script.entities[i].m_secondaryStats[j].showItem)
+//                    {
+//                        GUILayout.Label("Stat Description");
+//                        GUILayout.Label(script.entities[i].m_secondaryStats[j].name + " Stat", GUILayout.Width(150));
+//                        //Determining if its a percentage or integer it is effecting.
+//                        GUILayout.BeginHorizontal();
+//                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+//                        GUILayout.EndHorizontal();
+//                        GUILayout.BeginHorizontal();
+//                        //Button for converting to a percentage
+//                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
+//                        {
+//                            if (script.entities[i].m_secondaryStats[j].isItAPercent == true)
+//                            {
+//                                percentage = "Percentage";
+//                                script.entities[i].m_secondaryStats[j].isItAPercent = false;
+//                            }
+//                            else if (script.entities[i].m_secondaryStats[j].isItAPercent == false)
+//                            {
+//                                percentage = "Whole Number";
+//                                script.entities[i].m_secondaryStats[j].isItAPercent = true;
+//                            }
+//                        }
+//                        GUILayout.EndHorizontal();
+//                        GUILayout.BeginHorizontal();
+//                        if (script.entities[i].m_secondaryStats[j].isItAPercent)
+//                        {
+//                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
+//                        }
+//                        else if (!script.entities[i].m_secondaryStats[j].isItAPercent)
+//                        {
+//                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
+//                        }
+//                        GUILayout.EndHorizontal();
+//                    }
+//                }
+//                #endregion
+//                GUILayout.Label("Typing");
+//                for (int k = 0; k < script.entities[i].m_typeEffectiveness.Count; k++)
+//                {
+//                    GUILayout.BeginHorizontal();
+//                    script.entities[i].m_typeEffectiveness[k].typeIndex = EditorGUILayout.Popup(
+//                        script.entities[i].m_typeEffectiveness[k].typeIndex, script.entities[i].m_typeEffectiveness[k].m_types.ToArray());
+//                    GUILayout.EndHorizontal();
+//                }
+//                GUILayout.Space(10f);
+//                GUILayout.BeginHorizontal();
+//                if (GUILayout.Button("Add More Types"))
+//                {
+//                    script.AddNewTyping(i);
+//                }
+//                if (GUILayout.Button("Delete Recent Type"))
+//                {
+//                    if (script.entities[i].m_typeEffectiveness.Count > 1)
+//                        script.entities[i].m_typeEffectiveness.RemoveAt(script.entities[i].m_typeEffectiveness.Count - 1);
+//                }
+//                GUILayout.EndHorizontal();
+//            }
+//        }
+//        GUILayout.Space(20f);
+//        GUILayout.BeginHorizontal();
+//        if (GUILayout.Button("Add More Entities"))
+//        {
+//            script.AddEntity();
+//        }
+//        if (GUILayout.Button("Delete More Entities"))
+//        {
+//            if (script.entities.Count > 1)
+//                script.entities.RemoveAt(script.entities.Count - 1);
+//        }
+//        GUILayout.EndHorizontal();
+//        serializedObject.ApplyModifiedProperties();
+//    }
+//}
 [CustomEditor(typeof(StatusEffects))]
 [CanEditMultipleObjects]
 public class CustomEditorStatus : Editor
@@ -384,12 +384,14 @@ public class CustomEditorStatus : Editor
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Item Properties", GUILayout.Width(150));
+                GUILayout.EndHorizontal();
                 for (int j = 0; j < script.m_statusEffects[i].effectiveness.Count; j++)
                 {
+                    GUILayout.BeginHorizontal();
                     script.m_statusEffects[i].effectiveness[j] = (HowItEffects)EditorGUILayout.EnumPopup(
                         script.m_statusEffects[i].effectiveness[j], GUILayout.Width(150));
+                    GUILayout.EndHorizontal();
                 }
-                GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More effectiveness"))
@@ -456,7 +458,7 @@ public class CustomEditorMoveSets : Editor
 
         for (int i = 0; i < m_moveSets.arraySize; i++)
         {
-            script.m_moveSets[i].showItem = EditorGUILayout.Foldout(script.m_moveSets[i].showItem, 
+            script.m_moveSets[i].showItem = EditorGUILayout.Foldout(script.m_moveSets[i].showItem,
                 "Item " + script.m_moveSets[i].name, true);
             if (script.m_moveSets[i].showItem)
             {
@@ -527,17 +529,17 @@ public class CustomEditorMoveSets : Editor
                 GUILayout.BeginHorizontal();
                 for (int j = 0; j < script.m_moveSets[i].m_typeEffectiveness.Count; j++)
                 {
-                    script.m_moveSets[i].itemIndex =
-                    EditorGUILayout.Popup(script.m_moveSets[i].itemIndex,
-                    script.m_moveSets[i].m_typeEffectiveness[j].m_typeVariation.ToArray(), GUILayout.Width(150));
+                    script.m_moveSets[i].m_typeEffectiveness[j].typeIndex =
+                    EditorGUILayout.Popup(script.m_moveSets[i].m_typeEffectiveness[j].typeIndex,
+                    script.m_moveSets[i].m_typeEffectiveness[j].m_types.ToArray(), GUILayout.Width(150));
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More Types"))
                 {
-                    if(script.m_moveSets[i].m_typeEffectiveness.Count < 3)
-                        script.m_moveSets[i].m_typeEffectiveness.Add(new TypeVariation());
+                    if (script.m_moveSets[i].m_typeEffectiveness.Count < 3)
+                        script.AddNewTyping(i);
                 }
                 if (GUILayout.Button("Delete More Types"))
                 {
@@ -621,7 +623,7 @@ public class CustomEditorTypesEffected : Editor
                         (Effectiveness)EditorGUILayout.EnumPopup(script.typeEffective[i].effect, GUILayout.Width(150));
             }
         }
-        
+
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("More Matchups"))
         {
@@ -636,28 +638,30 @@ public class CustomEditorTypesEffected : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
-//[CustomPropertyDrawer(typeof(TypeChart))]
-//public class Items : PropertyDrawer
-//{
-//    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-//    {
-//        property = property.FindPropertyRelative("m_types");
-//        EditorGUI.BeginChangeCheck();
-//        int selectedIndex = Array.IndexOf(property, property.stringValue);
-
-//    }
-//}
 [CustomEditor(typeof(Items))]
 [CanEditMultipleObjects]
 public class CustomEditorItems : Editor
 {
-
-    private int lengthValueProperties = 1;
-
+    private string percentage = "Percentage";
+    private string durability = "Durability System";
+    private string use = "Number of Uses System";
     SerializedProperty m_items;
     private void OnEnable()
     {
         m_items = serializedObject.FindProperty("m_items");
+    }
+
+    public void IntOrPercentageConvert(Items a_script, int a_parameterEntity, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Item Power", GUILayout.Width(150));
+        a_script.m_items[a_parameterEntity].valueOfItem = EditorGUILayout.DoubleField(
+            a_script.m_items[a_parameterEntity].valueOfItem);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
     }
     public override void OnInspectorGUI()
     {
@@ -676,55 +680,92 @@ public class CustomEditorItems : Editor
                 GUILayout.Label("Item Name", GUILayout.Width(150));
                 script.m_items[i].name = GUILayout.TextField(script.m_items[i].name);
                 GUILayout.EndHorizontal();
-
+                //Percentage and Int modifier
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Item Value", GUILayout.Width(150));
-                script.m_items[i].valueOfItem = EditorGUILayout.IntField(script.m_items[i].valueOfItem);
+                //Button for converting to a percentage
+                if (GUILayout.Button(percentage, GUILayout.Width(250)))
+                {
+                    if (script.m_items[i].isAPercentage == true)
+                    {
+                        percentage = "Percentage";
+                        script.m_items[i].isAPercentage = false;
+                    }
+                    else if (script.m_items[i].isAPercentage == false)
+                    {
+                        percentage = "Whole Number";
+                        script.m_items[i].isAPercentage = true;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (script.m_items[i].isAPercentage)
+                {
+                    IntOrPercentageConvert(script, i, script.m_items[i].isAPercentage);
+                }
+                else if (!script.m_items[i].isAPercentage)
+                {
+                    IntOrPercentageConvert(script, i, script.m_items[i].isAPercentage);
+                }
                 GUILayout.EndHorizontal();
 
+                //Durability
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Is it a Percentage or Integer", GUILayout.Width(150));
-                script.m_items[i].isAPercentage = EditorGUILayout.Toggle(script.m_items[i].isAPercentage);
+                if (GUILayout.Button(durability, GUILayout.Width(250)))
+                {
+                    if (script.m_items[i].isDurability == true)
+                    {
+                        script.m_items[i].isDurability = false;
+                    }
+                    else if (script.m_items[i].isDurability == false)
+                    {
+
+                        script.m_items[i].isDurability = true;
+                    }
+                }
+
                 GUILayout.EndHorizontal();
+                if (script.m_items[i].isDurability)
+                {
+                    GUILayout.Label("This Item Has Durability", GUILayout.Width(150));
+                    script.m_items[i].valueOfItem = EditorGUILayout.DoubleField(
+                        script.m_items[i].durability);
+                }
+                else
+                    GUILayout.Label("This Item does not have Durability", GUILayout.Width(250));
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Item Properties", GUILayout.Width(150));
-                for (int j = 0; j < lengthValueProperties; j++)
+                GUILayout.EndHorizontal();
+                for (int j = 0; j < script.m_items[i].properties.Count; j++)
                 {
-                    script.m_items[i].properties = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties);
+                    GUILayout.BeginHorizontal();
+                    script.m_items[i].properties[j] = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties[j], GUILayout.Width(150));
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.Space(10f);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add More effectiveness"))
+                {
+                    if (script.m_items[i].properties.Count < 3)
+                        script.m_items[i].properties.Add(new ItemProperties());
+                }
+                if (GUILayout.Button("Delete Recent Effectiveness"))
+                {
+                    if (script.m_items[i].properties.Count > 1)
+                        script.m_items[i].properties.RemoveAt(script.m_items[i].properties.Count - 1);
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Add More Properties"))
-                {
-                    if (lengthValueProperties < 4)
-                        lengthValueProperties += 1;
-                }
-                if (GUILayout.Button("Delete More Properties"))
-                {
-                    if (lengthValueProperties > 1)
-                        lengthValueProperties -= 1;
-                }
-                GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Typing");
                 GUILayout.EndHorizontal();
-                EditorGUI.BeginChangeCheck();
                 for (int j = 0; j < script.m_items[i].variation.Count; j++)
                 {
-
-                    script.m_items[i].itemIndex =
-                    EditorGUILayout.Popup(script.m_items[i].itemIndex,
+                    script.m_items[i].variation[j].typeIndex = 
+                        EditorGUILayout.Popup(script.m_items[i].variation[j].typeIndex,
                     script.m_items[i].variation[j].m_types.ToArray(), GUILayout.Width(150));
-                    if (EditorGUI.EndChangeCheck())
-                    {
-
-                        //script.m_items[i].itemIndex = script.m_items[i].variation[j].m_types[script.m_items[i].itemIndex];
-                    }
                 }
-
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More Types"))
