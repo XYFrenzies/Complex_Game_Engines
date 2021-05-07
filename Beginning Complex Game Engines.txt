@@ -29,8 +29,6 @@ Moveset Per Level
 
 
 
-
-
 RoundBasedSystem: Creates the main round based system for the mainframe of the game. If theres more than 2 characters, the player can attack more people.
 
 Entities: Needs to be modular so that it has a health bar (customisable) and level (min level 1 and max level 100).
@@ -123,4 +121,15 @@ round = round to the nearest number.
 
 //Pokemon calc to find attack, defense, special attack, special defense and speed value
 Stat change = round(round(2 x base stats + individual values + Effort values ) x Level / 100 + 5) * natural value 
+
+
+Experience gained by battle and win is determined by this calculator:
+
+(a x b x Level(enemy)) / 7 x  number of entities that have paticipated
+
+where a:
+if its a wild pokemon = 1 
+if its a trainer = 1.5
+
+where b is the base experience yield of the entity.
 

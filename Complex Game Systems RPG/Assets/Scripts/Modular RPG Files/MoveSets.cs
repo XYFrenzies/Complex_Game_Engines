@@ -24,8 +24,14 @@ public class Moves
     public bool showItem;
     public List<TypeChart> m_typeEffectiveness;
     public bool isTypeChartNull;
+    public bool isLearntPerLevel;
+    public bool isLearntExternally;
+    public int levelLearnt;
     public Moves()
     {
+        isLearntPerLevel = true;
+        isLearntExternally = false;
+        levelLearnt = 1;
         m_typeEffectiveness = new List<TypeChart>();
         m_typeEffectiveness.Add(new TypeChart());
         name = "None";
@@ -53,8 +59,12 @@ public class Moves
 public class MoveSets : MonoBehaviour
 {
     public List<Moves> m_moveSets;
+    public int moveIndex = 0;
+    public static MoveSets moves;
     void Update()
     {
+        if (moves == null)
+            moves = this;
         if (!Application.isPlaying && m_moveSets == null)
         {
             m_moveSets = new List<Moves>();

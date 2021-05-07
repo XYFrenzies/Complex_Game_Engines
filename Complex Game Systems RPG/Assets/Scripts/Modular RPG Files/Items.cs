@@ -26,8 +26,10 @@ public class ItemID
     [Tooltip("Max size is 4!")]
     public List<ItemProperties> properties;
     public List<TypeChart> variation;
+    public int m_amountOfItemsForPlayer;
     public ItemID()
     {
+        m_amountOfItemsForPlayer = 1;
         durability = 1;
         isDurability = false;
         isTypeChartNull = false;
@@ -74,12 +76,14 @@ public class Items : MonoBehaviour
 {
     public List<ItemID> m_items;
     private TypeChart type;
+    public static Items item;
     private void LateUpdate()
     {  
         if (type == null)
             type = GetComponent<TypeChart>();
         if (!Application.isPlaying)
         {
+            item = this;
             if (m_items == null)
             {
                 m_items = new List<ItemID>();

@@ -218,9 +218,9 @@ GameObject:
   - component: {fileID: 1094056710}
   - component: {fileID: 1094056709}
   - component: {fileID: 1094056712}
-  - component: {fileID: 1094056714}
   - component: {fileID: 1094056713}
   - component: {fileID: 1094056708}
+  - component: {fileID: 1094056714}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -310,8 +310,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSets:
   - itemIndex: 0
-    name: None
-    power: 1
+    name: Dark Punch
+    power: 100
+    isItAPercentage: 0
+    Accuracy: 100
+    type: 01000000
+    showItem: 0
+    m_typeEffectiveness:
+    - {fileID: 0}
+    isTypeChartNull: 0
+    isLearntPerLevel: 1
+    isLearntExternally: 1
+    levelLearnt: 1
+  - itemIndex: 1
+    name: Light Punch
+    power: 100
     isItAPercentage: 0
     Accuracy: 100
     type: 00000000
@@ -319,6 +332,10 @@ MonoBehaviour:
     m_typeEffectiveness:
     - {fileID: 0}
     isTypeChartNull: 0
+    isLearntPerLevel: 1
+    isLearntExternally: 0
+    levelLearnt: 1
+  moveIndex: 0
 --- !u!114 &1094056713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_items:
   - itemIndex: 0
-    showItem: 0
+    showItem: 1
     name: Default
     valueOfItem: 1
     isAPercentage: 0
@@ -361,3 +378,5 @@ MonoBehaviour:
     properties: 00000000
     variation:
     - {fileID: 0}
+    - {fileID: 0}
+    m_amountOfItemsForPlayer: 1

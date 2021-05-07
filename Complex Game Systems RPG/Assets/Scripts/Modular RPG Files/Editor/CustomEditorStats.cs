@@ -101,6 +101,177 @@ public class CustomEditorStats : Editor
         #endregion
     }
 }
+
+[CustomEditor(typeof(Entity))]
+[CanEditMultipleObjects]
+public class CustomEditorEntity : Editor
+{
+    Entity m_entity;
+    private void OnEnable()
+    {
+        m_entity = (Entity)target;
+    }
+    public override void OnInspectorGUI()
+    {
+        //Per scriptableObject
+        //When a new scriptable object occurs, the developer gets the options that are preset with the
+        //types, stats, items and movesets.
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Name", GUILayout.Width(150));
+        m_entity.m_name = GUILayout.TextField(m_entity.m_name);
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Health", GUILayout.Width(150));
+        m_entity.m_health = EditorGUILayout.FloatField(m_entity.m_health);
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Current Level", GUILayout.Width(150));
+        m_entity.level = EditorGUILayout.IntField(m_entity.level);
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Max Level", GUILayout.Width(150));
+        m_entity.maxLevel = EditorGUILayout.IntField(m_entity.maxLevel);
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Base Experience Yield", GUILayout.Width(550));
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        m_entity.baseEXPYield = EditorGUILayout.FloatField(m_entity.baseEXPYield);
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Max Experience", GUILayout.Width(150));
+        m_entity.maxEXP = EditorGUILayout.FloatField(m_entity.maxEXP);
+        GUILayout.EndHorizontal();
+        //Typing
+        #region Typing
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Typing");
+        GUILayout.EndHorizontal();
+        for (int i = 0; i < m_entity.m_typeEffectiveness.Count; i++)
+        {
+            m_entity.m_typeEffectiveness[i].typeIndex =
+                EditorGUILayout.Popup(m_entity.m_typeEffectiveness[i].typeIndex,
+            m_entity.m_typeEffectiveness[i].m_types.ToArray(), GUILayout.Width(150));
+        }
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Capped at 3");
+        if (GUILayout.Button("Add More Types"))
+        {
+            ///Can be changed for later however we dont want to many typings on an entity
+            if (m_entity.m_typeEffectiveness.Count < 4)
+                m_entity.AddNewType();
+        }
+        if (GUILayout.Button("Delete More Types"))
+        {
+            if (m_entity.m_typeEffectiveness.Count > 1)
+                m_entity.m_typeEffectiveness.RemoveAt(m_entity.m_typeEffectiveness.Count - 1);
+        }
+        GUILayout.EndHorizontal();
+        #endregion
+        #region MoveSets
+        ///Starting movesets for the entity
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Starting Movesets");
+        GUILayout.EndHorizontal();
+        for (int i = 0; i < m_entity.m_currentMoveSets.Count; i++)
+        {
+            m_entity.m_currentMoveSets[i].moveIndex =
+            EditorGUILayout.Popup(m_entity.m_currentMoveSets[i].moveIndex,
+            m_entity.m_nameOfMovesCurrent.ToArray(), GUILayout.Width(150));
+            //This might be the issue in terms of the list of string names of moves.
+        }
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Moves"))
+        {
+            m_entity.AddMoreCurrentMove();
+        }
+        if (GUILayout.Button("Delete Recent Move"))
+        {
+            if (m_entity.m_currentMoveSets.Count > 1)
+                m_entity.m_currentMoveSets.RemoveAt(m_entity.m_currentMoveSets.Count - 1);
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Learnable Movesets");
+        GUILayout.EndHorizontal();
+
+        for (int i = 0; i < m_entity.m_learnableMoves.Count; i++)
+        {
+
+
+            m_entity.m_learnableMoves[i].moveIndex =
+            EditorGUILayout.Popup(m_entity.m_learnableMoves[i].moveIndex,
+            m_entity.m_nameOfMovesExternal.ToArray(), GUILayout.Width(150));
+
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Learnable By Level"))
+            {
+                m_entity.m_learntPerLevel[i] = true;
+            }
+            if (GUILayout.Button("Not Learnable By Level"))
+            {
+                m_entity.m_learntPerLevel[i] = false;
+            }
+            GUILayout.EndHorizontal();
+            if (m_entity.m_learntPerLevel[i] == true)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("What Level does it learn the move?");
+                GUILayout.EndHorizontal();
+                m_entity.levelForeachMoveset[i] = EditorGUILayout.IntField(
+                    m_entity.levelForeachMoveset[i]);
+            }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Learnt Externally"))
+            {
+                m_entity.m_learntPerLevel[i] = true;
+            }
+            if (GUILayout.Button("Not learnt externally"))
+            {
+                m_entity.m_learntPerLevel[i] = false;
+
+            }
+            GUILayout.EndHorizontal();
+            if (m_entity.m_learntPerLevel[i] == true)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("The move can now be learnt externally.");
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Cant be learnt externally!");
+                GUILayout.EndHorizontal();
+            }
+
+            //This might be the issue in terms of the list of string names of moves.
+        }
+        GUILayout.Space(10f);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add More Moves"))
+        {
+            m_entity.AddMoreCurrentMove();
+        }
+        if (GUILayout.Button("Delete Recent Move"))
+        {
+            if (m_entity.m_currentMoveSets.Count > 1)
+                m_entity.m_currentMoveSets.RemoveAt(m_entity.m_currentMoveSets.Count - 1);
+        }
+        GUILayout.EndHorizontal();
+
+        #endregion
+    }
+}
 //[CustomEditor(typeof(Entities))]
 //[CanEditMultipleObjects]
 //public class CustomEditorEntities : Editor
@@ -762,7 +933,7 @@ public class CustomEditorItems : Editor
                 GUILayout.EndHorizontal();
                 for (int j = 0; j < script.m_items[i].variation.Count; j++)
                 {
-                    script.m_items[i].variation[j].typeIndex = 
+                    script.m_items[i].variation[j].typeIndex =
                         EditorGUILayout.Popup(script.m_items[i].variation[j].typeIndex,
                     script.m_items[i].variation[j].m_types.ToArray(), GUILayout.Width(150));
                 }
