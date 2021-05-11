@@ -55,6 +55,10 @@ public class Stats : MonoBehaviour
     [Tooltip("Default")]
     public List<SecStatistic> m_secondaryStatistic;
     //Defaults
+    private void OnValidate()
+    {
+        statsForObjects = this;
+    }
     private void Update()
     {
         statsForObjects = this;

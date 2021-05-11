@@ -59,14 +59,18 @@ public class Moves
 public class MoveSets : MonoBehaviour
 {
     public List<Moves> m_moveSets;
-    public int moveIndex = 0;
+    public int moveIndex;
     public static MoveSets moves;
-    void Update()
+    private void OnValidate()
     {
         if (moves == null)
             moves = this;
+    }
+    void Update()
+    {
         if (!Application.isPlaying && m_moveSets == null)
         {
+            moveIndex = 0;
             m_moveSets = new List<Moves>();
             m_moveSets.Add(new Moves());
         }
@@ -79,6 +83,8 @@ public class MoveSets : MonoBehaviour
             }
             for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
             {
+                if (m_moveSets[i].m_typeEffectiveness[j] == null)
+                    m_moveSets[i].m_typeEffectiveness[j] = GetComponent<TypeChart>();
                 if (m_moveSets[i].m_typeEffectiveness[j].m_types.Count != TypeChart.chart.m_types.Count)
                 {
                     NewList(i, j);
@@ -128,3 +134,4 @@ public class MoveSets : MonoBehaviour
         }
     }
 }
+

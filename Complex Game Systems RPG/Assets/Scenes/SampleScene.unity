@@ -253,12 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_types:
-  - cbx
-  - gsdf
-  - None
-  - cbx
-  - k
-  - gdfsg
+  - Dark
+  - Liught
   typeIndex: 0
 --- !u!114 &1094056710
 MonoBehaviour:
@@ -317,7 +313,7 @@ MonoBehaviour:
     type: 01000000
     showItem: 0
     m_typeEffectiveness:
-    - {fileID: 0}
+    - {fileID: 1094056709}
     isTypeChartNull: 0
     isLearntPerLevel: 1
     isLearntExternally: 1
@@ -330,7 +326,7 @@ MonoBehaviour:
     type: 00000000
     showItem: 0
     m_typeEffectiveness:
-    - {fileID: 0}
+    - {fileID: 1094056709}
     isTypeChartNull: 0
     isLearntPerLevel: 1
     isLearntExternally: 0
@@ -366,9 +362,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemIndex: 0
   m_items:
   - itemIndex: 0
-    showItem: 1
+    showItem: 0
     name: Default
     valueOfItem: 1
     isAPercentage: 0
@@ -377,6 +374,17 @@ MonoBehaviour:
     durability: 1
     properties: 00000000
     variation:
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 1094056709}
+    m_amountOfItemsForPlayer: 1
+  - itemIndex: 1
+    showItem: 1
+    name: Toxic
+    valueOfItem: 1
+    isAPercentage: 0
+    isTypeChartNull: 0
+    isDurability: 0
+    durability: 1
+    properties: 00000000
+    variation:
+    - {fileID: 1094056709}
     m_amountOfItemsForPlayer: 1

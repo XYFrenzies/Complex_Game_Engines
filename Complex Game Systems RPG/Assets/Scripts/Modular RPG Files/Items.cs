@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+
 [Serializable]
 public enum ItemProperties
 {
@@ -74,9 +75,16 @@ public class ItemID
 [ExecuteInEditMode]
 public class Items : MonoBehaviour
 {
+    public int itemIndex;
     public List<ItemID> m_items;
     private TypeChart type;
     public static Items item;
+    private void OnValidate()
+    {
+        item = this;
+        if (type == null)
+            type = GetComponent<TypeChart>();
+    }
     private void LateUpdate()
     {  
         if (type == null)
@@ -86,6 +94,7 @@ public class Items : MonoBehaviour
             item = this;
             if (m_items == null)
             {
+                itemIndex = 0;
                 m_items = new List<ItemID>();
                 m_items.Add(new ItemID());
             }
@@ -150,6 +159,8 @@ public class Items : MonoBehaviour
     {
         for (int j = 0; j < m_items[i].variation.Count; j++)
         {
+            if (m_items[i].variation[j] == null)
+                m_items[i].variation[j] = GetComponent<TypeChart>();
             m_items[i].variation[j].m_types = new List<string>();
             foreach (var item in TypeChart.chart.m_types)
             {
@@ -158,3 +169,4 @@ public class Items : MonoBehaviour
         }
     }
 }
+

@@ -8,17 +8,20 @@ using System;
 public class TypeChart : MonoBehaviour
 {
     public List<string> m_types;
-    public int typeIndex = 0;
+    public int typeIndex;
     public static TypeChart chart;
-    
-    void Update()
+    private void OnValidate()
     {
         if (chart != this)
             chart = this;
+    }
+    void Update()
+    {
         if (!Application.isPlaying && m_types == null)
         {
             m_types = new List<string>();
             m_types.Add("None");
+            typeIndex = 0;
         }
         if (m_types.Count < 1)
         {

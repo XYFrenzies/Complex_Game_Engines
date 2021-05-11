@@ -106,380 +106,434 @@ public class CustomEditorStats : Editor
 [CanEditMultipleObjects]
 public class CustomEditorEntity : Editor
 {
+    private string primpercentage = "Percentage";
+    private string secpercentage = "Percentage";
     Entity m_entity;
     private void OnEnable()
     {
+        
         m_entity = (Entity)target;
+    }
+    public void IntOrPercentageConvertPrim(Entity a_script, int a_parameterStat, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        m_entity.m_primStat[a_parameterStat].stats = EditorGUILayout.DoubleField(
+    m_entity.m_primStat[a_parameterStat].stats);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
+    }
+    public void IntOrPercentageConvertSec(Entity a_script, int a_parameterEntity, bool isPercent)
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Stat Value", GUILayout.Width(150));
+        m_entity.m_secStat[a_parameterEntity].stats = EditorGUILayout.DoubleField(
+             m_entity.m_secStat[a_parameterEntity].stats);
+        if (isPercent)
+            GUILayout.Label("%", GUILayout.Width(150));
+        else
+            GUILayout.Label("Units", GUILayout.Width(150));
+        GUILayout.EndHorizontal();
     }
     public override void OnInspectorGUI()
     {
-        //Per scriptableObject
-        //When a new scriptable object occurs, the developer gets the options that are preset with the
-        //types, stats, items and movesets.
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Name", GUILayout.Width(150));
-        m_entity.m_name = GUILayout.TextField(m_entity.m_name);
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Health", GUILayout.Width(150));
-        m_entity.m_health = EditorGUILayout.FloatField(m_entity.m_health);
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Current Level", GUILayout.Width(150));
-        m_entity.level = EditorGUILayout.IntField(m_entity.level);
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Max Level", GUILayout.Width(150));
-        m_entity.maxLevel = EditorGUILayout.IntField(m_entity.maxLevel);
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Base Experience Yield", GUILayout.Width(550));
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        m_entity.baseEXPYield = EditorGUILayout.FloatField(m_entity.baseEXPYield);
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Max Experience", GUILayout.Width(150));
-        m_entity.maxEXP = EditorGUILayout.FloatField(m_entity.maxEXP);
-        GUILayout.EndHorizontal();
-        //Typing
+
+        #region Main Stats
+        m_entity.entityMainShow = EditorGUILayout.Foldout(m_entity.entityMainShow,
+                 "Entity Main Stats", true);
+        if (m_entity.entityMainShow)
+        {
+            //Per scriptableObject
+            //When a new scriptable object occurs, the developer gets the options that are preset with the
+            //types, stats, items and movesets.
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Name", GUILayout.Width(150));
+            m_entity.m_name = GUILayout.TextField(m_entity.m_name);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Health", GUILayout.Width(150));
+            m_entity.m_health = EditorGUILayout.FloatField(m_entity.m_health);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Current Level", GUILayout.Width(150));
+            m_entity.level = EditorGUILayout.IntField(m_entity.level);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Max Level", GUILayout.Width(150));
+            m_entity.maxLevel = EditorGUILayout.IntField(m_entity.maxLevel);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Base Experience Yield", GUILayout.Width(550));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            m_entity.baseEXPYield = EditorGUILayout.FloatField(m_entity.baseEXPYield);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Max Experience", GUILayout.Width(150));
+            m_entity.maxEXP = EditorGUILayout.FloatField(m_entity.maxEXP);
+            GUILayout.EndHorizontal();
+        }
+        #endregion
         #region Typing
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Typing");
-        GUILayout.EndHorizontal();
-        for (int i = 0; i < m_entity.m_typeEffectiveness.Count; i++)
+        m_entity.entityTypesShow = EditorGUILayout.Foldout(m_entity.entityTypesShow,
+                 "Entity Typing", true);
+        if (m_entity.entityTypesShow)
         {
-            m_entity.m_typeEffectiveness[i].typeIndex =
-                EditorGUILayout.Popup(m_entity.m_typeEffectiveness[i].typeIndex,
-            m_entity.m_typeEffectiveness[i].m_types.ToArray(), GUILayout.Width(150));
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Typing");
+            GUILayout.EndHorizontal();
+            for (int i = 0; i < m_entity.m_typeEffectiveness.Count; i++)
+            {
+                m_entity.m_typeEffectiveness[i].typeIndex =
+                    EditorGUILayout.Popup(m_entity.m_typeEffectiveness[i].typeIndex,
+                m_entity.m_typeEffectiveness[i].m_types.ToArray(), GUILayout.Width(150));
+            }
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Capped at 3");
+            if (GUILayout.Button("Add More Types"))
+            {
+                ///Can be changed for later however we dont want to many typings on an entity
+                if (m_entity.m_typeEffectiveness.Count < 3)
+                    m_entity.AddNewType();
+            }
+            if (GUILayout.Button("Delete More Types"))
+            {
+                if (m_entity.m_typeEffectiveness.Count > 1)
+                    m_entity.m_typeEffectiveness.RemoveAt(m_entity.m_typeEffectiveness.Count - 1);
+            }
+            GUILayout.EndHorizontal();
         }
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Capped at 3");
-        if (GUILayout.Button("Add More Types"))
-        {
-            ///Can be changed for later however we dont want to many typings on an entity
-            if (m_entity.m_typeEffectiveness.Count < 4)
-                m_entity.AddNewType();
-        }
-        if (GUILayout.Button("Delete More Types"))
-        {
-            if (m_entity.m_typeEffectiveness.Count > 1)
-                m_entity.m_typeEffectiveness.RemoveAt(m_entity.m_typeEffectiveness.Count - 1);
-        }
-        GUILayout.EndHorizontal();
         #endregion
         #region MoveSets
         ///Starting movesets for the entity
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Starting Movesets");
-        GUILayout.EndHorizontal();
-        for (int i = 0; i < m_entity.m_currentMoveSets.Count; i++)
+        m_entity.entityMoveSetShow = EditorGUILayout.Foldout(m_entity.entityMoveSetShow,
+        "Entity MoveSet", true);
+        if (m_entity.entityMoveSetShow)
         {
-            m_entity.m_currentMoveSets[i].moveIndex =
-            EditorGUILayout.Popup(m_entity.m_currentMoveSets[i].moveIndex,
-            m_entity.m_nameOfMovesCurrent.ToArray(), GUILayout.Width(150));
-            //This might be the issue in terms of the list of string names of moves.
-        }
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add More Moves"))
-        {
-            m_entity.AddMoreCurrentMove();
-        }
-        if (GUILayout.Button("Delete Recent Move"))
-        {
-            if (m_entity.m_currentMoveSets.Count > 1)
-                m_entity.m_currentMoveSets.RemoveAt(m_entity.m_currentMoveSets.Count - 1);
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Learnable Movesets");
-        GUILayout.EndHorizontal();
-
-        for (int i = 0; i < m_entity.m_learnableMoves.Count; i++)
-        {
-
-
-            m_entity.m_learnableMoves[i].moveIndex =
-            EditorGUILayout.Popup(m_entity.m_learnableMoves[i].moveIndex,
-            m_entity.m_nameOfMovesExternal.ToArray(), GUILayout.Width(150));
-
             GUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("Learnable By Level"))
+            GUILayout.Label("Starting Movesets");
+            GUILayout.EndHorizontal();
+            for (int i = 0; i < m_entity.m_currentMoveSets.Count; i++)
             {
-                m_entity.m_learntPerLevel[i] = true;
+                m_entity.m_currentMoveSets[i].moveIndex =
+                EditorGUILayout.Popup(m_entity.m_currentMoveSets[i].moveIndex,
+                m_entity.m_nameOfMovesCurrent.ToArray(), GUILayout.Width(150));
+                //This might be the issue in terms of the list of string names of moves.
             }
-            if (GUILayout.Button("Not Learnable By Level"))
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Add More Starting Moves"))
             {
-                m_entity.m_learntPerLevel[i] = false;
+                m_entity.AddMoreCurrentMove();
+            }
+            if (GUILayout.Button("Delete Recent Move"))
+            {
+                if (m_entity.m_currentMoveSets.Count > 1)
+                    m_entity.m_currentMoveSets.RemoveAt(m_entity.m_currentMoveSets.Count - 1);
             }
             GUILayout.EndHorizontal();
-            if (m_entity.m_learntPerLevel[i] == true)
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("What Level does it learn the move?");
-                GUILayout.EndHorizontal();
-                m_entity.levelForeachMoveset[i] = EditorGUILayout.IntField(
-                    m_entity.levelForeachMoveset[i]);
-            }
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Learnt Externally"))
-            {
-                m_entity.m_learntPerLevel[i] = true;
-            }
-            if (GUILayout.Button("Not learnt externally"))
-            {
-                m_entity.m_learntPerLevel[i] = false;
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Learnable Movesets");
+            GUILayout.EndHorizontal();
+
+            for (int i = 0; i < m_entity.m_learnableMoves.Count; i++)
+            {
+                m_entity.m_learnableMoves[i].moveIndex =
+                EditorGUILayout.Popup(m_entity.m_learnableMoves[i].moveIndex,
+                m_entity.m_nameOfMovesExternal.ToArray(), GUILayout.Width(150));
+
+                GUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Learnable By Level"))
+                {
+                    m_entity.m_learntPerLevel[i] = true;
+                }
+                if (GUILayout.Button("Not Learnable By Level"))
+                {
+                    m_entity.m_learntPerLevel[i] = false;
+                }
+                GUILayout.EndHorizontal();
+                if (m_entity.m_learntPerLevel[i] == true)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("What Level does it learn the move?");
+                    GUILayout.EndHorizontal();
+                    m_entity.levelForeachMoveset[i] = EditorGUILayout.IntField(
+                        m_entity.levelForeachMoveset[i]);
+                }
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Learnt Externally"))
+                {
+                    m_entity.m_learntExternally[i] = true;
+                }
+                if (GUILayout.Button("Not learnt externally"))
+                {
+                    m_entity.m_learntExternally[i] = false;
+
+                }
+                GUILayout.EndHorizontal();
+                if (m_entity.m_learntExternally[i] == true)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("The move can now be learnt externally.");
+                    GUILayout.EndHorizontal();
+                }
+                else
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Cant be learnt externally!");
+                    GUILayout.EndHorizontal();
+                }
+                //This might be the issue in terms of the list of string names of moves.
+            }
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Add More Learnable Moves"))
+            {
+                m_entity.AddNewLearnableMove();
+            }
+            if (GUILayout.Button("Delete Recent Move"))
+            {
+                if (m_entity.m_learnableMoves.Count > 1 && m_entity.m_learntPerLevel.Count > 1
+                    && m_entity.m_learntExternally.Count > 1)
+                {
+                    m_entity.m_learnableMoves.RemoveAt(m_entity.m_learnableMoves.Count - 1);
+                    m_entity.m_learntPerLevel.RemoveAt(m_entity.m_learntPerLevel.Count - 1);
+                    m_entity.m_learntExternally.RemoveAt(m_entity.m_learntExternally.Count - 1);
+                }
             }
             GUILayout.EndHorizontal();
-            if (m_entity.m_learntPerLevel[i] == true)
+        }
+        #endregion
+        #region Items
+        m_entity.entityItemShow = EditorGUILayout.Foldout(m_entity.entityItemShow,
+        "Entity Items", true);
+        if (m_entity.entityItemShow)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Items");
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("What Item is on the player?", GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+            for (int i = 0; i < m_entity.m_itemsOnPlayer.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("The move can now be learnt externally.");
+                m_entity.m_itemsOnPlayer[i].itemIndex =
+                    EditorGUILayout.Popup(m_entity.m_itemsOnPlayer[i].itemIndex,
+                m_entity.m_nameOfItems.ToArray(), GUILayout.Width(150));
                 GUILayout.EndHorizontal();
-            }
-            else
-            {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Cant be learnt externally!");
+                GUILayout.Label("How many on the player?", GUILayout.Width(150));
+                m_entity.numOfItemsOnEntity[i] = EditorGUILayout.IntField(m_entity.numOfItemsOnEntity[i]);
                 GUILayout.EndHorizontal();
             }
 
-            //This might be the issue in terms of the list of string names of moves.
+            if (GUILayout.Button("Add More Items"))
+            {
+                m_entity.AddNewItem();
+            }
+            if (GUILayout.Button("Delete Recent Item"))
+            {
+                if (m_entity.m_itemsOnPlayer.Count > 1 && m_entity.numOfItemsOnEntity.Count > 1)
+                {
+                    m_entity.m_itemsOnPlayer.RemoveAt(m_entity.m_itemsOnPlayer.Count - 1);
+                    m_entity.numOfItemsOnEntity.RemoveAt(m_entity.numOfItemsOnEntity.Count - 1);
+                }
+            }
         }
-        GUILayout.Space(10f);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add More Moves"))
+        #endregion
+        #region PrimStat
+        m_entity.entityPrimStatShow = EditorGUILayout.Foldout(m_entity.entityPrimStatShow,
+        "Entity Primary Stats", true);
+        if (m_entity.entityPrimStatShow)
         {
-            m_entity.AddMoreCurrentMove();
+            for (int i = 0; i < m_entity.m_primStat.Count; i++)
+            {
+                GUILayout.Label(m_entity.m_primStat[i].name + "'s Primary Stats", EditorStyles.boldLabel);
+                GUILayout.Space(10f);
+                m_entity.m_primStat[i].showItem = EditorGUILayout.Foldout(m_entity.m_primStat[i].showItem,
+                    m_entity.m_primStat[i].name, true);
+                if (m_entity.m_primStat[i].showItem)
+                {
+                    GUILayout.Label("Stat Description");
+                    GUILayout.Label(m_entity.m_primStat[i].name + " Stat", GUILayout.Width(150));
+                    //Determining if its a percentage or integer it is effecting.
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    //Button for converting to a percentage
+                    if (GUILayout.Button(primpercentage, GUILayout.Width(250)))
+                    {
+                        if (m_entity.m_primStat[i].isItAPercent == true)
+                        {
+                            primpercentage = "Percentage";
+                            m_entity.m_primStat[i].isItAPercent = false;
+                        }
+                        else if (m_entity.m_primStat[i].isItAPercent == false)
+                        {
+                            primpercentage = "Whole Number";
+                            m_entity.m_primStat[i].isItAPercent = true;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    if (m_entity.m_primStat[i].isItAPercent)
+                    {
+                        IntOrPercentageConvertPrim(m_entity, i, m_entity.m_primStat[i].isItAPercent);
+                    }
+                    else if (!m_entity.m_primStat[i].isItAPercent)
+                    {
+                        IntOrPercentageConvertPrim(m_entity, i, m_entity.m_primStat[i].isItAPercent);
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
         }
-        if (GUILayout.Button("Delete Recent Move"))
+        #endregion
+        #region SecStat
+        m_entity.entitySecStatShow = EditorGUILayout.Foldout(m_entity.entitySecStatShow,
+        "Entity Secondary Stats", true);
+        if (m_entity.entitySecStatShow)
         {
-            if (m_entity.m_currentMoveSets.Count > 1)
-                m_entity.m_currentMoveSets.RemoveAt(m_entity.m_currentMoveSets.Count - 1);
-        }
-        GUILayout.EndHorizontal();
+            GUILayout.Space(20f);
+            GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
+            GUILayout.Space(10f);
 
+            for (int i = 0; i < m_entity.m_secStat.Count; i++)
+            {
+                m_entity.m_secStat[i].showItem = EditorGUILayout.Foldout(m_entity.m_secStat[i].showItem,
+                     m_entity.m_secStat[i].name, true);
+                if (m_entity.m_secStat[i].showItem)
+                {
+                    GUILayout.Label("Stat Description");
+                    GUILayout.Label(m_entity.m_secStat[i].name + " Stat", GUILayout.Width(150));
+                    //Determining if its a percentage or integer it is effecting.
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    //Button for converting to a percentage
+                    if (GUILayout.Button(secpercentage, GUILayout.Width(250)))
+                    {
+                        if (m_entity.m_secStat[i].isItAPercent == true)
+                        {
+                            secpercentage = "Percentage";
+                            m_entity.m_secStat[i].isItAPercent = false;
+                        }
+                        else if (m_entity.m_secStat[i].isItAPercent == false)
+                        {
+                            secpercentage = "Whole Number";
+                            m_entity.m_secStat[i].isItAPercent = true;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    if (m_entity.m_secStat[i].isItAPercent)
+                    {
+                        IntOrPercentageConvertSec(m_entity, i, m_entity.m_secStat[i].isItAPercent);
+                    }
+                    else if (!m_entity.m_secStat[i].isItAPercent)
+                    {
+                        IntOrPercentageConvertSec(m_entity, i, m_entity.m_secStat[i].isItAPercent);
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
+        }
+        #endregion
+        #region EffectingStats
+        m_entity.entityEffectStatShow = EditorGUILayout.Foldout(m_entity.entityEffectStatShow,
+        "Entity Effectiveness Stats", true);
+        if (m_entity.entityEffectStatShow)
+        {
+
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stat Effectiveness:");
+            GUILayout.EndHorizontal();
+            for (int i = 0; i < m_entity.m_statsEffecting.Count; i++)
+            {
+                m_entity.m_statsEffecting[i].showStat = EditorGUILayout.Foldout(m_entity.m_statsEffecting[i].showStat,
+                     "Effecting Type " + i, true);
+                if (m_entity.m_statsEffecting[i].showStat)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Effecting stat:");
+                    m_entity.m_statsEffecting[i].indexValueEffecting =
+                    EditorGUILayout.Popup(m_entity.m_statsEffecting[i].indexValueEffecting,
+                    m_entity.m_statsEffecting[i].m_effectingStats.ToArray(), GUILayout.Width(150));
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Additive)
+                    {
+                        GUILayout.Label("+");
+                    }
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Subtraction)
+                    {
+                        GUILayout.Label("-");
+                    }
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Multiplicative)
+                    {
+                        GUILayout.Label("x");
+                    }
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Division)
+                    {
+                        GUILayout.Label("/");
+                    }
+                    GUILayout.Label("Effected stat:");
+                    m_entity.m_statsEffecting[i].indexValueEffected =
+                    EditorGUILayout.Popup(m_entity.m_statsEffecting[i].indexValueEffected,
+                    m_entity.m_statsEffecting[i].m_statsEffected.ToArray(), GUILayout.Width(150));
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("+", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.Additive;
+                    }
+                    if (GUILayout.Button("-", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.Subtraction;
+                    }
+                    if (GUILayout.Button("x", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.Multiplicative;
+                    }
+                    if (GUILayout.Button("/", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.Division;
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
+            if (GUILayout.Button("Add More Effectiveness"))
+            {
+                m_entity.AddNewStatChange();
+            }
+            if (GUILayout.Button("Delete Recent Effectiveness"))
+            {
+                if (m_entity.m_statsEffecting.Count > 1)
+                    m_entity.m_statsEffecting.RemoveAt(m_entity.m_statsEffecting.Count - 1);
+            }
+        }
         #endregion
     }
 }
-//[CustomEditor(typeof(Entities))]
-//[CanEditMultipleObjects]
-//public class CustomEditorEntities : Editor
-//{
-//    SerializedProperty m_entity;
-//    private string percentage = "Percentage";
-//    private void OnEnable()
-//    {
-//        m_entity = serializedObject.FindProperty("entities");
-//    }
-//    public void IntOrPercentageConvertPrim(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
-//    {
-//        GUILayout.BeginHorizontal();
-//        GUILayout.Label("Stat Value", GUILayout.Width(150));
-//        a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
-//    a_script.entities[a_parameterEntity].m_stats.m_primaryStatistic[a_parameterStat].stats);
-//        if (isPercent)
-//            GUILayout.Label("%", GUILayout.Width(150));
-//        else
-//            GUILayout.Label("Units", GUILayout.Width(150));
-//        GUILayout.EndHorizontal();
-//    }
-//    public void IntOrPercentageConvertSec(Entities a_script, int a_parameterStat, int a_parameterEntity, bool isPercent)
-//    {
-//        GUILayout.BeginHorizontal();
-//        GUILayout.Label("Stat Value", GUILayout.Width(150));
-//        a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats = EditorGUILayout.DoubleField(
-//            a_script.entities[a_parameterEntity].m_stats.m_secondaryStatistic[a_parameterStat].stats);
-//        if (isPercent)
-//            GUILayout.Label("%", GUILayout.Width(150));
-//        else
-//            GUILayout.Label("Units", GUILayout.Width(150));
-//        GUILayout.EndHorizontal();
-//    }
-//    public override void OnInspectorGUI()
-//    {
-//        serializedObject.Update();
-//        Entities script = (Entities)target;
-
-//        GUILayout.Space(20f);
-//        GUILayout.Label("Entities:", EditorStyles.boldLabel);
-//        GUILayout.Space(10f);
-//        for (int i = 0; i < m_entity.arraySize; i++)
-//        {
-//            script.entities[i].showItem = EditorGUILayout.Foldout(script.entities[i].showItem, script.entities[i].m_name, true);
-//            if (script.entities[i].showItem)
-//            {
-//                #region EntityStart
-//                GUILayout.Label("Entity Description");
-//                GUILayout.BeginHorizontal();
-//                GUILayout.Label("Entity Name", GUILayout.Width(150));
-//                script.entities[i].m_name = GUILayout.TextField(script.entities[i].m_name);
-//                GUILayout.EndHorizontal();
-//                //Asking the developer to put in a gameobject.
-
-//                GUILayout.BeginHorizontal();
-//                GUILayout.Label("Health", GUILayout.Width(150));
-//                script.entities[i].m_health = EditorGUILayout.FloatField(script.entities[i].m_health, GUILayout.Width(150));
-//                GUILayout.EndHorizontal();
-//                GUILayout.BeginHorizontal();
-//                GUILayout.Label("Current Level", GUILayout.Width(150));
-//                script.entities[i].level = EditorGUILayout.IntField(script.entities[i].level, GUILayout.Width(150));
-//                GUILayout.EndHorizontal();
-//                GUILayout.BeginHorizontal();
-//                GUILayout.Label("Max Level", GUILayout.Width(150));
-//                script.entities[i].maxLevel = EditorGUILayout.IntField(script.entities[i].maxLevel, GUILayout.Width(150));
-//                GUILayout.EndHorizontal();
-//                GUILayout.BeginHorizontal();
-//                GUILayout.Label("Max EXP", GUILayout.Width(150));
-//                script.entities[i].maxEXP = EditorGUILayout.FloatField(script.entities[i].maxEXP, GUILayout.Width(150));
-//                GUILayout.EndHorizontal();
-//                #endregion
-//                #region PrimaryStats
-//                GUILayout.Label(script.entities[i].m_name + "'s Primary Stats", EditorStyles.boldLabel);
-//                GUILayout.Space(10f);
-
-//                for (int j = 0; j < script.entities[i].m_primaryStats.Count; j++)
-//                {
-//                    script.entities[i].m_primaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_primaryStats[j].showItem,
-//                        script.entities[i].m_primaryStats[j].name, true);
-//                    if (script.entities[i].m_primaryStats[j].showItem)
-//                    {
-//                        GUILayout.Label("Stat Description");
-//                        GUILayout.Label(script.entities[i].m_primaryStats[j].name + " Stat", GUILayout.Width(150));
-//                        //Determining if its a percentage or integer it is effecting.
-//                        GUILayout.BeginHorizontal();
-//                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
-//                        GUILayout.EndHorizontal();
-//                        GUILayout.BeginHorizontal();
-//                        //Button for converting to a percentage
-//                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
-//                        {
-//                            if (script.entities[i].m_primaryStats[j].isItAPercent == true)
-//                            {
-//                                percentage = "Percentage";
-//                                script.entities[i].m_primaryStats[j].isItAPercent = false;
-//                            }
-//                            else if (script.entities[i].m_primaryStats[j].isItAPercent == false)
-//                            {
-//                                percentage = "Whole Number";
-//                                script.entities[i].m_primaryStats[j].isItAPercent = true;
-//                            }
-//                        }
-//                        GUILayout.EndHorizontal();
-//                        GUILayout.BeginHorizontal();
-//                        if (script.entities[i].m_primaryStats[j].isItAPercent)
-//                        {
-//                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
-//                        }
-//                        else if (!script.entities[i].m_primaryStats[j].isItAPercent)
-//                        {
-//                            IntOrPercentageConvertPrim(script, j, i, script.entities[i].m_primaryStats[j].isItAPercent);
-//                        }
-//                        GUILayout.EndHorizontal();
-//                    }
-//                }
-//                #endregion
-//                #region SecondaryStats
-//                GUILayout.Space(20f);
-//                GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
-//                GUILayout.Space(10f);
-
-//                for (int j = 0; j < script.entities[i].m_secondaryStats.Count; j++)
-//                {
-//                    script.entities[i].m_secondaryStats[j].showItem = EditorGUILayout.Foldout(script.entities[i].m_secondaryStats[j].showItem,
-//                        script.entities[i].m_secondaryStats[j].name, true);
-//                    if (script.entities[i].m_secondaryStats[j].showItem)
-//                    {
-//                        GUILayout.Label("Stat Description");
-//                        GUILayout.Label(script.entities[i].m_secondaryStats[j].name + " Stat", GUILayout.Width(150));
-//                        //Determining if its a percentage or integer it is effecting.
-//                        GUILayout.BeginHorizontal();
-//                        GUILayout.Label("Is it a Percentage or Whole Number", GUILayout.Width(250));
-//                        GUILayout.EndHorizontal();
-//                        GUILayout.BeginHorizontal();
-//                        //Button for converting to a percentage
-//                        if (GUILayout.Button(percentage, GUILayout.Width(250)))
-//                        {
-//                            if (script.entities[i].m_secondaryStats[j].isItAPercent == true)
-//                            {
-//                                percentage = "Percentage";
-//                                script.entities[i].m_secondaryStats[j].isItAPercent = false;
-//                            }
-//                            else if (script.entities[i].m_secondaryStats[j].isItAPercent == false)
-//                            {
-//                                percentage = "Whole Number";
-//                                script.entities[i].m_secondaryStats[j].isItAPercent = true;
-//                            }
-//                        }
-//                        GUILayout.EndHorizontal();
-//                        GUILayout.BeginHorizontal();
-//                        if (script.entities[i].m_secondaryStats[j].isItAPercent)
-//                        {
-//                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
-//                        }
-//                        else if (!script.entities[i].m_secondaryStats[j].isItAPercent)
-//                        {
-//                            IntOrPercentageConvertSec(script, j, i, script.entities[i].m_secondaryStats[j].isItAPercent);
-//                        }
-//                        GUILayout.EndHorizontal();
-//                    }
-//                }
-//                #endregion
-//                GUILayout.Label("Typing");
-//                for (int k = 0; k < script.entities[i].m_typeEffectiveness.Count; k++)
-//                {
-//                    GUILayout.BeginHorizontal();
-//                    script.entities[i].m_typeEffectiveness[k].typeIndex = EditorGUILayout.Popup(
-//                        script.entities[i].m_typeEffectiveness[k].typeIndex, script.entities[i].m_typeEffectiveness[k].m_types.ToArray());
-//                    GUILayout.EndHorizontal();
-//                }
-//                GUILayout.Space(10f);
-//                GUILayout.BeginHorizontal();
-//                if (GUILayout.Button("Add More Types"))
-//                {
-//                    script.AddNewTyping(i);
-//                }
-//                if (GUILayout.Button("Delete Recent Type"))
-//                {
-//                    if (script.entities[i].m_typeEffectiveness.Count > 1)
-//                        script.entities[i].m_typeEffectiveness.RemoveAt(script.entities[i].m_typeEffectiveness.Count - 1);
-//                }
-//                GUILayout.EndHorizontal();
-//            }
-//        }
-//        GUILayout.Space(20f);
-//        GUILayout.BeginHorizontal();
-//        if (GUILayout.Button("Add More Entities"))
-//        {
-//            script.AddEntity();
-//        }
-//        if (GUILayout.Button("Delete More Entities"))
-//        {
-//            if (script.entities.Count > 1)
-//                script.entities.RemoveAt(script.entities.Count - 1);
-//        }
-//        GUILayout.EndHorizontal();
-//        serializedObject.ApplyModifiedProperties();
-//    }
-//}
 [CustomEditor(typeof(StatusEffects))]
 [CanEditMultipleObjects]
 public class CustomEditorStatus : Editor
 {
     private string percentage = "Percentage";
-
     SerializedProperty m_status;
-
     public void IntOrPercentageConvertPrim(StatusEffects a_script, int a_parameterEntity, bool isPercent)
     {
         GUILayout.BeginHorizontal();
@@ -815,7 +869,6 @@ public class CustomEditorItems : Editor
 {
     private string percentage = "Percentage";
     private string durability = "Durability System";
-    private string use = "Number of Uses System";
     SerializedProperty m_items;
     private void OnEnable()
     {
