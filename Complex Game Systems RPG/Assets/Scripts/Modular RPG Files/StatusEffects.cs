@@ -12,7 +12,8 @@ public enum HowItEffects
     increaseStat,
     decreaseStat,
     healBlock,
-    immunity
+    immunityToDamage,
+    immunityToStatus
 }
 [Serializable]
 public class Status

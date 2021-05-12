@@ -121,14 +121,19 @@ public class MoveSets : MonoBehaviour
     }
     public void AddNewTyping(int i)
     {
-        m_moveSets[i].m_typeEffectiveness.Add(new TypeChart());
 
+        m_moveSets[i].m_typeEffectiveness.Add(new TypeChart());
+        //if(TypeChart.chart == null)
+        //    TypeChart.chart
+        for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
+        {
+            if (m_moveSets[i].m_typeEffectiveness[j].m_types == null)
+                m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
+        }
         foreach (var item in TypeChart.chart.m_types)
         {
             for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
             {
-                if (m_moveSets[i].m_typeEffectiveness[j].m_types == null)
-                    m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
                 m_moveSets[i].m_typeEffectiveness[j].m_types.Add(item);
             }
         }

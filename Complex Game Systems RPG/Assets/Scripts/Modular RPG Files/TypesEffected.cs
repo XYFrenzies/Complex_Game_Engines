@@ -9,6 +9,7 @@ using System;
 [ExecuteInEditMode]
 public class TypesEffected : MonoBehaviour
 {
+
     public List<TypingEffectiveness> typeEffective;
     public static TypesEffected effected;
     private void LateUpdate()

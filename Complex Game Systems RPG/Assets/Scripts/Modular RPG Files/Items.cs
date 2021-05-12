@@ -26,11 +26,15 @@ public class ItemID
     public double durability;
     [Tooltip("Max size is 4!")]
     public List<ItemProperties> properties;
+    public List<Stats> m_stat;
+    public List<string> allStatseffected;
     public List<TypeChart> variation;
     public int m_amountOfItemsForPlayer;
     public ItemID()
     {
         m_amountOfItemsForPlayer = 1;
+        allStatseffected = new List<string>();
+        m_stat = new List<Stats>();
         durability = 1;
         isDurability = false;
         isTypeChartNull = false;
@@ -104,6 +108,7 @@ public class Items : MonoBehaviour
                 {
                     AddToTypes(i);
                 }
+                AddStats(i);
             }
         }
         for (int i = 0; i < m_items.Count; i++)
@@ -166,6 +171,19 @@ public class Items : MonoBehaviour
             {
                 m_items[i].variation[j].m_types.Add(item);
             }
+        }
+    }
+    public void AddStats(int i)
+    {
+        foreach (var item in Stats.statsForObjects.m_primaryStatistic)
+        {
+            m_items[i].allStatseffected.Add(item.name);
+            //m_items[i].m_stat.Add(item);
+        }
+        foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+        {
+            m_items[i].allStatseffected.Add(item.name);
+            //m_items[i].secStat.Add(item);
         }
     }
 }

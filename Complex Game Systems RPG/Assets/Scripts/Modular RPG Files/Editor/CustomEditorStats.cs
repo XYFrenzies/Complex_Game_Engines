@@ -111,20 +111,57 @@ public class CustomEditorEntity : Editor
     Entity m_entity;
     private void OnEnable()
     {
-        
+
         m_entity = (Entity)target;
+        if (m_entity.m_nameOfItems.Count == 0)
+        {
+            foreach (var item in Items.item.m_items)
+            {
+                m_entity.m_nameOfItems.Add(item.name);
+            }
+        }
     }
-    public void IntOrPercentageConvertPrim(Entity a_script, int a_parameterStat, bool isPercent)
+    public void IntOrPercentageConvertPrim(int a_parameterStat, bool isPercent)
     {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Stat Value", GUILayout.Width(150));
-        m_entity.m_primStat[a_parameterStat].stats = EditorGUILayout.DoubleField(
-    m_entity.m_primStat[a_parameterStat].stats);
-        if (isPercent)
-            GUILayout.Label("%", GUILayout.Width(150));
-        else
-            GUILayout.Label("Units", GUILayout.Width(150));
-        GUILayout.EndHorizontal();
+
+        if (m_entity.m_primStat[a_parameterStat].diminishingReturns == true)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stat Value Min", GUILayout.Width(150));
+            m_entity.m_primStat[a_parameterStat].min = EditorGUILayout.IntField(
+            m_entity.m_primStat[a_parameterStat].min);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stat Value Current", GUILayout.Width(150));
+            m_entity.m_primStat[a_parameterStat].stats = EditorGUILayout.DoubleField(
+            m_entity.m_primStat[a_parameterStat].stats);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stat Value Max", GUILayout.Width(150));
+            m_entity.m_primStat[a_parameterStat].max = EditorGUILayout.IntField(
+           m_entity.m_primStat[a_parameterStat].max);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (isPercent)
+                GUILayout.Label("%", GUILayout.Width(150));
+            else
+                GUILayout.Label("Units", GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+
+        }
+        if (m_entity.m_primStat[a_parameterStat].diminishingReturns == false)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stat Value", GUILayout.Width(150));
+            m_entity.m_primStat[a_parameterStat].stats = EditorGUILayout.DoubleField(
+            m_entity.m_primStat[a_parameterStat].stats);
+            if (isPercent)
+                GUILayout.Label("%", GUILayout.Width(150));
+            else
+                GUILayout.Label("Units", GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+        }
+
     }
     public void IntOrPercentageConvertSec(Entity a_script, int a_parameterEntity, bool isPercent)
     {
@@ -192,6 +229,10 @@ public class CustomEditorEntity : Editor
             GUILayout.EndHorizontal();
             for (int i = 0; i < m_entity.m_typeEffectiveness.Count; i++)
             {
+                if (m_entity.m_typeEffectiveness[i].m_types.Count == 0)
+                {
+                    m_entity.AddAllTypes(i);
+                }
                 m_entity.m_typeEffectiveness[i].typeIndex =
                     EditorGUILayout.Popup(m_entity.m_typeEffectiveness[i].typeIndex,
                 m_entity.m_typeEffectiveness[i].m_types.ToArray(), GUILayout.Width(150));
@@ -219,11 +260,19 @@ public class CustomEditorEntity : Editor
         "Entity MoveSet", true);
         if (m_entity.entityMoveSetShow)
         {
+            if (m_entity.m_currentMoveSets.Count == 0)
+            {
+                m_entity.AddMoreCurrentMove();
+            }
             GUILayout.BeginHorizontal();
             GUILayout.Label("Starting Movesets");
             GUILayout.EndHorizontal();
             for (int i = 0; i < m_entity.m_currentMoveSets.Count; i++)
             {
+                if (m_entity.m_nameOfMovesCurrent.Count == 0)
+                {
+                    m_entity.AddMoveset();
+                }
                 m_entity.m_currentMoveSets[i].moveIndex =
                 EditorGUILayout.Popup(m_entity.m_currentMoveSets[i].moveIndex,
                 m_entity.m_nameOfMovesCurrent.ToArray(), GUILayout.Width(150));
@@ -242,12 +291,20 @@ public class CustomEditorEntity : Editor
             }
             GUILayout.EndHorizontal();
 
+            if (m_entity.m_learnableMoves.Count == 0)
+            {
+                m_entity.AddNewLearnableMove();
+            }
             GUILayout.BeginHorizontal();
             GUILayout.Label("Learnable Movesets");
             GUILayout.EndHorizontal();
 
             for (int i = 0; i < m_entity.m_learnableMoves.Count; i++)
             {
+                if (m_entity.m_nameOfMovesExternal.Count == 0)
+                {
+                    m_entity.AddMoveset();
+                }
                 m_entity.m_learnableMoves[i].moveIndex =
                 EditorGUILayout.Popup(m_entity.m_learnableMoves[i].moveIndex,
                 m_entity.m_nameOfMovesExternal.ToArray(), GUILayout.Width(150));
@@ -325,9 +382,15 @@ public class CustomEditorEntity : Editor
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.Label("What Item is on the player?", GUILayout.Width(150));
+
             GUILayout.EndHorizontal();
             for (int i = 0; i < m_entity.m_itemsOnPlayer.Count; i++)
             {
+                if (m_entity.m_itemsOnPlayer.Count >= 0  && 
+                    (m_entity.m_nameOfItems.Count == 0 || m_entity.numOfItemsOnEntity.Count == 0))
+                {
+                    m_entity.AddItem(i);
+                }
                 GUILayout.BeginHorizontal();
                 m_entity.m_itemsOnPlayer[i].itemIndex =
                     EditorGUILayout.Popup(m_entity.m_itemsOnPlayer[i].itemIndex,
@@ -338,14 +401,13 @@ public class CustomEditorEntity : Editor
                 m_entity.numOfItemsOnEntity[i] = EditorGUILayout.IntField(m_entity.numOfItemsOnEntity[i]);
                 GUILayout.EndHorizontal();
             }
-
             if (GUILayout.Button("Add More Items"))
             {
                 m_entity.AddNewItem();
             }
             if (GUILayout.Button("Delete Recent Item"))
             {
-                if (m_entity.m_itemsOnPlayer.Count > 1 && m_entity.numOfItemsOnEntity.Count > 1)
+                if (m_entity.m_itemsOnPlayer.Count > 0 && m_entity.numOfItemsOnEntity.Count > 0)
                 {
                     m_entity.m_itemsOnPlayer.RemoveAt(m_entity.m_itemsOnPlayer.Count - 1);
                     m_entity.numOfItemsOnEntity.RemoveAt(m_entity.numOfItemsOnEntity.Count - 1);
@@ -358,6 +420,10 @@ public class CustomEditorEntity : Editor
         "Entity Primary Stats", true);
         if (m_entity.entityPrimStatShow)
         {
+            if (m_entity.m_primStat.Count == 0)
+            {
+                m_entity.AddPrimStat();
+            }
             for (int i = 0; i < m_entity.m_primStat.Count; i++)
             {
                 GUILayout.Label(m_entity.m_primStat[i].name + "'s Primary Stats", EditorStyles.boldLabel);
@@ -389,15 +455,24 @@ public class CustomEditorEntity : Editor
                     }
                     GUILayout.EndHorizontal();
                     GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Diminishing Returns"))
+                    {
+                        m_entity.m_primStat[i].diminishingReturns = true;
+                    }
+                    if (GUILayout.Button("No Diminishing Returns"))
+                    {
+                        m_entity.m_primStat[i].diminishingReturns = false;
+                    }
+                    GUILayout.EndHorizontal();
+
                     if (m_entity.m_primStat[i].isItAPercent)
                     {
-                        IntOrPercentageConvertPrim(m_entity, i, m_entity.m_primStat[i].isItAPercent);
+                        IntOrPercentageConvertPrim(i, m_entity.m_primStat[i].isItAPercent);
                     }
                     else if (!m_entity.m_primStat[i].isItAPercent)
                     {
-                        IntOrPercentageConvertPrim(m_entity, i, m_entity.m_primStat[i].isItAPercent);
+                        IntOrPercentageConvertPrim(i, m_entity.m_primStat[i].isItAPercent);
                     }
-                    GUILayout.EndHorizontal();
                 }
             }
         }
@@ -407,7 +482,10 @@ public class CustomEditorEntity : Editor
         "Entity Secondary Stats", true);
         if (m_entity.entitySecStatShow)
         {
-            GUILayout.Space(20f);
+            if (m_entity.m_secStat.Count == 0)
+            {
+                m_entity.AddSecStat();
+            }
             GUILayout.Label("Secondary Stats", EditorStyles.boldLabel);
             GUILayout.Space(10f);
 
@@ -477,18 +555,32 @@ public class CustomEditorEntity : Editor
                     if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Additive)
                     {
                         GUILayout.Label("+");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.add;
                     }
                     if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Subtraction)
                     {
                         GUILayout.Label("-");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.sub;
                     }
                     if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Multiplicative)
                     {
                         GUILayout.Label("x");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.mul;
                     }
                     if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Division)
                     {
                         GUILayout.Label("/");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.div;
+                    }
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.Average)
+                    {
+                        GUILayout.Label("+/2");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.avg;
+                    }
+                    if (m_entity.m_statsEffecting[i].m_statChanges == StatChange.MultiplicativeAverage)
+                    {
+                        GUILayout.Label("*sqrt");
+                        m_entity.m_statsEffecting[i].operate = StatsEffected.mulAvg;
                     }
                     GUILayout.Label("Effected stat:");
                     m_entity.m_statsEffecting[i].indexValueEffected =
@@ -512,6 +604,14 @@ public class CustomEditorEntity : Editor
                     {
                         m_entity.m_statsEffecting[i].m_statChanges = StatChange.Division;
                     }
+                    if (GUILayout.Button("Avg", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.Average;
+                    }
+                    if (GUILayout.Button("Multi Avg", GUILayout.Width(100)))
+                    {
+                        m_entity.m_statsEffecting[i].m_statChanges = StatChange.MultiplicativeAverage;
+                    }
                     GUILayout.EndHorizontal();
                 }
             }
@@ -521,7 +621,7 @@ public class CustomEditorEntity : Editor
             }
             if (GUILayout.Button("Delete Recent Effectiveness"))
             {
-                if (m_entity.m_statsEffecting.Count > 1)
+                if (m_entity.m_statsEffecting.Count > 0)
                     m_entity.m_statsEffecting.RemoveAt(m_entity.m_statsEffecting.Count - 1);
             }
         }
@@ -964,6 +1064,10 @@ public class CustomEditorItems : Editor
                 {
                     GUILayout.BeginHorizontal();
                     script.m_items[i].properties[j] = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties[j], GUILayout.Width(150));
+//                    script.m_items[i].primStat =
+//    EditorGUILayout.Popup(m_entity.m_itemsOnPlayer[i].itemIndex,
+//m_entity.m_nameOfItems.ToArray(), GUILayout.Width(150));
+                    //script.m_items[i].allStatseffected
                     GUILayout.EndHorizontal();
                 }
                 GUILayout.Space(10f);
@@ -996,9 +1100,9 @@ public class CustomEditorItems : Editor
                 {
                     script.AddNewTyping(i);
                 }
-                if (GUILayout.Button("Delete More Types"))
+                if (GUILayout.Button("Delete Recent Types"))
                 {
-                    if (script.m_items[i].variation.Count > 1)
+                    if (script.m_items[i].variation.Count > 0)
                         script.m_items[i].variation.RemoveAt(script.m_items[i].variation.Count - 1);
                 }
                 GUILayout.EndHorizontal();

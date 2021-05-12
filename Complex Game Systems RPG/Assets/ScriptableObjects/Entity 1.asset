@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9abe5ac22dfe4498ed0de9499a8baa, type: 3}
+  m_Name: Entity 1
+  m_EditorClassIdentifier: 
+  entityMainShow: 0
+  entityTypesShow: 0
+  entityMoveSetShow: 0
+  entityItemShow: 1
+  entityPrimStatShow: 0
+  entitySecStatShow: 0
+  entityEffectStatShow: 0
+  m_name: Name
+  m_health: 1
+  level: 1
+  maxLevel: 2
+  baseEXPYield: 0
+  maxEXP: 1
+  m_typeEffectiveness:
+  - {fileID: 0}
+  m_primStat:
+  - name: Strength
+    isItAPercent: 0
+    stats: 1
+    showItem: 1
+  m_secStat:
+  - name: Damage
+    isItAPercent: 0
+    stats: 1
+    showItem: 0
+  m_statsEffecting:
+  - {fileID: 0}
+  m_itemsOnPlayer:
+  - {fileID: 0}
+  numOfItemsOnEntity: 
+  m_nameOfItems:
+  - Default
+  levelForeachMoveset: 
+  m_currentMoveSets:
+  - {fileID: 0}
+  m_learnableMoves:
+  - {fileID: 0}
+  m_nameOfMovesCurrent: []
+  m_nameOfMovesExternal: []
+  m_learntPerLevel: 
+  m_learntExternally: 

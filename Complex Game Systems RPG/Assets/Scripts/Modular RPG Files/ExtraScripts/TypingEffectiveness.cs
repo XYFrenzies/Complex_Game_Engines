@@ -18,6 +18,7 @@ public class TypingEffectiveness
     [HideInInspector] public Effectiveness effect;
     [HideInInspector] public int indexValueAtt = 0;
     [HideInInspector] public int indexValueDef = 0;
+    [HideInInspector] public float returnOfAttackDefenseEffect = 1;
     public TypingEffectiveness()
     {
         nameAttack = new List<string>();

@@ -9,6 +9,9 @@ public class PrimStatisic
     public string name;
     public bool isItAPercent;
     public double stats;//Can be base stat or additive stat
+    public int min = int.MinValue;
+    public int max = int.MaxValue;
+    public bool diminishingReturns = true;
     [HideInInspector] public bool showItem = false;
 
     public PrimStatisic() 
@@ -31,6 +34,9 @@ public class SecStatistic
     public string name;
     public bool isItAPercent;
     public double stats;//This is influenced stat
+    public int min = int.MinValue;
+    public int max = int.MaxValue;
+    public bool diminishingReturns = true;
     [HideInInspector] public bool showItem = false;
     public SecStatistic()
     {
@@ -49,19 +55,31 @@ public class SecStatistic
 [ExecuteInEditMode]
 public class Stats : MonoBehaviour
 {
-    public static Stats statsForObjects;
+    //public static Stats statsForObjects;
+    public static Stats _statsForObjects = null;
     [Tooltip("Default")]
     public List<PrimStatisic> m_primaryStatistic;
     [Tooltip("Default")]
     public List<SecStatistic> m_secondaryStatistic;
     //Defaults
-    private void OnValidate()
+    //private void OnValidate()
+    //{
+    //    statsForObjects = this;
+    //}
+    public static Stats statsForObjects
     {
-        statsForObjects = this;
+        get 
+        {
+            if (_statsForObjects == null)
+            {
+                _statsForObjects = FindObjectOfType<Stats>();
+            }
+                return _statsForObjects;
+        }
     }
     private void Update()
     {
-        statsForObjects = this;
+        //statsForObjects = this;
         if (!Application.isPlaying && m_primaryStatistic == null
             && m_secondaryStatistic == null)
         {
@@ -94,15 +112,5 @@ public class Stats : MonoBehaviour
     public void AddToSecondaryArray()
     {
         m_secondaryStatistic.Add(new SecStatistic());
-    }
-    //Function to add primary stat with secondary stat
-    public void AddPrimWithSecStats(float a_primStat, float a_secStat) 
-    {
-        //In this either make another function that adds the percentage by the integer or in this function
-    }
-    //Function to add secondary stat with secondary stat
-    public void AddSecWithSecStats(float a_secStatA, float a_secStatB)
-    {
-        //In this either make another function that adds the percentage by the integer or in this function
     }
 }

@@ -8,7 +8,9 @@ public enum StatChange
     Additive,
     Subtraction,
     Multiplicative,
-    Division
+    Division,
+    Average,
+    MultiplicativeAverage
 }
 
 [ExecuteInEditMode]
@@ -21,6 +23,14 @@ public class StatsEffected : MonoBehaviour
     [HideInInspector]public int indexValueEffecting;
     [HideInInspector]public int indexValueEffected;
     [HideInInspector]public StatChange m_statChanges;
+    public static Func<double, double, double> add = (double lhs, double rhs) => { return lhs + rhs; };
+    public static Func<double, double, double> sub = (double lhs, double rhs) => { return lhs - rhs; };
+    public static Func<double, double, double> mul = (double lhs, double rhs) => { return lhs * rhs; };
+    public static Func<double, double, double> div = (double lhs, double rhs) => { return lhs / rhs; };
+    public static Func<double, double, double> avg = (double lhs, double rhs) => { return (lhs + rhs) / 2; };
+    public static Func<double, double, double> mulAvg = (double lhs, double rhs) => { return (double)Mathf.Sqrt((float)lhs * (float)rhs); };
+    public static Func<double, double, double> log = (double lhs, double rhs) => { return lhs + Mathf.Log10((float)lhs); };
+    public Func<double, double, double> operate = null;
     private void OnValidate()
     {
         m_effectStats = this;

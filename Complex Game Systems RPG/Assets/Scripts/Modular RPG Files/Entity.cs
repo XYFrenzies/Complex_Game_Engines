@@ -43,9 +43,8 @@ public class Entity : ScriptableObject
     public List<string> m_nameOfMovesExternal;
     public List<bool> m_learntPerLevel;
     public List<bool> m_learntExternally;
-    public Entity()
+    public void OnEnable()
     {
-
         level = 1;
         maxLevel = 2;
         maxEXP = 1;
@@ -71,29 +70,27 @@ public class Entity : ScriptableObject
         AddMoreCurrentMove();
         AddNewLearnableMove();
         AddNewStatChange();
+
+        AddPrimStat();
+        AddSecStat();
+        AddMoveset();
+    }
+    #region StatFunctions
+    public void AddPrimStat()
+    {
         foreach (var item in Stats.statsForObjects.m_primaryStatistic)
         {
             m_primStat.Add(item);
         }
+    }
+    public void AddSecStat()
+    {
         foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
         {
             m_secStat.Add(item);
         }
-        foreach (var item in Items.item.m_items)
-        {
-            m_nameOfItems.Add(item.name);
-            numOfItemsOnEntity.Add(item.m_amountOfItemsForPlayer);
-        }
-        foreach (var item in MoveSets.moves.m_moveSets)
-        {
-            m_nameOfMovesCurrent.Add(item.name);
-            m_nameOfMovesExternal.Add(item.name);
-            m_learntPerLevel.Add(item.isLearntPerLevel);
-            m_learntExternally.Add(item.isLearntExternally);
-            levelForeachMoveset.Add(item.levelLearnt);
-        }
     }
-    public void AddNewStatChange() 
+    public void AddNewStatChange()
     {
         m_statsEffecting.Add(new StatsEffected());
         for (int i = 0; i < m_statsEffecting.Count; i++)
@@ -113,17 +110,39 @@ public class Entity : ScriptableObject
             m_statsEffecting[i].m_statChanges = StatChange.Additive;
         }
     }
-    public void AddNewItem() 
+    #endregion
+    #region ItemFunctions
+    public void AddItem(int i)
+    {
+        foreach (var item in Items.item.m_items)
+        {
+            m_itemsOnPlayer[i].m_items.Add(item);
+            m_nameOfItems.Add(item.name);
+            numOfItemsOnEntity.Add(item.m_amountOfItemsForPlayer);
+        }
+    }
+    public void AddNewItem()
     {
         m_itemsOnPlayer.Add(new Items());
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
             m_itemsOnPlayer[i].m_items = new List<ItemID>();
-            foreach (var item in Items.item.m_items)
+            if (Items.item == null) 
             {
-                m_itemsOnPlayer[i].m_items.Add(item);
-                numOfItemsOnEntity.Add(item.m_amountOfItemsForPlayer);
+                return;
             }
+            AddItem(i);
+        }
+    }
+    #endregion
+    #region TypeFunctions
+    public void AddAllTypes(int i)
+    {
+        if (TypeChart.chart == null)
+            return;
+        foreach (var item in TypeChart.chart.m_types)
+        {
+            m_typeEffectiveness[i].m_types.Add(item);
         }
     }
     //To be used in the inspector
@@ -133,15 +152,29 @@ public class Entity : ScriptableObject
         for (int i = 0; i < m_typeEffectiveness.Count; i++)
         {
             m_typeEffectiveness[i].m_types = new List<string>();
-            foreach (var item in TypeChart.chart.m_types)
-            {
-                m_typeEffectiveness[i].m_types.Add(item);
-            }
+            AddAllTypes(i);
+        }
+    }
+    #endregion
+    #region MovesetFunctions
+    public void AddMoveset()
+    {
+        if (MoveSets.moves == null)
+            return;
+        foreach (var item in MoveSets.moves.m_moveSets)
+        {
+            m_nameOfMovesCurrent.Add(item.name);
+            m_nameOfMovesExternal.Add(item.name);
+            m_learntPerLevel.Add(item.isLearntPerLevel);
+            m_learntExternally.Add(item.isLearntExternally);
+            levelForeachMoveset.Add(item.levelLearnt);
         }
     }
     public void AddMoreCurrentMove()
     {
         m_currentMoveSets.Add(new MoveSets());
+        if (MoveSets.moves == null)
+            return;
         for (int i = 0; i < m_currentMoveSets.Count; i++)
         {
             m_currentMoveSets[i].m_moveSets = new List<Moves>();
@@ -153,7 +186,10 @@ public class Entity : ScriptableObject
     }
     public void AddNewLearnableMove()
     {
+
         m_learnableMoves.Add(new MoveSets());
+        if (MoveSets.moves == null)
+            return;
         for (int i = 0; i < m_learnableMoves.Count; i++)
         {
             m_learnableMoves[i].m_moveSets = new List<Moves>();
@@ -165,4 +201,5 @@ public class Entity : ScriptableObject
             }
         }
     }
+    #endregion
 }
