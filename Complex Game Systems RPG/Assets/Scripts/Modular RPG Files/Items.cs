@@ -12,6 +12,13 @@ public enum ItemProperties
     DecreaseStats,
     IncludeStatus
 }
+[Serializable]
+public enum ItemType
+{
+    Armour,
+    Weapon,
+    Potion
+}
 [RequireComponent(typeof(TypeChart))]
 [Serializable]
 public class ItemID
@@ -23,27 +30,37 @@ public class ItemID
     public bool isAPercentage;
     public bool isTypeChartNull;
     public bool isDurability;
+    public bool staticItem;
     public double durability;
+    public string description;
     [Tooltip("Max size is 4!")]
     public List<ItemProperties> properties;
-    public List<Stats> m_stat;
-    public List<string> allStatseffected;
+    public ItemType itemType;
+    public List<List<string>> allStatseffected;
     public List<TypeChart> variation;
     public int m_amountOfItemsForPlayer;
+    public List<int> m_statIndex;
+    public List<StatusEffects> status;
+    public List<string> statusNames;
     public ItemID()
     {
+        allStatseffected = new List<List<string>>();
+        variation = new List<TypeChart>();
+        status = new List<StatusEffects>();
+        statusNames = new List<string>();
+        m_statIndex = new List<int>();
+        itemType = ItemType.Potion;
+        properties = new List<ItemProperties>();
+        properties.Add(ItemProperties.None);
+        name = "Default";
+        description = "This is an Item.";
         m_amountOfItemsForPlayer = 1;
-        allStatseffected = new List<string>();
-        m_stat = new List<Stats>();
+        valueOfItem = 1;
         durability = 1;
         isDurability = false;
         isTypeChartNull = false;
-        variation = new List<TypeChart>();
-        name = "Default";
-        valueOfItem = 1;
         isAPercentage = false;
-        properties = new List<ItemProperties>();
-        properties.Add(ItemProperties.None);
+        staticItem = false;
         showItem = false;
         variation.Add(new TypeChart());
         if (TypeChart.chart == null)
@@ -75,6 +92,8 @@ public class ItemID
         }
     }
 }
+[RequireComponent(typeof(Stats))]
+[RequireComponent(typeof(StatusEffects))]
 [RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
 public class Items : MonoBehaviour
@@ -90,7 +109,7 @@ public class Items : MonoBehaviour
             type = GetComponent<TypeChart>();
     }
     private void LateUpdate()
-    {  
+    {
         if (type == null)
             type = GetComponent<TypeChart>();
         if (!Application.isPlaying)
@@ -108,7 +127,10 @@ public class Items : MonoBehaviour
                 {
                     AddToTypes(i);
                 }
-                AddStats(i);
+                if (m_items[i].status.Count <= 0)
+                    AddNewStatus(i);
+                if (m_items[i].allStatseffected.Count <= 0)
+                    AddNewStats(i);
             }
         }
         for (int i = 0; i < m_items.Count; i++)
@@ -149,7 +171,8 @@ public class Items : MonoBehaviour
             {
                 if (m_items[i].variation[j].m_types == null)
                     m_items[i].variation[j].m_types = new List<string>();
-                m_items[i].variation[j].m_types.Add(item);
+                if(m_items[i].variation[j].m_types.Count < TypeChart.chart.m_types.Count)
+                    m_items[i].variation[j].m_types.Add(item);
             }
         }
     }
@@ -160,12 +183,13 @@ public class Items : MonoBehaviour
             m_items[itemPara].variation[variationPara].m_types.Add(item);
         }
     }
-    private void AddToTypes(int i) 
+    private void AddToTypes(int i)
     {
+        TypeChart.chart = GetComponent<TypeChart>();
         for (int j = 0; j < m_items[i].variation.Count; j++)
         {
             if (m_items[i].variation[j] == null)
-                m_items[i].variation[j] = GetComponent<TypeChart>();
+                m_items[i].variation[j] = new TypeChart();
             m_items[i].variation[j].m_types = new List<string>();
             foreach (var item in TypeChart.chart.m_types)
             {
@@ -175,15 +199,46 @@ public class Items : MonoBehaviour
     }
     public void AddStats(int i)
     {
-        foreach (var item in Stats.statsForObjects.m_primaryStatistic)
+        for (int j = 0; j < m_items[i].allStatseffected.Count; j++)
         {
-            m_items[i].allStatseffected.Add(item.name);
-            //m_items[i].m_stat.Add(item);
+            foreach (var item in Stats.statsForObjects.m_primaryStatistic)
+            {
+                m_items[i].allStatseffected[j].Add(item.name);
+            }
+            foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+            {
+                m_items[i].allStatseffected[j].Add(item.name);
+            }
         }
-        foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+    }
+    public void AddNewStats(int i) 
+    {
+        m_items[i].allStatseffected.Add(new List<string>());
+        m_items[i].m_statIndex.Add(0);
+        for (int j = 0; j < m_items[i].allStatseffected.Count; j++)
         {
-            m_items[i].allStatseffected.Add(item.name);
-            //m_items[i].secStat.Add(item);
+            foreach (var item in Stats.statsForObjects.m_primaryStatistic)
+            {
+                m_items[i].allStatseffected[j].Add(item.name);
+
+            }
+            foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+            {
+                m_items[i].allStatseffected[j].Add(item.name);
+            }
+        }
+    }
+    public void AddNewStatus(int i)
+    {
+        m_items[i].status.Add(new StatusEffects());
+        foreach (var item in StatusEffects.status.m_statusEffects)
+        {
+            for (int j = 0; j < m_items[i].status.Count; j++)
+            {
+                m_items[i].status[j].m_statusEffects = new List<Status>();
+                m_items[i].status[j].m_statusEffects.Add(item);
+                m_items[i].statusNames.Add(item.name);
+            }
         }
     }
 }

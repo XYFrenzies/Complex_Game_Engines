@@ -19,6 +19,7 @@ public enum HowItEffects
 public class Status
 {
     public string name;
+    public string description;
     public double valueToChange; //Can be a int or a percent
     public List<HowItEffects> effectiveness;
     public bool isAPercentage;
@@ -26,6 +27,7 @@ public class Status
     public Status()
     {
         name = "Toxic";
+        description = "This is a status Condition.";
         valueToChange = 1;
         effectiveness = new List<HowItEffects>();
         effectiveness.Add(HowItEffects.Damage);
@@ -39,8 +41,11 @@ public class StatusEffects : MonoBehaviour
     [Tooltip("Can be on its own.")]
     //Make functions that interact with the status.
     public List<Status> m_statusEffects;
+    public static StatusEffects status;
+    public int index = 0;
     private void Update()
     {
+        status = this;
         if (!Application.isPlaying && m_statusEffects == null)
         {
             m_statusEffects = new List<Status>();

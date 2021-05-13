@@ -16,6 +16,7 @@ public class Moves
 {
     public int itemIndex = 0;
     public string name;
+    public string description;
     public double power;
     public bool isItAPercentage;
     [Range(1, 100)]
@@ -35,6 +36,7 @@ public class Moves
         m_typeEffectiveness = new List<TypeChart>();
         m_typeEffectiveness.Add(new TypeChart());
         name = "None";
+        description = "This is a moveset";
         type = new List<Type>();
         type.Add(Type.None);
         power = 1;
@@ -66,7 +68,7 @@ public class MoveSets : MonoBehaviour
         if (moves == null)
             moves = this;
     }
-    void Update()
+    void LateUpdate()
     {
         if (!Application.isPlaying && m_moveSets == null)
         {
@@ -78,13 +80,17 @@ public class MoveSets : MonoBehaviour
         {
             if (TypeChart.chart == null || m_moveSets[i].isTypeChartNull)
             {
+                TypeChart.chart = GetComponent<TypeChart>();
                 AddToTypes(i);
                 return;
             }
             for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
             {
                 if (m_moveSets[i].m_typeEffectiveness[j] == null)
-                    m_moveSets[i].m_typeEffectiveness[j] = GetComponent<TypeChart>();
+                {
+                    AddToTypes(i);
+                    return;
+                }
                 if (m_moveSets[i].m_typeEffectiveness[j].m_types.Count != TypeChart.chart.m_types.Count)
                 {
                     NewList(i, j);
@@ -103,8 +109,11 @@ public class MoveSets : MonoBehaviour
     }
     private void AddToTypes(int i)
     {
+        TypeChart.chart = GetComponent<TypeChart>();
         for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
         {
+            if (m_moveSets[i].m_typeEffectiveness[j] == null)
+                m_moveSets[i].m_typeEffectiveness[j] = new TypeChart();
             m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
             foreach (var item in TypeChart.chart.m_types)
             {
@@ -121,20 +130,15 @@ public class MoveSets : MonoBehaviour
     }
     public void AddNewTyping(int i)
     {
-
         m_moveSets[i].m_typeEffectiveness.Add(new TypeChart());
-        //if(TypeChart.chart == null)
-        //    TypeChart.chart
-        for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
-        {
-            if (m_moveSets[i].m_typeEffectiveness[j].m_types == null)
-                m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
-        }
         foreach (var item in TypeChart.chart.m_types)
         {
             for (int j = 0; j < m_moveSets[i].m_typeEffectiveness.Count; j++)
             {
-                m_moveSets[i].m_typeEffectiveness[j].m_types.Add(item);
+                if (m_moveSets[i].m_typeEffectiveness[j].m_types == null)
+                    m_moveSets[i].m_typeEffectiveness[j].m_types = new List<string>();
+                if (m_moveSets[i].m_typeEffectiveness[j].m_types.Count < TypeChart.chart.m_types.Count)
+                    m_moveSets[i].m_typeEffectiveness[j].m_types.Add(item);
             }
         }
     }

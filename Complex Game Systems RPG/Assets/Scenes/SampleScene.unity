@@ -217,10 +217,9 @@ GameObject:
   - component: {fileID: 1094056711}
   - component: {fileID: 1094056710}
   - component: {fileID: 1094056709}
-  - component: {fileID: 1094056712}
   - component: {fileID: 1094056713}
+  - component: {fileID: 1094056712}
   - component: {fileID: 1094056708}
-  - component: {fileID: 1094056714}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -237,9 +236,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094056707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea7733293526c947889ca0784978a2b, type: 3}
+  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemIndex: 0
+  m_items:
+  - itemIndex: 0
+    showItem: 1
+    name: This is an Item.
+    valueOfItem: 1
+    isAPercentage: 0
+    isTypeChartNull: 0
+    isDurability: 0
+    staticItem: 0
+    durability: 1
+    description: This is an Item.
+    properties: 00000000
+    variation:
+    - {fileID: 0}
+    - {fileID: 0}
+    m_amountOfItemsForPlayer: 1
+    m_statIndex: 0000000000000000
+    status:
+    - {fileID: 0}
+    statusNames:
+    - Toxic
+    - Toxisadfc
 --- !u!114 &1094056709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_types:
   - None
-  typeIndex: 1
+  - dark
+  - light
+  - fire
+  - water
+  typeIndex: 0
 --- !u!114 &1094056710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,15 +338,16 @@ MonoBehaviour:
   m_moveSets:
   - itemIndex: 0
     name: None
+    description: This is a moveset
     power: 100
     isItAPercentage: 0
     Accuracy: 100
     type: 00000000
     showItem: 1
     m_typeEffectiveness:
-    - {fileID: 1094056709}
-    - {fileID: 1094056709}
-    - {fileID: 1094056709}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     isTypeChartNull: 0
     isLearntPerLevel: 1
     isLearntExternally: 0
@@ -340,39 +367,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_statusEffects:
   - name: Toxic
+    description: 
     valueToChange: 1
     effectiveness: 01000000
     isAPercentage: 0
     showItem: 1
---- !u!114 &1094056714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094056707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81a5643a1e85094997a0238ed1cfaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemIndex: 0
-  m_items:
-  - itemIndex: 0
-    showItem: 1
-    name: Default
-    valueOfItem: 1
+  - name: Toxisadfc
+    description: 
+    valueToChange: 2314
+    effectiveness: 01000000
     isAPercentage: 0
-    isTypeChartNull: 0
-    isDurability: 0
-    durability: 1
-    properties: 0200000001000000
-    m_stat: []
-    allStatseffected:
-    - Strength
-    - Damage
-    - Strength
-    - Damage
-    variation:
-    - {fileID: 1094056709}
-    m_amountOfItemsForPlayer: 1
+    showItem: 0
+  index: 0

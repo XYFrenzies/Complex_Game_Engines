@@ -20,6 +20,7 @@ public class Entity : ScriptableObject
     [HideInInspector] public bool entityEffectStatShow;
     //MainStats
     public string m_name;
+    public string m_descriptionEntity;
     public float m_health;
     public int level;
     public int maxLevel;
@@ -63,6 +64,7 @@ public class Entity : ScriptableObject
         numOfItemsOnEntity = new List<int>();
         levelForeachMoveset = new List<int>();
         m_name = "Name";
+        m_descriptionEntity = "This is the entity.";
         m_health = 1;
         entityMainShow = false;
         AddNewType();

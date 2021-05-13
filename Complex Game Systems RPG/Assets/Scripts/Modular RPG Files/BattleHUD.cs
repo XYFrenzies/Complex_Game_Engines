@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BattleHUD : MonoBehaviour
 {
+    [SerializeField] private List<Button> m_button;
     // Start is called before the first frame update
     void Start()
     {
