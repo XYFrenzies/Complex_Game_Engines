@@ -4,6 +4,14 @@ using UnityEngine;
 using System;
 
 [Serializable]
+public enum TypeOfStat
+{
+    None,
+    Attack,
+    Defense,
+    Other
+}
+[Serializable]
 public class PrimStatisic
 {
     public string name;
@@ -12,10 +20,12 @@ public class PrimStatisic
     public int min = int.MinValue;
     public int max = int.MaxValue;
     public bool diminishingReturns = true;
+    public TypeOfStat typeOfStat;
     [HideInInspector] public bool showItem = false;
 
     public PrimStatisic() 
     {
+        typeOfStat = TypeOfStat.Attack;
         name = "Strength";
         stats = 1;
         isItAPercent = false;
@@ -37,9 +47,11 @@ public class SecStatistic
     public int min = int.MinValue;
     public int max = int.MaxValue;
     public bool diminishingReturns = true;
+    public TypeOfStat typeOfStat;
     [HideInInspector] public bool showItem = false;
     public SecStatistic()
     {
+        typeOfStat = TypeOfStat.Attack;
         name = "Damage";
         stats = 1;
         isItAPercent = false;

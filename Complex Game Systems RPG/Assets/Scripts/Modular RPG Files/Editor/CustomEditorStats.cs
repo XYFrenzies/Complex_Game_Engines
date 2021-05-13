@@ -56,6 +56,11 @@ public class CustomEditorStats : Editor
                 GUILayout.Label("Stat Name", GUILayout.Width(150));
                 script.m_primaryStatistic[i].name = GUILayout.TextField(script.m_primaryStatistic[i].name);
                 GUILayout.EndHorizontal();
+                GUILayout.Label("Stat Type", GUILayout.Width(150));
+                GUILayout.BeginHorizontal();
+                script.m_primaryStatistic[i].typeOfStat = (TypeOfStat)EditorGUILayout.EnumPopup(
+                    script.m_primaryStatistic[i].typeOfStat, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
             }
         }
         GUILayout.Space(20f);
@@ -84,6 +89,11 @@ public class CustomEditorStats : Editor
                 GUILayout.Label("Stat Name", GUILayout.Width(150));
                 script.m_secondaryStatistic[i].name = GUILayout.TextField(script.m_secondaryStatistic[i].name);
                 GUILayout.EndHorizontal();
+                GUILayout.Label("Stat Type", GUILayout.Width(150));
+                GUILayout.BeginHorizontal();
+                script.m_secondaryStatistic[i].typeOfStat = (TypeOfStat)EditorGUILayout.EnumPopup(
+                    script.m_secondaryStatistic[i].typeOfStat, GUILayout.Width(150));
+                GUILayout.EndHorizontal();
             }
         }
         GUILayout.Space(20f);
@@ -98,6 +108,9 @@ public class CustomEditorStats : Editor
                 script.m_secondaryStatistic.RemoveAt(script.m_secondaryStatistic.Count - 1);
         }
         GUILayout.EndHorizontal();
+        #endregion
+        #region StatsTypeAgainst
+
         #endregion
     }
 }
@@ -1012,8 +1025,21 @@ public class CustomEditorItems : Editor
                 "Item " + script.m_items[i].name, true);
             if (script.m_items[i].showItem)
             {
+
                 GUILayout.Label("Item Description");
                 GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Customised Item"))
+                {
+                    script.m_items[i].customizedItem = true;
+                }
+                if (GUILayout.Button("Create Item"))
+                {
+                    script.m_items[i].customizedItem = false;
+                }
+                GUILayout.EndHorizontal();
+                if (!script.m_items[i].customizedItem)
+                {
+                    GUILayout.BeginHorizontal();
                 GUILayout.Label("Item Name", GUILayout.Width(150));
                 script.m_items[i].name = GUILayout.TextField(script.m_items[i].name, GUILayout.Width(250));
                 GUILayout.EndHorizontal();
@@ -1099,99 +1125,119 @@ public class CustomEditorItems : Editor
                 }
                 else
                     GUILayout.Label("This Item does not have Durability", GUILayout.Width(250));
-                if (!script.m_items[i].staticItem)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Item Properties", GUILayout.Width(150));
-                    GUILayout.EndHorizontal();
-                    for (int j = 0; j < script.m_items[i].properties.Count; j++)
-                    {
-                        if (script.m_items[i].properties.Count != script.m_items[i].allStatseffected.Count)
-                            script.AddNewStats(i);
-                        if (script.m_items[i].allStatseffected[j].Count <= 0)
-                        {
-                            script.AddStats(i);
-                        }
-                        GUILayout.BeginHorizontal();
-                        script.m_items[i].properties[j] = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties[j], GUILayout.Width(150));
-                        if (script.m_items[i].properties[j] == ItemProperties.IncreaseStats ||
-                            script.m_items[i].properties[j] == ItemProperties.DecreaseStats)
-                            script.m_items[i].m_statIndex[j] =
-                        EditorGUILayout.Popup(script.m_items[i].m_statIndex[j],
-                        script.m_items[i].allStatseffected[j].ToArray(), GUILayout.Width(150));
-
-                        if (script.m_items[i].properties[j] == ItemProperties.IncludeStatus)
-                            script.m_items[i].status[j].index =
-                        EditorGUILayout.Popup(script.m_items[i].status[j].index,
-                        script.m_items[i].statusNames.ToArray(), GUILayout.Width(150));
-
-                        GUILayout.EndHorizontal();
-                    }
-                    GUILayout.Space(10f);
-                    GUILayout.BeginHorizontal();
-                    if (GUILayout.Button("Add More effectiveness"))
-                    {
-                        if (script.m_items[i].properties.Count < 3)
-                        {
-                            script.AddNewStats(i);
-                            script.m_items[i].properties.Add(new ItemProperties());
-                            script.AddNewStatus(i);
-                        }
-                    }
-                    if (GUILayout.Button("Delete Recent Effectiveness"))
-                    {
-                        if (script.m_items[i].properties.Count > 1)
-                        {
-                            script.m_items[i].properties.RemoveAt(script.m_items[i].properties.Count - 1);
-                            script.m_items[i].allStatseffected.RemoveAt(script.m_items[i].allStatseffected.Count - 1);
-                            script.m_items[i].statusNames.RemoveAt(script.m_items[i].statusNames.Count - 1);
-                            script.m_items[i].status.RemoveAt(script.m_items[i].status.Count - 1);
-                        }
-                    }
-                    GUILayout.EndHorizontal();
-                    GUILayout.Space(10f);
-                    GUILayout.Space(10f);
-                    if (script.m_items[i].itemType != ItemType.Potion)
+                    if (!script.m_items[i].staticItem)
                     {
                         GUILayout.BeginHorizontal();
-                        GUILayout.Label("Typing");
+                        GUILayout.Label("Item Properties", GUILayout.Width(150));
                         GUILayout.EndHorizontal();
-
-                        for (int j = 0; j < script.m_items[i].variation.Count; j++)
+                        for (int j = 0; j < script.m_items[i].properties.Count; j++)
                         {
-                            script.m_items[i].variation[j].typeIndex =
-                                EditorGUILayout.Popup(script.m_items[i].variation[j].typeIndex,
-                            script.m_items[i].variation[j].m_types.ToArray(), GUILayout.Width(150));
+                            if (script.m_items[i].properties.Count != script.m_items[i].allStatseffected.Count)
+                                script.AddNewStats(i);
+                            if (script.m_items[i].allStatseffected[j].Count <= 0)
+                            {
+                                script.AddStats(i);
+                            }
+                            GUILayout.BeginHorizontal();
+                            script.m_items[i].properties[j] = (ItemProperties)EditorGUILayout.EnumPopup(script.m_items[i].properties[j], GUILayout.Width(150));
+                            if (script.m_items[i].properties[j] == ItemProperties.IncreaseStats ||
+                                script.m_items[i].properties[j] == ItemProperties.DecreaseStats)
+                                script.m_items[i].m_statIndex[j] =
+                            EditorGUILayout.Popup(script.m_items[i].m_statIndex[j],
+                            script.m_items[i].allStatseffected[j].ToArray(), GUILayout.Width(150));
+
+                            if (script.m_items[i].properties[j] == ItemProperties.IncludeStatus)
+                                script.m_items[i].status[j].index =
+                            EditorGUILayout.Popup(script.m_items[i].status[j].index,
+                            script.m_items[i].statusNames.ToArray(), GUILayout.Width(150));
+
+                            GUILayout.EndHorizontal();
                         }
                         GUILayout.Space(10f);
                         GUILayout.BeginHorizontal();
-                        if (script.m_items[i].itemType == ItemType.Armour)
+                        if (GUILayout.Button("Add More effectiveness"))
                         {
-                            if (GUILayout.Button("Add More Resistences"))
+                            if (script.m_items[i].properties.Count < 3)
                             {
-                                script.AddNewTyping(i);
-                            }
-                            if (GUILayout.Button("Delete Recent Resistence"))
-                            {
-                                if (script.m_items[i].variation.Count > 0)
-                                    script.m_items[i].variation.RemoveAt(script.m_items[i].variation.Count - 1);
+                                script.AddNewStats(i);
+                                script.m_items[i].properties.Add(new ItemProperties());
+                                script.AddNewStatus(i);
                             }
                         }
-                        else if (script.m_items[i].itemType == ItemType.Weapon)
+                        if (GUILayout.Button("Delete Recent Effectiveness"))
                         {
-                            if (GUILayout.Button("Add More Weapon Types"))
+                            if (script.m_items[i].properties.Count > 1)
                             {
-                                script.AddNewTyping(i);
-                            }
-                            if (GUILayout.Button("Delete Recent Weapon Types"))
-                            {
-                                if (script.m_items[i].variation.Count > 0)
-                                    script.m_items[i].variation.RemoveAt(script.m_items[i].variation.Count - 1);
+                                script.m_items[i].properties.RemoveAt(script.m_items[i].properties.Count - 1);
+                                script.m_items[i].allStatseffected.RemoveAt(script.m_items[i].allStatseffected.Count - 1);
+                                script.m_items[i].statusNames.RemoveAt(script.m_items[i].statusNames.Count - 1);
+                                script.m_items[i].status.RemoveAt(script.m_items[i].status.Count - 1);
                             }
                         }
                         GUILayout.EndHorizontal();
+                        GUILayout.Space(10f);
+                        GUILayout.Space(10f);
+                        if (script.m_items[i].itemType != ItemType.Potion)
+                        {
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Label("Typing");
+                            GUILayout.EndHorizontal();
+
+                            for (int j = 0; j < script.m_items[i].variation.Count; j++)
+                            {
+                                script.m_items[i].variation[j].typeIndex =
+                                    EditorGUILayout.Popup(script.m_items[i].variation[j].typeIndex,
+                                script.m_items[i].variation[j].m_types.ToArray(), GUILayout.Width(150));
+                            }
+                            GUILayout.Space(10f);
+                            GUILayout.BeginHorizontal();
+                            if (script.m_items[i].itemType == ItemType.Armour)
+                            {
+                                if (GUILayout.Button("Add More Resistences"))
+                                {
+                                    script.AddNewTyping(i);
+                                }
+                                if (GUILayout.Button("Delete Recent Resistence"))
+                                {
+                                    if (script.m_items[i].variation.Count > 0)
+                                        script.m_items[i].variation.RemoveAt(script.m_items[i].variation.Count - 1);
+                                }
+                            }
+                            else if (script.m_items[i].itemType == ItemType.Weapon)
+                            {
+                                if (GUILayout.Button("Add More Weapon Types"))
+                                {
+                                    script.AddNewTyping(i);
+                                }
+                                if (GUILayout.Button("Delete Recent Weapon Types"))
+                                {
+                                    if (script.m_items[i].variation.Count > 0)
+                                        script.m_items[i].variation.RemoveAt(script.m_items[i].variation.Count - 1);
+                                }
+                            }
+                            GUILayout.EndHorizontal();
+                        }
                     }
                 }
+                for (int j = 0; j < script.m_items[i].itemFunctions.Count; j++)
+                {
+                    ItemFunction selected = (ItemFunction)EditorGUILayout.ObjectField(script.m_items[i].itemFunctions[j], typeof(ItemFunction), false);
+                    if (script.m_items[i].itemFunctions[j] != null)
+                    {
+                        script.m_items[i].itemFunctions[j] = Instantiate(selected);
+                        script.m_items[i].itemFunctions[j].item = script.m_items[i];
+                    }
+                }
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add Function"))
+                {
+                    script.m_items[i].itemFunctions.Add(null);
+                }
+                if (GUILayout.Button("Remove Function"))
+                {
+                    script.m_items[i].itemFunctions.RemoveAt(script.m_items[i].itemFunctions.Count - 1);
+                }
+                GUILayout.EndHorizontal();
             }
         }
         GUILayout.Space(10f);

@@ -23,6 +23,8 @@ public enum ItemType
 [Serializable]
 public class ItemID
 {
+    public bool customizedItem;
+    public List<ItemFunction> itemFunctions;
     public int itemIndex = 0;
     [HideInInspector] public bool showItem;
     public string name;
@@ -44,6 +46,8 @@ public class ItemID
     public List<string> statusNames;
     public ItemID()
     {
+        customizedItem = false;
+        itemFunctions = new List<ItemFunction>();
         allStatseffected = new List<List<string>>();
         variation = new List<TypeChart>();
         status = new List<StatusEffects>();
@@ -89,6 +93,13 @@ public class ItemID
             {
                 variation[0].m_types.Add(item);
             }
+        }
+    }
+    public void UseItem()
+    {
+        foreach (var itemFunction in itemFunctions)
+        {
+            itemFunction.DoSomething();
         }
     }
 }
@@ -156,6 +167,15 @@ public class Items : MonoBehaviour
             m_items.Add(new ItemID());
             type = GetComponent<TypeChart>();
         }
+    }
+    public ItemID GetItems(string m_nameOfItem)
+    {
+        foreach (var item in m_items)
+        {
+            if (item.name == m_nameOfItem)
+                return item;
+        }
+        return null;
     }
     public void AddNewItem()
     {

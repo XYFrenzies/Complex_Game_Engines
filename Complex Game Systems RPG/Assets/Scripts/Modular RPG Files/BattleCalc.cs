@@ -6,10 +6,12 @@ using System;
 public class BattleCalc : MonoBehaviour
 {
     public List<Entity> m_allEntities;
+    public static BattleCalc battleCalc;
     private Entity m_mainEntity;
     private double damageToDeal = 0;
     private void Awake()
     {
+        battleCalc = this;
         m_allEntities = new List<Entity>();
         foreach (var item in FindObjectsOfType<Entity>())
         {
@@ -18,14 +20,19 @@ public class BattleCalc : MonoBehaviour
         m_mainEntity = GetComponent<Entity>();
         StatsEffected();
     }
-    private void Update()
-    {
 
+    public static Entity GetEntity(string m_nameEntity) 
+    {
+        if (battleCalc.m_allEntities == null)
+            return null;
+        Predicate<Entity> predicate = (Entity entity) => { return entity.m_name == m_nameEntity; };
+        return battleCalc.m_allEntities.Find(predicate);
     }
-    public double Attack(Entity[] numOfEntitiesAttacked)
+
+    public void Attack(Entity[] numOfEntitiesAttacked)
     {
 
-
+        damageToDeal = BaseDamage();
         //double player1Damage = a_atkEntity;
 
         //foreach (var entity in numOfEntitiesAttacked)
@@ -33,13 +40,32 @@ public class BattleCalc : MonoBehaviour
 
         //}
         Debug.Log("Player did " + damageToDeal + "to all players");
-        return damageToDeal;
     }
 
-    public void BaseDamage()
+    public double BaseDamage()
     {
+        double result = 0;
+
         //Strength (or other attack value) If Stab * 
+        return result;
     }
+    #region Stats
+    //Determines who goes first or when someone will attack.
+    //Returns true if left side is larger but is false if right is larger.
+    public bool CompareStatsLHSisLarger(PrimStatisic m_mainPrim, PrimStatisic m_enemyPrim)
+    {
+        if (m_mainPrim == null || m_enemyPrim == null)
+            return false;
+        if (m_mainPrim.stats > m_enemyPrim.stats)
+        {
+            return true;
+        }
+        return false;
+        
+    }
+    #endregion
+    
+
     //This is a calculation for the stats that are effecting each other. 
     //The calculation is determined by the entity that is placed into the scene on start.
     #region ChangeInStats
@@ -231,24 +257,13 @@ public class BattleCalc : MonoBehaviour
     {
 
     }
-    public bool UseItem(ItemID item)
+    public void UseItem()
     {
-        bool canUseItem = false;
-        for (int i = 0; i < m_mainEntity.m_itemsOnPlayer.Count; i++)
-        {
-            if (m_mainEntity.m_itemsOnPlayer[i].m_items[m_mainEntity.m_itemsOnPlayer[i].itemIndex]
-                == item)
-            {
-                if (m_mainEntity.numOfItemsOnEntity[i] <= 0)
-                    return canUseItem = false;
-                else if (m_mainEntity.numOfItemsOnEntity[i] > 0)
-                {
-                    m_mainEntity.numOfItemsOnEntity[i] -= 1;
-                    return canUseItem = true;
-                }
-            }
-        }
-        return canUseItem;
+        //foreach (var itemFunction in item.itemFunctions)
+        //{
+        //    itemFunction.DoSomething();
+        //}
+
     }
     //Looks through 1 instance of an items durability
     public bool ItemDurabilityCheck(ItemID item, double calcDmgToDurability)
