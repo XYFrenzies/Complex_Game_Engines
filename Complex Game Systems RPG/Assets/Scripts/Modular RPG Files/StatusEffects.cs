@@ -56,6 +56,16 @@ public class StatusEffects : MonoBehaviour
             m_statusEffects = new List<Status>();
             m_statusEffects.Add(new Status());
         }
+        //if (!Application.isPlaying)
+        //{
+        //    for (int i = 0; i < m_statusEffects.Count; i++)
+        //    {
+        //        if (m_statusEffects[i] == null)
+        //        {
+        //            m_statusEffects[i] = new Status();
+        //        }
+        //    }
+        //}
     }
 
 }

@@ -35,7 +35,6 @@ public class ItemID
     public bool staticItem;
     public double durability;
     public string description;
-    [Tooltip("Max size is 4!")]
     public List<ItemProperties> properties;
     public ItemType itemType;
     public List<List<string>> allStatseffected;
@@ -44,8 +43,14 @@ public class ItemID
     public List<int> m_statIndex;
     public List<StatusEffects> status;
     public List<string> statusNames;
+    public Sprite sprite;
+    public GameObject obj;
+    public bool itemIsSprite = true;
+    public bool isStackable;
+    public bool isStatusNull = false;
     public ItemID()
     {
+        isStackable = true;
         customizedItem = false;
         itemFunctions = new List<ItemFunction>();
         allStatseffected = new List<List<string>>();
@@ -67,6 +72,7 @@ public class ItemID
         staticItem = false;
         showItem = false;
         variation.Add(new TypeChart());
+        status.Add(new StatusEffects());
         if (TypeChart.chart == null)
             isTypeChartNull = true;
         else
@@ -78,6 +84,23 @@ public class ItemID
                     variation[j].m_types.Add(item);
                 }
             }
+        if (StatusEffects.status == null)
+        {
+            isStatusNull = true;
+            return;
+        }
+        else
+        {
+            for (int j = 0; j < status.Count; j++)
+            {
+                status[j].m_statusEffects = new List<Status>();
+                foreach (var item in StatusEffects.status.m_statusEffects)
+                {
+                    status[j].m_statusEffects.Add(item);
+                    statusNames.Add(item.name);
+                }
+            }
+        }
     }
     public ItemID(string a_name, int a_valueOfItem, bool a_isAPercentage, int a_propertiesSize)
     {
@@ -142,6 +165,22 @@ public class Items : MonoBehaviour
                     AddNewStatus(i);
                 if (m_items[i].allStatseffected.Count <= 0)
                     AddNewStats(i);
+                for (int j = 0; j < m_items[i].status.Count; j++)
+                {
+                    if (m_items[i].status == null)
+                        m_items[i].status = new List<StatusEffects>();
+                    if (m_items[i].status[j] == null)
+                    {
+                        StatusEffects.status = GetComponent<StatusEffects>();
+                        m_items[i].status[j] = StatusEffects.status;
+                        m_items[i].status[j].m_statusEffects = new List<Status>();
+                        foreach (var item in StatusEffects.status.m_statusEffects)
+                        {
+                            m_items[i].status[j].m_statusEffects.Add(item);
+                            m_items[i].statusNames.Add(item.name);
+                        }
+                    }
+                }
             }
         }
         for (int i = 0; i < m_items.Count; i++)

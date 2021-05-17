@@ -18,6 +18,10 @@ public class Entity : ScriptableObject
     [HideInInspector] public bool entityPrimStatShow;
     [HideInInspector] public bool entitySecStatShow;
     [HideInInspector] public bool entityEffectStatShow;
+    [HideInInspector] public bool entitySpriteOrObj;
+    public bool is2DSprite;
+    public GameObject entityOBJ;
+    public Sprite sprite2D;
     //MainStats
     public string m_name;
     public string m_descriptionEntity;
@@ -44,38 +48,45 @@ public class Entity : ScriptableObject
     public List<string> m_nameOfMovesExternal;
     public List<bool> m_learntPerLevel;
     public List<bool> m_learntExternally;
+    public List<Status> onPlayer;
+
     public void OnEnable()
     {
-        level = 1;
-        maxLevel = 2;
-        maxEXP = 1;
-        m_typeEffectiveness = new List<TypeChart>();
-        m_currentMoveSets = new List<MoveSets>();
-        m_learnableMoves = new List<MoveSets>();
-        m_learntPerLevel = new List<bool>();
-        m_learntExternally = new List<bool>();
-        m_nameOfMovesCurrent = new List<string>();
-        m_nameOfMovesExternal = new List<string>();
-        m_primStat = new List<PrimStatisic>();
-        m_secStat = new List<SecStatistic>();
-        m_statsEffecting = new List<StatsEffected>();
-        m_itemsOnPlayer = new List<Items>();
-        m_nameOfItems = new List<string>();
-        numOfItemsOnEntity = new List<int>();
-        levelForeachMoveset = new List<int>();
-        m_name = "Name";
-        m_descriptionEntity = "This is the entity.";
-        m_health = 1;
-        entityMainShow = false;
-        AddNewType();
-        AddNewItem();
-        AddMoreCurrentMove();
-        AddNewLearnableMove();
-        AddNewStatChange();
+        if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            level = 1;
+            maxLevel = 2;
+            maxEXP = 1;
+            is2DSprite = false;
+            onPlayer = new List<Status>();
+            m_typeEffectiveness = new List<TypeChart>();
+            m_currentMoveSets = new List<MoveSets>();
+            m_learnableMoves = new List<MoveSets>();
+            m_learntPerLevel = new List<bool>();
+            m_learntExternally = new List<bool>();
+            m_nameOfMovesCurrent = new List<string>();
+            m_nameOfMovesExternal = new List<string>();
+            m_primStat = new List<PrimStatisic>();
+            m_secStat = new List<SecStatistic>();
+            m_statsEffecting = new List<StatsEffected>();
+            m_itemsOnPlayer = new List<Items>();
+            m_nameOfItems = new List<string>();
+            numOfItemsOnEntity = new List<int>();
+            levelForeachMoveset = new List<int>();
+            m_name = "Name";
+            m_descriptionEntity = "This is the entity.";
+            m_health = 1;
+            entityMainShow = false;
+            AddNewType();
+            AddNewItem();
+            AddMoreCurrentMove();
+            AddNewLearnableMove();
+            AddNewStatChange();
 
-        AddPrimStat();
-        AddSecStat();
-        AddMoveset();
+            AddPrimStat();
+            AddSecStat();
+            AddMoveset();
+        }
     }
     #region StatFunctions
     public void AddPrimStat()
@@ -126,10 +137,11 @@ public class Entity : ScriptableObject
     public void AddNewItem()
     {
         m_itemsOnPlayer.Add(new Items());
+
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
             m_itemsOnPlayer[i].m_items = new List<ItemID>();
-            if (Items.item == null) 
+            if (Items.item == null)
             {
                 return;
             }
@@ -203,5 +215,280 @@ public class Entity : ScriptableObject
             }
         }
     }
+    #endregion
+    #region publicFunction
+    #region Image
+    public void NewImage(Sprite sprite)
+    {
+        sprite2D = sprite;
+    }
+    public Sprite GetSpriteInfo()
+    {
+        if (is2DSprite == true)
+        {
+            return sprite2D;
+        }
+        return null;
+    }
+    public GameObject GetGameObj()
+    {
+        if (!is2DSprite)
+        {
+            return entityOBJ;
+        }
+        return null;
+    }
+    public void NewImage(GameObject obj)
+    {
+        entityOBJ = obj;
+    }
+    #endregion
+    #region Movesets
+    public bool FindCurrentMoveset(string moveName)
+    {
+        for (int i = 0; i < m_nameOfMovesCurrent.Count; i++)
+        {
+            if (m_nameOfMovesCurrent[i] == moveName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public Moves GetCurrentMoveset(string moveName)
+    {
+        for (int i = 0; i < m_currentMoveSets.Count; i++)
+        {
+            for (int j = 0; j < m_currentMoveSets[i].m_moveSets.Count; j++)
+            {
+                if (m_currentMoveSets[i].m_moveSets[j].name == moveName)
+                {
+                    return m_currentMoveSets[i].m_moveSets[j];
+                }
+            }
+        }
+        return null;
+    }
+    public List<MoveSets> GetCurrentMovesets()
+    {
+        return m_currentMoveSets;
+    }
+    public List<MoveSets> GetLearnableMovesets()
+    {
+        return m_learnableMoves;
+    }
+    //Make functions to quickely access the entities methods.
+    #endregion
+    #region Items
+    public void AddCurrentItem(ItemID item, int amount)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
+            {
+                numOfItemsOnEntity[i] += amount;
+            }
+        }
+    }
+    public void AddCurrentItem(ItemID item)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
+            {
+                numOfItemsOnEntity[i] += 1;
+            }
+        }
+    }
+    public void DecreaseCurrentItem(ItemID item)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
+            {
+                numOfItemsOnEntity[i] -= 1;
+            }
+        }
+    }
+    public void DecreaseCurrentItem(ItemID item, int amount)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
+            {
+                numOfItemsOnEntity[i] -= amount;
+            }
+        }
+    }
+    public void AddNewItemNotOnPlayer(ItemID item)
+    {
+        bool thereIsItem = false;
+        if (Items.item == null)
+            Debug.Log("An error has occured when making a new item!");
+        for (int i = 0; i < Items.item.m_items.Count; i++)
+        {
+            if (Items.item.m_items[i] == item)
+            {
+                m_nameOfItems.Add(item.name);
+                numOfItemsOnEntity.Add(1);
+                thereIsItem = true;
+            }
+        }
+        if (!thereIsItem)
+        {
+            Debug.Log("No such Item exists!");
+        }
+    }
+    public void AddNewItemNotOnPlayer(ItemID item, int amount)
+    {
+        bool thereIsItem = false;
+        if (Items.item == null)
+            Debug.Log("An error has occured when making a new item!");
+        for (int i = 0; i < Items.item.m_items.Count; i++)
+        {
+            if (Items.item.m_items[i] == item)
+            {
+                m_nameOfItems.Add(item.name);
+                numOfItemsOnEntity.Add(amount);
+                thereIsItem = true;
+            }
+        }
+        if (!thereIsItem)
+        {
+            Debug.Log("No such Item exists!");
+        }
+    }
+    //This goes through every item and determines if it increases or decreases the stat depending on if its equipt or used.
+    public void ItemEquiptChangeStats(ItemID item)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name) && item.properties.Count != 0)
+            {
+                for (int j = 0; j < item.properties.Count; j++)
+                {
+                    if (item.properties[j] == ItemProperties.DecreaseStats)
+                    {
+                        foreach (var stat in m_primStat)
+                        {
+                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            {
+                                stat.stats -= item.valueOfItem;
+                                if (stat.stats < 0)
+                                {
+                                    stat.stats = 0;
+                                }
+                            }
+                        }
+                    }
+                    if (item.properties[j] == ItemProperties.IncreaseStats)
+                    {
+                        foreach (var stat in m_primStat)
+                        {
+                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            {
+                                if ((stat.stats * 2) > stat.max)
+                                {
+                                    //Diminishing effects of the stats as it goes over halfway.
+                                    stat.stats += Mathf.Log10((float)item.valueOfItem);
+                                }
+                                else
+                                {
+                                    stat.stats += item.valueOfItem;
+                                }
+                            }
+                        }
+                    }
+                    if (item.properties[j] == ItemProperties.IncludeStatus)
+                    {
+                        for (int k = 0; k < item.status.Count; k++)
+                        {
+                            for (int l = 0; l < item.statusNames.Count; l++)
+                            {
+                                if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                {
+                                    onPlayer.Add(item.status[k].m_statusEffects[item.status[k].index]);
+                                }
+                            }
+
+                        }
+                    }
+                }
+                return;
+            }
+        }
+    }
+    //This goes through every item and removes or the additions and subtractions of the stat changes.
+    public void ItemUnEquiptChangeStats(ItemID item)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name) && item.properties.Count != 0)
+            {
+                for (int j = 0; j < item.properties.Count; j++)
+                {
+                    if (item.properties[j] == ItemProperties.DecreaseStats)
+                    {
+                        foreach (var stat in m_primStat)
+                        {
+                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            {
+                                stat.stats += item.valueOfItem;
+                            }
+                        }
+                    }
+                    if (item.properties[j] == ItemProperties.IncreaseStats)
+                    {
+                        foreach (var stat in m_primStat)
+                        {
+                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            {
+                                if ((stat.stats * 2) > stat.max)
+                                {
+                                    //Diminishing effects of the stats as it goes over halfway.
+                                    stat.stats -= Mathf.Log10((float)item.valueOfItem);
+                                }
+                                else
+                                {
+                                    stat.stats -= item.valueOfItem;
+                                }
+                            }
+                        }
+                    }
+                    if (item.properties[j] == ItemProperties.IncludeStatus)
+                    {
+                        for (int k = 0; k < item.status.Count; k++)
+                        {
+                            for (int l = 0; l < item.statusNames.Count; l++)
+                            {
+                                if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                {
+                                    onPlayer.Remove(item.status[k].m_statusEffects[item.status[k].index]);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public List<ItemID> GetAllItemsOnPLayer()
+    {
+        List<ItemID> items = new List<ItemID>();
+
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (m_itemsOnPlayer[i] == null)
+                m_itemsOnPlayer[i] = Items.item;
+            for (int j = 0; j < m_itemsOnPlayer[i].m_items.Count; j++)
+            {
+                if (m_itemsOnPlayer[i].m_items[j].name == m_nameOfItems[m_itemsOnPlayer[i].itemIndex])
+                    items.Add(m_itemsOnPlayer[i].m_items[j]);
+            }
+        }
+        return items;
+    }
+    #endregion
     #endregion
 }

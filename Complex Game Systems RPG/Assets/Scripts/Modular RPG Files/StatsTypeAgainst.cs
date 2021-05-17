@@ -2,63 +2,119 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-[RequireComponent(typeof(Stats))]
-public class StatsTypeAgainst : MonoBehaviour
+
+public class StatsForAndAgainst
 {
-    public List<List<string>> m_attack;
-    public List<List<string>> m_defense;
-    public List<List<string>> m_other;
-    public List<int> m_index;
-    private Stats stat;
-    void Update()
+    public int indexAttack;
+    public int indexDefense;
+    public int indexOtherFor;
+    public int indexOtherAgainst;
+    public bool showItem = false;
+    public List<string> m_attack;
+    public List<string> m_defense;
+    public List<string> m_other;
+    public bool isStatNull;
+    public bool isOtherActive;
+    public StatsForAndAgainst()
     {
-        if (stat == null)
-            stat = GetComponent<Stats>();
-        if (!Application.isPlaying && m_defense == null && 
-            m_other == null && m_attack == null)
+        isOtherActive = false;
+        indexAttack = 0;
+        indexDefense = 0;
+        indexOtherFor = 0;
+        indexOtherAgainst = 0;
+        isStatNull = true;
+        m_attack = new List<string>();
+        m_defense = new List<string>();
+        m_other = new List<string>();
+        if (Stats.statsForObjects == null)
+            isStatNull = true;
+        else
         {
-            m_index = new List<int>();
-            m_attack = new List<List<string>>();
-            m_defense = new List<List<string>>();
-            m_other = new List<List<string>>();
             AddNewStats(m_attack, TypeOfStat.Attack);
             AddNewStats(m_defense, TypeOfStat.Defense);
             AddNewStats(m_other, TypeOfStat.Other);
         }
     }
-    public void AddNewStats(List<List<string>> type, TypeOfStat typeofStat)
+    public void AddNewStats(List<string> type, TypeOfStat typeofStat)
     {
-        type.Add(new List<string>());
-        m_index.Add(0);
-        for (int j = 0; j < type.Count; j++)
+        foreach (var item in Stats.statsForObjects.m_primaryStatistic)
         {
-            foreach (var item in Stats.statsForObjects.m_primaryStatistic)
-            {
-                if (item.typeOfStat == typeofStat)
-                    type[j].Add(item.name);
+            if (item.typeOfStat == typeofStat)
+                type.Add(item.name);
+        }
+        foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+        {
+            if (item.typeOfStat == typeofStat)
+                type.Add(item.name);
+        }
+    }
+}
 
-            }
-            foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+[ExecuteInEditMode]
+[RequireComponent(typeof(Stats))]
+public class StatsTypeAgainst : MonoBehaviour
+{
+    public List<StatsForAndAgainst> stats;
+    private Stats stat;
+    void Update()
+    {
+        if (stat == null)
+            stat = GetComponent<Stats>();
+        if (!Application.isPlaying)
+        {
+            if (stats == null)
             {
-                if (item.typeOfStat == typeofStat)
-                    type[j].Add(item.name);
+                stats = new List<StatsForAndAgainst>();
+
+                    stats.Add(new StatsForAndAgainst());
+            }
+            for (int i = 0; i < stats.Count; i++)
+            {
+                if (stats[i].isStatNull == true)
+                {
+                    AddNewStats(stats[i].m_attack, TypeOfStat.Attack);
+                    AddNewStats(stats[i].m_defense, TypeOfStat.Defense);
+                    AddNewStats(stats[i].m_other, TypeOfStat.Other);
+                }
             }
         }
     }
-    public void AddStats(List<List<string>> type, TypeOfStat typeofStat)
+    public void AddNewStats(List<string> type, TypeOfStat typeofStat)
     {
-        for (int j = 0; j < type.Count; j++)
+        foreach (var item in Stats.statsForObjects.m_primaryStatistic)
+        {
+            if (item.typeOfStat == typeofStat)
+                type.Add(item.name);
+
+        }
+        foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
+        {
+            if (item.typeOfStat == typeofStat)
+                type.Add(item.name);
+        }
+    }
+    public void AddStats()
+    {
+        stats.Add(new StatsForAndAgainst());
+        for (int j = 0; j < stats.Count; j++)
         {
             foreach (var item in Stats.statsForObjects.m_primaryStatistic)
             {
-                if(item.typeOfStat == typeofStat)
-                    type[j].Add(item.name);
+                if (item.typeOfStat == TypeOfStat.Attack)
+                    stats[j].m_attack.Add(item.name);
+                else if(item.typeOfStat == TypeOfStat.Defense)
+                    stats[j].m_defense.Add(item.name);
+                else if(item.typeOfStat == TypeOfStat.Other)
+                    stats[j].m_other.Add(item.name);
             }
             foreach (var item in Stats.statsForObjects.m_secondaryStatistic)
             {
-                if (item.typeOfStat == typeofStat)
-                    type[j].Add(item.name);
+                if (item.typeOfStat == TypeOfStat.Attack)
+                    stats[j].m_attack.Add(item.name);
+                else if (item.typeOfStat == TypeOfStat.Defense)
+                    stats[j].m_defense.Add(item.name);
+                else if (item.typeOfStat == TypeOfStat.Other)
+                    stats[j].m_other.Add(item.name);
             }
         }
     }

@@ -5,20 +5,19 @@ using System;
 
 public class BattleCalc : MonoBehaviour
 {
-    public List<Entity> m_allEntities;
+    [SerializeField]public Entity m_mainEntity;
+    [SerializeField]private List<Entity> m_allEntities;
+    private Inventory inventory;
     public static BattleCalc battleCalc;
-    private Entity m_mainEntity;
     private double damageToDeal = 0;
     private void Awake()
     {
         battleCalc = this;
-        m_allEntities = new List<Entity>();
-        foreach (var item in FindObjectsOfType<Entity>())
-        {
-            m_allEntities.Add(item);
-        }
-        m_mainEntity = GetComponent<Entity>();
-        StatsEffected();
+        //foreach (var Entity in m_allEntities)
+        //{
+        //    StatsEffected(Entity);
+        //}
+        inventory = new Inventory();
     }
 
     public static Entity GetEntity(string m_nameEntity) 
@@ -82,11 +81,11 @@ public class BattleCalc : MonoBehaviour
             sec.stats += Mathf.Log10((float)value);
 
     }
-    public void StatsEffected()
+    public void StatsEffected(Entity m_entity)
     {
-        List<StatsEffected> stats = m_mainEntity.m_statsEffecting;
-        List<PrimStatisic> primStats = m_mainEntity.m_primStat;
-        List<SecStatistic> secStatistics = m_mainEntity.m_secStat;
+        List<StatsEffected> stats = m_entity.m_statsEffecting;
+        List<PrimStatisic> primStats = m_entity.m_primStat;
+        List<SecStatistic> secStatistics = m_entity.m_secStat;
         PrimStatisic primaryEffectingStat = null;
         SecStatistic secondaryEffectingStat = null;
         SecStatistic secondaryEffectedStat = null;
@@ -249,21 +248,9 @@ public class BattleCalc : MonoBehaviour
     #endregion
     //Items
     #region ItemsMath
-    public void ItemEquiptChangeStats(ItemID item)
-    {
-        
-    }
-    public void ItemUnEquiptChangeStats(ItemID item)
-    {
 
-    }
     public void UseItem()
     {
-        //foreach (var itemFunction in item.itemFunctions)
-        //{
-        //    itemFunction.DoSomething();
-        //}
-
     }
     //Looks through 1 instance of an items durability
     public bool ItemDurabilityCheck(ItemID item, double calcDmgToDurability)
@@ -279,6 +266,9 @@ public class BattleCalc : MonoBehaviour
         }
         return isDestroyed;
     }
+
+
+
     //public int ItemEffectiveness() 
     //{
     //    if () { }
