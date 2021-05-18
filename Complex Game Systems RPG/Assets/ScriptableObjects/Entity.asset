@@ -19,7 +19,12 @@ MonoBehaviour:
   entityPrimStatShow: 0
   entitySecStatShow: 0
   entityEffectStatShow: 0
+  entitySpriteOrObj: 0
+  is2DSprite: 0
+  entityOBJ: {fileID: 0}
+  sprite2D: {fileID: 0}
   m_name: Name
+  m_descriptionEntity: This is the entity.
   m_health: 1
   level: 1
   maxLevel: 2
@@ -34,6 +39,7 @@ MonoBehaviour:
     min: -2147483648
     max: 2147483647
     diminishingReturns: 1
+    typeOfStat: 1
     showItem: 0
   m_secStat:
   - name: Damage
@@ -42,21 +48,30 @@ MonoBehaviour:
     min: -2147483648
     max: 2147483647
     diminishingReturns: 1
-    showItem: 0
+    typeOfStat: 2
+    showItem: 1
   m_statsEffecting:
   - {fileID: 0}
   m_itemsOnPlayer:
   - {fileID: 0}
-  numOfItemsOnEntity: 01000000
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  numOfItemsOnEntity: 0100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_nameOfItems:
-  - Default
-  - Default
-  levelForeachMoveset: 
+  - health Potion
+  - Death Potion
+  levelForeachMoveset: 01000000
   m_currentMoveSets:
   - {fileID: 0}
   m_learnableMoves:
   - {fileID: 0}
-  m_nameOfMovesCurrent: []
-  m_nameOfMovesExternal: []
-  m_learntPerLevel: 
-  m_learntExternally: 
+  m_nameOfMovesCurrent:
+  - None
+  m_nameOfMovesExternal:
+  - None
+  m_learntPerLevel: 0101
+  m_learntExternally: 0000
+  onPlayer: []
+  itemIndex: 00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  hasBeenCreated: 1

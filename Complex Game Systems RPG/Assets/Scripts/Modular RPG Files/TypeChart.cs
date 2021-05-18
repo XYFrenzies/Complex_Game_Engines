@@ -10,6 +10,10 @@ public class TypeChart : MonoBehaviour
     public List<string> m_types;
     public int typeIndex;
     public static TypeChart chart;
+    private void Awake()
+    {
+        chart = this;
+    }
     private void OnValidate()
     {
         if (chart != this)

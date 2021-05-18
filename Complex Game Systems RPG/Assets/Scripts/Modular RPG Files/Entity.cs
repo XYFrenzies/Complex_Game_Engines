@@ -25,9 +25,10 @@ public class Entity : ScriptableObject
     //MainStats
     public string m_name;
     public string m_descriptionEntity;
-    public float m_health;
+    public double m_health;
     public int level;
     public int maxLevel;
+    public float currentEXP;
     public float baseEXPYield;
     public float maxEXP;
     //TypeEffectiveness
@@ -49,14 +50,18 @@ public class Entity : ScriptableObject
     public List<bool> m_learntPerLevel;
     public List<bool> m_learntExternally;
     public List<Status> onPlayer;
-
+    public List<int> itemIndex;
+    public bool hasBeenCreated = false;
     public void OnEnable()
     {
-        if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+        if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !hasBeenCreated)
         {
+            hasBeenCreated = true;
+            itemIndex = new List<int>();
             level = 1;
             maxLevel = 2;
             maxEXP = 1;
+            currentEXP = 0;
             is2DSprite = false;
             onPlayer = new List<Status>();
             m_typeEffectiveness = new List<TypeChart>();
@@ -86,6 +91,14 @@ public class Entity : ScriptableObject
             AddPrimStat();
             AddSecStat();
             AddMoveset();
+        }
+        if (currentEXP > maxEXP)
+        {
+            currentEXP = maxEXP;
+        }
+        if (level > maxLevel)
+        {
+            level = maxLevel;
         }
     }
     #region StatFunctions
@@ -130,14 +143,15 @@ public class Entity : ScriptableObject
         foreach (var item in Items.item.m_items)
         {
             m_itemsOnPlayer[i].m_items.Add(item);
-            m_nameOfItems.Add(item.name);
+            if (Items.item.m_items.Count != m_nameOfItems.Count)
+                m_nameOfItems.Add(item.name);
             numOfItemsOnEntity.Add(item.m_amountOfItemsForPlayer);
         }
     }
     public void AddNewItem()
     {
         m_itemsOnPlayer.Add(new Items());
-
+        itemIndex.Add(0);
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
             m_itemsOnPlayer[i].m_items = new List<ItemID>();
@@ -483,11 +497,60 @@ public class Entity : ScriptableObject
                 m_itemsOnPlayer[i] = Items.item;
             for (int j = 0; j < m_itemsOnPlayer[i].m_items.Count; j++)
             {
-                if (m_itemsOnPlayer[i].m_items[j].name == m_nameOfItems[m_itemsOnPlayer[i].itemIndex])
-                    items.Add(m_itemsOnPlayer[i].m_items[j]);
+                if (m_itemsOnPlayer[i].m_items[j].name == m_nameOfItems[itemIndex[i]])
+                    items.Add(m_itemsOnPlayer[i].m_items[itemIndex[i]]);
             }
         }
         return items;
+    }
+    #endregion
+    #region Leveling
+    public float GainExpMath(int a_levelOfEnemy, float a_baseEXPYield, int a_amountOfUnitsInBattle)
+    {
+        float m_mathOfBattle;
+        m_mathOfBattle = ((a_baseEXPYield * a_levelOfEnemy) / (5 * a_amountOfUnitsInBattle)) * ((2 * a_levelOfEnemy + 10) / a_levelOfEnemy + level + 10) + 1;
+        return m_mathOfBattle;
+    }
+    public int ReturnLevelUp(int a_level, double a_currentEXP)
+    {
+        double expForLevel;
+        expForLevel = Math.Pow(a_level, 3);
+        if (a_currentEXP >= expForLevel)
+        {
+            a_level += 1;
+        }
+        return a_level;
+    }
+    public double GetMinExp()
+    {
+        double expForLevel = 0;
+        if (level != 1)
+            expForLevel = Math.Pow(level - 1, 3);
+        return expForLevel;
+    }
+    public double GetMaxExpToGet()
+    {
+        double expForLevel = Math.Pow(level, 3);
+        return expForLevel;
+    }
+    public void ReturnLevelUp()
+    {
+        double expForLevel = Math.Pow(level, 3);
+        if (expForLevel <= currentEXP)
+        {
+            if (level != maxLevel)
+                level += 1;
+        }
+    }
+    #endregion
+    #region GetBaseStats
+    public double GetHealth() 
+    {
+        return m_health;
+    }
+    public string GetDescription() 
+    {
+        return m_descriptionEntity;
     }
     #endregion
     #endregion

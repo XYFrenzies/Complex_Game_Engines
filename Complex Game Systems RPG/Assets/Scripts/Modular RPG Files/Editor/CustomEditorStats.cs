@@ -220,7 +220,6 @@ public class CustomEditorEntity : Editor
     Entity m_entity;
     private void OnEnable()
     {
-
         m_entity = (Entity)target;
         if (m_entity.m_nameOfItems.Count == 0)
         {
@@ -306,7 +305,7 @@ public class CustomEditorEntity : Editor
             GUILayout.Space(10f);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Health", GUILayout.Width(150));
-            m_entity.m_health = EditorGUILayout.FloatField(m_entity.m_health);
+            m_entity.m_health = EditorGUILayout.DoubleField(m_entity.m_health);
             GUILayout.EndHorizontal();
             GUILayout.Space(10f);
             GUILayout.BeginHorizontal();
@@ -493,7 +492,6 @@ public class CustomEditorEntity : Editor
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.Label("What Item is on the player?", GUILayout.Width(150));
-
             GUILayout.EndHorizontal();
             for (int i = 0; i < m_entity.m_itemsOnPlayer.Count; i++)
             {
@@ -503,8 +501,8 @@ public class CustomEditorEntity : Editor
                     m_entity.AddItem(i);
                 }
                 GUILayout.BeginHorizontal();
-                m_entity.m_itemsOnPlayer[i].itemIndex =
-                    EditorGUILayout.Popup(m_entity.m_itemsOnPlayer[i].itemIndex,
+                m_entity.itemIndex[i] =
+                    EditorGUILayout.Popup(m_entity.itemIndex[i],
                 m_entity.m_nameOfItems.ToArray(), GUILayout.Width(150));
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -764,6 +762,7 @@ public class CustomEditorEntity : Editor
             GUILayout.EndHorizontal();
         }
         #endregion
+        EditorUtility.SetDirty(target);
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -1381,11 +1380,11 @@ public class CustomEditorItems : Editor
 
                 if (script.m_items[i].itemIsSprite == true)
                 {
-                    EditorGUILayout.ObjectField(script.m_items[i].sprite, typeof(Sprite), false);
+                    script.m_items[i].sprite = (Sprite)EditorGUILayout.ObjectField(script.m_items[i].sprite, typeof(Sprite), false);
                 }
                 if (script.m_items[i].itemIsSprite == false)
                 {
-                    EditorGUILayout.ObjectField(script.m_items[i].obj, typeof(GameObject), false);
+                    script.m_items[i].obj = (GameObject)EditorGUILayout.ObjectField(script.m_items[i].obj, typeof(GameObject), false);
                 }
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("2D Sprite"))
@@ -1397,7 +1396,6 @@ public class CustomEditorItems : Editor
                     script.m_items[i].itemIsSprite = false;
                 }
                 GUILayout.EndHorizontal();
-
             }
         }
         GUILayout.Space(10f);
@@ -1412,6 +1410,7 @@ public class CustomEditorItems : Editor
                 script.m_items.RemoveAt(script.m_items.Count - 1);
         }
         GUILayout.EndHorizontal();
+        EditorUtility.SetDirty(target);
         serializedObject.ApplyModifiedProperties();
     }
 }

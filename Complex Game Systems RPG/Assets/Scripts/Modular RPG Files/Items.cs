@@ -25,7 +25,6 @@ public class ItemID
 {
     public bool customizedItem;
     public List<ItemFunction> itemFunctions;
-    public int itemIndex = 0;
     [HideInInspector] public bool showItem;
     public string name;
     public double valueOfItem;
@@ -132,10 +131,13 @@ public class ItemID
 [ExecuteInEditMode]
 public class Items : MonoBehaviour
 {
-    public int itemIndex;
     public List<ItemID> m_items;
     private TypeChart type;
     public static Items item;
+    private void OnEnable()
+    {
+        item = this;
+    }
     private void OnValidate()
     {
         item = this;
@@ -151,7 +153,6 @@ public class Items : MonoBehaviour
             item = this;
             if (m_items == null)
             {
-                itemIndex = 0;
                 m_items = new List<ItemID>();
                 m_items.Add(new ItemID());
             }

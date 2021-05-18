@@ -10,16 +10,29 @@ public class BattleCalc : MonoBehaviour
     private Inventory inventory;
     public static BattleCalc battleCalc;
     private double damageToDeal = 0;
-    private void Awake()
+    [SerializeField] private UI_Inventory uiInventory;
+    private void Start()
     {
         battleCalc = this;
         //foreach (var Entity in m_allEntities)
         //{
         //    StatsEffected(Entity);
         //}
-        inventory = new Inventory();
+        inventory = new Inventory(UseItem);
+        uiInventory.SetInventory(inventory);
+        //ItemWorld.SpawnItemInWorld(new Vector3(20, 20), m_mainEntity.GetAllItemsOnPLayer()[1]);
+        //ItemWorld.SpawnItemInWorld(new Vector3(-20, -20), m_mainEntity.GetAllItemsOnPLayer()[0]);
     }
-
+    //When the player interacts with the item on the ground
+    public void PickUpItemInWorld(Collider2D collider) 
+    {
+        ItemWorld itemWorld = collider.GetComponent<ItemWorld>();
+        if (itemWorld != null)
+        {
+            inventory.AddItem(itemWorld.GetItem());
+            itemWorld.DestroySelf();
+        }
+    }
     public static Entity GetEntity(string m_nameEntity) 
     {
         if (battleCalc.m_allEntities == null)
@@ -27,10 +40,14 @@ public class BattleCalc : MonoBehaviour
         Predicate<Entity> predicate = (Entity entity) => { return entity.m_name == m_nameEntity; };
         return battleCalc.m_allEntities.Find(predicate);
     }
-
-    public void Attack(Entity[] numOfEntitiesAttacked)
+    //This is using an item from the inventory.
+    public void UseItem(ItemID item) 
     {
 
+    }
+    public void Attack(Entity[] numOfEntitiesAttacked)
+    {
+        
         damageToDeal = BaseDamage();
         //double player1Damage = a_atkEntity;
 
@@ -48,6 +65,11 @@ public class BattleCalc : MonoBehaviour
         //Strength (or other attack value) If Stab * 
         return result;
     }
+
+
+
+
+
     #region Stats
     //Determines who goes first or when someone will attack.
     //Returns true if left side is larger but is false if right is larger.
@@ -63,11 +85,15 @@ public class BattleCalc : MonoBehaviour
         
     }
     #endregion
-    
-
     //This is a calculation for the stats that are effecting each other. 
     //The calculation is determined by the entity that is placed into the scene on start.
     #region ChangeInStats
+    #region DiminishingEffectsFunction
+    public double DiminishingEffects(double value, double valueBeingEffected)
+    {
+        valueBeingEffected += Mathf.Log10((float)value);
+        return valueBeingEffected;
+    }
     public void DiminishingEffects(PrimStatisic prim, double value)
     {
         if (prim.diminishingReturns &&
@@ -81,6 +107,7 @@ public class BattleCalc : MonoBehaviour
             sec.stats += Mathf.Log10((float)value);
 
     }
+    #endregion
     public void StatsEffected(Entity m_entity)
     {
         List<StatsEffected> stats = m_entity.m_statsEffecting;
@@ -245,6 +272,15 @@ public class BattleCalc : MonoBehaviour
         }
         return valueToChange;
     }
+    public double ReturnStatusDamage()
+    {
+        double dmg = 0;
+        return dmg;
+    }
+
+
+
+
     #endregion
     //Items
     #region ItemsMath
