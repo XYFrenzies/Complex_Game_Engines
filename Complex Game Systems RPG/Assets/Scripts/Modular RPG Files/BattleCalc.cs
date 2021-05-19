@@ -5,26 +5,31 @@ using System;
 
 public class BattleCalc : MonoBehaviour
 {
-    [SerializeField]public Entity m_mainEntity;
-    [SerializeField]private List<Entity> m_allEntities;
+    [SerializeField] public Entity m_mainEntity;
+    [SerializeField] private List<Entity> m_allEntities;
     private Inventory inventory;
     public static BattleCalc battleCalc;
-    private double damageToDeal = 0;
     [SerializeField] private UI_Inventory uiInventory;
+    private bool hasMissed = false;
+    private bool isImmune = false;
+    private bool canNotHeal = false;
     private void Start()
     {
         battleCalc = this;
-        //foreach (var Entity in m_allEntities)
-        //{
-        //    StatsEffected(Entity);
-        //}
+        if (m_allEntities != null)
+        {
+            foreach (var Entity in m_allEntities)
+            {
+                StatsEffected(Entity);
+            }
+        }
         inventory = new Inventory(UseItem);
         uiInventory.SetInventory(inventory);
         //ItemWorld.SpawnItemInWorld(new Vector3(20, 20), m_mainEntity.GetAllItemsOnPLayer()[1]);
         //ItemWorld.SpawnItemInWorld(new Vector3(-20, -20), m_mainEntity.GetAllItemsOnPLayer()[0]);
     }
     //When the player interacts with the item on the ground
-    public void PickUpItemInWorld(Collider2D collider) 
+    public void PickUpItemInWorld(Collider2D collider)
     {
         ItemWorld itemWorld = collider.GetComponent<ItemWorld>();
         if (itemWorld != null)
@@ -33,7 +38,7 @@ public class BattleCalc : MonoBehaviour
             itemWorld.DestroySelf();
         }
     }
-    public static Entity GetEntity(string m_nameEntity) 
+    public static Entity GetEntity(string m_nameEntity)
     {
         if (battleCalc.m_allEntities == null)
             return null;
@@ -41,36 +46,210 @@ public class BattleCalc : MonoBehaviour
         return battleCalc.m_allEntities.Find(predicate);
     }
     //This is using an item from the inventory.
-    public void UseItem(ItemID item) 
+    public void UseItem(ItemID item)
+    {
+        if (!item.staticItem)
+        { }
+    }
+    #region DamageCalc
+    //public double Defend(Moves move, Entity defendEntity, Entity attackEntity) { }
+    public bool GetAttackHasMissed()
+    {
+        return hasMissed;
+    }
+    //Returns if the durability of the item has been broken.
+    public bool DamageDurability(Entity entity, ItemID item, double damage)
+    {
+        bool hasBeenBroken = false;
+        foreach (var itemOnPlayer in entity.GetAllItemsOnPLayer())
+        {
+            if (item == itemOnPlayer)
+            {
+                hasBeenBroken = item.DamageDurability(damage);
+                return hasBeenBroken;
+            }
+        }
+        return hasBeenBroken;
+    }
+    public double DoubleReDamageDurability(Entity entity, ItemID item, double damage)
+    {
+        double itemDur = 0;
+        foreach (var itemOnPlayer in entity.GetAllItemsOnPLayer())
+        {
+            if (item == itemOnPlayer)
+            {
+                itemDur = item.DoubleReDamageDurability(damage);
+                return itemDur;
+            }
+
+        }
+        return itemDur;
+    }
+    //Returns attacking output.
+    public double AttackMove(Moves move, Entity attackEntity, Entity defendEntity)
+    {
+        hasMissed = false;
+        double damageToDeal = 0;
+        bool isAttacking = false;
+        bool isStatus = false;
+        bool isNone = false;
+        if (Accuracy(move))
+        {
+            for (int i = 0; i < move.type.Count; i++)
+            {
+                if (move.type[i] == Type.None)
+                    isNone = true;
+                if (move.type[i] == Type.Attack)
+                    isAttacking = true;
+                if (move.type[i] == Type.Status)
+                    isStatus = true;
+            }
+            if (isNone == true)
+            {
+                //Calculate damage.
+                damageToDeal = ((2 * attackEntity.level / 5) + 2) * (move.power * EffectivenessMath(move, defendEntity) *
+                    DamageIsStab(attackEntity, move)) / 5;
+            }
+            else if (isAttacking == true)
+            {
+                //Calculate damage.
+                damageToDeal = ((2 * attackEntity.level / 5) + 2) * move.power * (GetStat(move.statsAttack[move.statsIndex],
+                    attackEntity) / GetDefenseStat(move.statsAttack[move.statsIndex], defendEntity) * EffectivenessMath(move, defendEntity) *
+                    DamageIsStab(attackEntity, move));
+            }
+            if (isStatus == true && !isNone)
+            {
+                //Adds the Status Condition
+                defendEntity.AddStatus(move.status[0].m_statusEffects[move.status[0].index]);
+            }
+        }
+        else
+            hasMissed = true;
+        Debug.Log("Player did " + damageToDeal + "to 1 player");
+        return damageToDeal;
+    }
+    public void ItemAttacks(ItemID item, Entity defendEntity)
     {
 
     }
-    public void Attack(Entity[] numOfEntitiesAttacked)
+    public double AttackItemMove(ItemID item, Moves move, Entity attackEntity, Entity defendEntity)
     {
-        
-        damageToDeal = BaseDamage();
-        //double player1Damage = a_atkEntity;
+        hasMissed = false;
+        double damageToDeal = 0;
+        bool isAttacking = false;
+        bool isNone = false;
+        if (Accuracy(move))
+        {
+            for (int i = 0; i < move.type.Count; i++)
+            {
+                if (move.type[i] == Type.None || item.itemType == ItemType.None)
+                    isNone = true;
+                if (move.type[i] == Type.Attack && item.itemType == ItemType.Weapon)
+                    isAttacking = true;
+            }
 
-        //foreach (var entity in numOfEntitiesAttacked)
-        //{
-
-        //}
-        Debug.Log("Player did " + damageToDeal + "to all players");
+            if (isNone == true)
+            {
+                //Calculate damage.
+                damageToDeal = ((2 * attackEntity.level / 5) + 2) * ((item.valueOfItem * move.power / 2) * EffectivenessMath(move, defendEntity) *
+                    DamageIsStab(attackEntity, move)) / 5;
+            }
+            else if (isAttacking == true)
+            {
+                //Calculate damage.
+                damageToDeal = ((2 * attackEntity.level / 5) + 2) * (item.valueOfItem * move.power / 2) * (GetStat(move.statsAttack[move.statsIndex],
+                    attackEntity) / GetDefenseStat(move.statsAttack[move.statsIndex], defendEntity) * EffectivenessMath(move, defendEntity) *
+                    DamageIsStab(attackEntity, move));
+            }
+        }
+        else
+            hasMissed = true;
+        Debug.Log("Player did " + damageToDeal + "to 1 player");
+        return damageToDeal;
     }
-
-    public double BaseDamage()
+    //Returns the doubles in damage in the order of the defending entities.
+    public List<double> MultiAttack(Moves move, Entity attackEntity, List<Entity> defendEntity)
     {
-        double result = 0;
-
-        //Strength (or other attack value) If Stab * 
-        return result;
+        List<double> damageToDeal = new List<double>();
+        bool isAttacking = false;
+        bool isStatus = false;
+        bool isNone = false;
+        for (int i = 0; i < move.type.Count; i++)
+        {
+            if (move.type[i] == Type.Attack)
+                isAttacking = true;
+            if (move.type[i] == Type.None)
+                isNone = true;
+            if (move.type[i] == Type.Status)
+                isStatus = true;
+        }
+        if (isAttacking == true)
+        {
+            for (int i = 0; i < defendEntity.Count; i++)
+            {
+                //Calculates the damage and then adds it to the damage to deal list.
+                damageToDeal.Add(((2 * attackEntity.level / 5) + 2) * move.power * (GetStat(move.statsAttack[move.statsIndex],
+                    attackEntity) / GetDefenseStat(move.statsAttack[move.statsIndex], defendEntity[i]) * EffectivenessMath(move, defendEntity[i]) *
+                    DamageIsStab(attackEntity, move)));
+            }
+        }
+        if (isStatus == true && !isNone)
+        {
+            for (int i = 0; i < defendEntity.Count; i++)
+            {
+                defendEntity[i].AddStatus(move.status[0].m_statusEffects[move.status[0].index]);
+            }
+            //Adds the Status Condition
+        }
+        return damageToDeal;
     }
-
-
-
-
 
     #region Stats
+    //Gets the stat of the entity that is attacking
+    public double GetStat(string statAttack, Entity m_entity)
+    {
+        foreach (var stat in m_entity.GetPrimStats())
+        {
+            if (stat.name == statAttack)
+            {
+                return stat.stats;
+            }
+        }
+        foreach (var stat in m_entity.GetSecStats())
+        {
+            if (stat.name == statAttack)
+                return stat.stats;
+        }
+        return 0;
+    }
+    //Gets the defense stat of the entity defending.
+    public double GetDefenseStat(string statAttack, Entity m_entity)
+    {
+        string defense = "";
+        foreach (var item in StatsTypeAgainst.instance.stats)
+        {
+            if (item.m_attack[item.indexAttack] == statAttack)
+            {
+                defense = item.m_defense[item.indexDefense];
+            }
+        }
+        if (defense != "")
+        {
+            foreach (var stat in m_entity.GetPrimStats())
+            {
+                if (stat.name == defense)
+                {
+                    return stat.stats;
+                }
+            }
+            foreach (var stat in m_entity.GetSecStats())
+            {
+                if (stat.name == defense)
+                    return stat.stats;
+            }
+        }
+        return 0;
+    }
     //Determines who goes first or when someone will attack.
     //Returns true if left side is larger but is false if right is larger.
     public bool CompareStatsLHSisLarger(PrimStatisic m_mainPrim, PrimStatisic m_enemyPrim)
@@ -82,8 +261,9 @@ public class BattleCalc : MonoBehaviour
             return true;
         }
         return false;
-        
+
     }
+    #endregion
     #endregion
     //This is a calculation for the stats that are effecting each other. 
     //The calculation is determined by the entity that is placed into the scene on start.
@@ -216,7 +396,34 @@ public class BattleCalc : MonoBehaviour
         }
         return effectiveness;
     }
+    public float DamageIsStab(Entity entity, Moves move)
+    {
+        float stabIncrease = 1;
+        bool hasStab = false;
+        for (int i = 0; i < move.m_typeEffectiveness.Count; i++)
+        {
+            for (int j = 0; j < entity.m_typeEffectiveness.Count; j++)
+            {
+                if (entity.m_typeEffectiveness[i].m_types[entity.m_typeEffectiveness[i].typeIndex]
+                    == move.m_typeEffectiveness[i].m_types[move.m_typeEffectiveness[i].typeIndex])
+                {
+                    if (stabIncrease == 1)
+                    {
+                        stabIncrease = 1.2f;
+                    }
+                    else
+                        hasStab = true;
+                }
+                if (hasStab == true)
+                {
+                    stabIncrease += 0.2f;
+                    hasStab = false;
+                }
+            }
 
+        }
+        return stabIncrease;
+    }
     #endregion
     //Accuracy of the attack
     #region AccuracyOfAttack
@@ -238,45 +445,91 @@ public class BattleCalc : MonoBehaviour
     //checks the status condition and converts it to a positive or negative depending on 
     //if the entity is not immune.
     #region StatusEffectsMath
-    public double StatusEffectIncDec(Status m_statusEffecting)
+    public void IsHealing(Entity m_entity, double valueToChange)
     {
-        double valueToChange = 0;
-        bool isImmune = false;
-        bool canNotHeal = false;
-        if (m_statusEffecting.effectiveness.Contains(HowItEffects.immunityToStatus))
-        {
-            isImmune = true;
-        }
-        if (m_statusEffecting.effectiveness.Contains(HowItEffects.healBlock))
-        {
-            canNotHeal = true;
-        }
-        for (int i = 0; i < m_statusEffecting.effectiveness.Count; i++)
-        {
-            if (!isImmune)
-            {
-                if (m_statusEffecting.effectiveness[i] == HowItEffects.Damage ||
-                    m_statusEffecting.effectiveness[i] == HowItEffects.decreaseStat)
-                {
-                    valueToChange = -m_statusEffecting.valueToChange;
-                }
-            }
-            if (!canNotHeal)
-            {
-                if (m_statusEffecting.effectiveness[i] == HowItEffects.Healing ||
-                    m_statusEffecting.effectiveness[i] == HowItEffects.increaseStat)
-                {
-                    valueToChange = m_statusEffecting.valueToChange;
-                }
-            }
-        }
-        return valueToChange;
+        m_entity.m_health += valueToChange;
     }
-    public double ReturnStatusDamage()
+    public void IsDamaging(Entity m_entity, double valueToChange)
+    {
+        m_entity.m_health -= valueToChange;
+    }
+    public void IsHealBlocked(Entity m_entity, bool healingIsBlocked)
+    {
+        m_entity.isHealBlocked = healingIsBlocked;
+    }
+    public void IsImmuneToDamage(Entity m_entity, bool immuneToDamage)
+    {
+        m_entity.isImmuneToDamage = immuneToDamage;
+    }
+    public void IsImmuneToStatus(Entity m_entity, bool immuneToStatus)
+    {
+        m_entity.isImmuneToStatus = immuneToStatus;
+    }
+    public void StatusEffectInc(Entity m_entity)
+    {
+        //if (!isImmune)
+        //{
+        //    if (m_statusEffecting.effectiveness[i] == HowItEffects.decreaseStat)
+        //    {
+        //        valueToChange = -m_statusEffecting.valueToChange;
+        //    }
+        //}
+        //if (!canNotHeal)
+        //{
+        //    if (m_statusEffecting.effectiveness[i] == HowItEffects.increaseStat)
+        //    {
+        //        valueToChange = m_statusEffecting.valueToChange;
+        //    }
+        //}
+    }
+    public void StatusEffectDec(Entity entity)
+    {
+
+    }
+    //Does all the statusEffects on the player.
+    public void DoStatus(Entity entity)
+    {
+        for (int i = 0; i < entity.onPlayer.Count; i++)
+        {
+            foreach (var effect in entity.onPlayer[i].effectiveness)
+            {
+                switch (effect)
+                {
+                    case HowItEffects.Damage:
+                        IsDamaging(entity, entity.onPlayer[i].valueToChange);
+                        break;
+                    case HowItEffects.Healing:
+                        IsHealing(entity, entity.onPlayer[i].valueToChange);
+                        break;
+                    case HowItEffects.healBlock:
+                        IsHealBlocked(entity, true);
+                        break;
+                    case HowItEffects.immunityToStatus:
+                        IsImmuneToStatus(entity, true);
+                        break;
+                    case HowItEffects.immunityToDamage:
+                        IsImmuneToDamage(entity, true);
+                        break;
+                    case HowItEffects.decreaseStat:
+                        StatusEffectInc(entity);
+                        break;
+                    case HowItEffects.increaseStat:
+                        StatusEffectDec(entity);
+                        break;
+                }
+            }
+
+        }
+    }
+    public double ReturnStatusDamage(Status m_statusEffecting)
     {
         double dmg = 0;
         return dmg;
     }
+    //public double ReturnStatusDamage(string m_status)
+    //{
+
+    //}
 
 
 
@@ -285,9 +538,6 @@ public class BattleCalc : MonoBehaviour
     //Items
     #region ItemsMath
 
-    public void UseItem()
-    {
-    }
     //Looks through 1 instance of an items durability
     public bool ItemDurabilityCheck(ItemID item, double calcDmgToDurability)
     {
@@ -302,15 +552,9 @@ public class BattleCalc : MonoBehaviour
         }
         return isDestroyed;
     }
-
-
-
-    //public int ItemEffectiveness() 
-    //{
-    //    if () { }
-    //}
     #endregion
 }
+
 //Main User Class
 
 

@@ -108,6 +108,8 @@ public class CustomEditorStats : Editor
                 script.m_secondaryStatistic.RemoveAt(script.m_secondaryStatistic.Count - 1);
         }
         GUILayout.EndHorizontal();
+        EditorUtility.SetDirty(target);
+        serializedObject.ApplyModifiedProperties();
         #endregion
 
     }
@@ -147,7 +149,7 @@ public class CustomEditorStatsType : Editor
         serializedObject.Update();
         typeAgainst = (StatsTypeAgainst)target;
         if (typeAgainst != null)
-        { 
+        {
             GUILayout.Label("Effectiveness of Stats");
             for (int i = 0; i < typeAgainst.stats.Count; i++)
             {
@@ -208,6 +210,8 @@ public class CustomEditorStatsType : Editor
                 typeAgainst.stats.RemoveAt(typeAgainst.stats.Count - 1);
             }
             GUILayout.EndHorizontal();
+            EditorUtility.SetDirty(target);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
@@ -646,7 +650,6 @@ public class CustomEditorEntity : Editor
         "Entity Effectiveness Stats", true);
         if (m_entity.entityEffectStatShow)
         {
-
             GUILayout.Space(10f);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Stat Effectiveness:");
@@ -858,6 +861,9 @@ public class CustomEditorStatus : Editor
                         script.m_statusEffects[i].effectiveness[j], GUILayout.Width(150));
                     GUILayout.EndHorizontal();
                 }
+//                script.m_items[i].m_statIndex[j] =
+//EditorGUILayout.Popup(script.m_items[i].m_statIndex[j],
+//script.m_items[i].allStatsEffected[j].ToArray(), GUILayout.Width(150));
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More effectiveness"))
@@ -886,6 +892,7 @@ public class CustomEditorStatus : Editor
                 script.m_statusEffects.RemoveAt(script.m_statusEffects.Count - 1);
         }
         GUILayout.EndHorizontal();
+        EditorUtility.SetDirty(target);
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -969,26 +976,45 @@ public class CustomEditorMoveSets : Editor
                 script.m_moveSets[i].power = EditorGUILayout.IntSlider(script.m_moveSets[i].Accuracy, 1, 100);
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
+                
                 GUILayout.Label("Item Properties", GUILayout.Width(150));
 
                 for (int j = 0; j < script.m_moveSets[i].type.Count; j++)
                 {
+                    GUILayout.BeginHorizontal();
                     script.m_moveSets[i].type[j] = (Type)EditorGUILayout.EnumPopup(
-                        script.m_moveSets[i].type[j]);
+                        script.m_moveSets[i].type[j], GUILayout.Width(350));
+                    if (script.m_moveSets[i].type[j] == Type.Attack)
+                    {
+                        script.m_moveSets[i].statsIndex = EditorGUILayout.Popup(script.m_moveSets[i].statsIndex,
+                        script.m_moveSets[i].statsAttack.ToArray(), GUILayout.Width(150));
+                    }
+                    if (script.m_moveSets[i].type[j] == Type.Status)
+                    {
+                        script.m_moveSets[i].status[j].index = EditorGUILayout.Popup(script.m_moveSets[i].status[j].index,
+                        script.m_moveSets[i].statusNames.ToArray(), GUILayout.Width(150));
+                    }
+                    GUILayout.EndHorizontal();
                 }
-                GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Add More effectiveness"))
                 {
                     if (script.m_moveSets[i].type.Count < 3)
+                    {
                         script.m_moveSets[i].type.Add(new Type());
+                        script.AddNewStatus(i);
+                    }
+
                 }
                 if (GUILayout.Button("Delete Recent Effectiveness"))
                 {
                     if (script.m_moveSets[i].type.Count > 1)
+                    {
                         script.m_moveSets[i].type.RemoveAt(script.m_moveSets[i].type.Count - 1);
+                        script.m_moveSets[i].statusNames.RemoveAt(script.m_moveSets[i].statusNames.Count);
+                        script.m_moveSets[i].status.RemoveAt(script.m_moveSets[i].status.Count - 1);
+                    }
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(10f);
@@ -1020,7 +1046,6 @@ public class CustomEditorMoveSets : Editor
                         script.m_moveSets[i].m_typeEffectiveness.RemoveAt(script.m_moveSets[i].m_typeEffectiveness.Count - 1);
                 }
                 GUILayout.EndHorizontal();
-
             }
         }
         GUILayout.BeginHorizontal();
@@ -1035,6 +1060,7 @@ public class CustomEditorMoveSets : Editor
                 script.m_moveSets.RemoveAt(script.m_moveSets.Count - 1);
         }
         GUILayout.EndHorizontal();
+        EditorUtility.SetDirty(target);
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -1150,16 +1176,6 @@ public class CustomEditorItems : Editor
             {
 
                 GUILayout.Label("Item Description");
-                GUILayout.BeginHorizontal();
-                //if (GUILayout.Button("Customised Item"))
-                //{
-                //    script.m_items[i].customizedItem = true;
-                //}
-                //if (GUILayout.Button("Create Item"))
-                //{
-                //    script.m_items[i].customizedItem = false;
-                //}
-                GUILayout.EndHorizontal();
                 if (!script.m_items[i].customizedItem)
                 {
                     GUILayout.BeginHorizontal();
@@ -1271,9 +1287,9 @@ public class CustomEditorItems : Editor
                         GUILayout.EndHorizontal();
                         for (int j = 0; j < script.m_items[i].properties.Count; j++)
                         {
-                            if (script.m_items[i].properties.Count != script.m_items[i].allStatseffected.Count)
+                            if (script.m_items[i].properties.Count != script.m_items[i].allStatsEffected.Count)
                                 script.AddNewStats(i);
-                            if (script.m_items[i].allStatseffected[j].Count <= 0)
+                            if (script.m_items[i].allStatsEffected[j].Count <= 0)
                             {
                                 script.AddStats(i);
                             }
@@ -1283,7 +1299,7 @@ public class CustomEditorItems : Editor
                                 script.m_items[i].properties[j] == ItemProperties.DecreaseStats)
                                 script.m_items[i].m_statIndex[j] =
                             EditorGUILayout.Popup(script.m_items[i].m_statIndex[j],
-                            script.m_items[i].allStatseffected[j].ToArray(), GUILayout.Width(150));
+                            script.m_items[i].allStatsEffected[j].ToArray(), GUILayout.Width(150));
 
                             if (script.m_items[i].properties[j] == ItemProperties.IncludeStatus)
                                 script.m_items[i].status[j].index =
@@ -1308,7 +1324,7 @@ public class CustomEditorItems : Editor
                             if (script.m_items[i].properties.Count > 1)
                             {
                                 script.m_items[i].properties.RemoveAt(script.m_items[i].properties.Count - 1);
-                                script.m_items[i].allStatseffected.RemoveAt(script.m_items[i].allStatseffected.Count - 1);
+                                script.m_items[i].allStatsEffected.RemoveAt(script.m_items[i].allStatsEffected.Count - 1);
                                 script.m_items[i].statusNames.RemoveAt(script.m_items[i].statusNames.Count - 1);
                                 script.m_items[i].status.RemoveAt(script.m_items[i].status.Count - 1);
                             }
@@ -1358,26 +1374,6 @@ public class CustomEditorItems : Editor
                         }
                     }
                 }
-                //for (int j = 0; j < script.m_items[i].itemFunctions.Count; j++)
-                //{
-                //    ItemFunction selected = (ItemFunction)EditorGUILayout.ObjectField(script.m_items[i].itemFunctions[j], typeof(ItemFunction), false);
-                //    if (script.m_items[i].itemFunctions[j] != null)
-                //    {
-                //        script.m_items[i].itemFunctions[j] = Instantiate(selected);
-                //        script.m_items[i].itemFunctions[j].item = script.m_items[i];
-                //    }
-                //}
-                //GUILayout.BeginHorizontal();
-                //if (GUILayout.Button("Add Function"))
-                //{
-                //    script.m_items[i].itemFunctions.Add(null);
-                //}
-                //if (GUILayout.Button("Remove Function"))
-                //{
-                //    script.m_items[i].itemFunctions.RemoveAt(script.m_items[i].itemFunctions.Count - 1);
-                //}
-                //GUILayout.EndHorizontal();
-
                 if (script.m_items[i].itemIsSprite == true)
                 {
                     script.m_items[i].sprite = (Sprite)EditorGUILayout.ObjectField(script.m_items[i].sprite, typeof(Sprite), false);

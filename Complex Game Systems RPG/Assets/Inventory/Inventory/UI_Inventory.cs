@@ -95,7 +95,7 @@ public class UI_Inventory : MonoBehaviour
     }
     public ItemID DuplicateItem(ItemID item) 
     {
-        ItemID duplicateItem = new ItemID { allStatseffected = item.allStatseffected, customizedItem = item.customizedItem, description = item.description, durability = item.durability,
+        ItemID duplicateItem = new ItemID { allStatsEffected = item.allStatsEffected, customizedItem = item.customizedItem, description = item.description, durability = item.durability,
             isAPercentage = item.isAPercentage, isDurability = item.isDurability, isStackable = item.isStackable, m_amountOfItemsForPlayer = item.m_amountOfItemsForPlayer, properties = item.properties,
             name = item.name, itemType = item.itemType, sprite = item.sprite, valueOfItem = item.valueOfItem, statusNames = item.statusNames, m_statIndex = item.m_statIndex, variation = item.variation, status = item.status };
         return duplicateItem;

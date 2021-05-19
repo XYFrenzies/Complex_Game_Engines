@@ -48,6 +48,10 @@ public class StatsForAndAgainst
                 type.Add(item.name);
         }
     }
+    public List<string> GetAttack() 
+    {
+        return m_attack;
+    }
 }
 
 [ExecuteInEditMode]
@@ -56,8 +60,10 @@ public class StatsTypeAgainst : MonoBehaviour
 {
     public List<StatsForAndAgainst> stats;
     private Stats stat;
+    public static StatsTypeAgainst instance;
     void Update()
     {
+        instance = this;
         if (stat == null)
             stat = GetComponent<Stats>();
         if (!Application.isPlaying)

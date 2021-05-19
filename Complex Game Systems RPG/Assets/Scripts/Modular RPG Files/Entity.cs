@@ -52,10 +52,18 @@ public class Entity : ScriptableObject
     public List<Status> onPlayer;
     public List<int> itemIndex;
     public bool hasBeenCreated = false;
+    public List<ItemID> itemsEquipped;
+    public bool isHealBlocked;
+    public bool isImmuneToDamage;
+    public bool isImmuneToStatus;
     public void OnEnable()
     {
         if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !hasBeenCreated)
         {
+            isHealBlocked = false;
+            isImmuneToDamage = false;
+            isImmuneToStatus = false;
+            itemsEquipped = new List<ItemID>();
             hasBeenCreated = true;
             itemIndex = new List<int>();
             level = 1;
@@ -101,6 +109,7 @@ public class Entity : ScriptableObject
             level = maxLevel;
         }
     }
+
     #region StatFunctions
     public void AddPrimStat()
     {
@@ -377,54 +386,58 @@ public class Entity : ScriptableObject
     {
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
-            if (item == m_itemsOnPlayer[i].GetItems(item.name) && item.properties.Count != 0)
+            if (item == m_itemsOnPlayer[i].GetItems(item.name) )
             {
-                for (int j = 0; j < item.properties.Count; j++)
+                itemsEquipped.Add(item);
+                if (item.properties.Count != 0)
                 {
-                    if (item.properties[j] == ItemProperties.DecreaseStats)
+                    for (int j = 0; j < item.properties.Count; j++)
                     {
-                        foreach (var stat in m_primStat)
+                        if (item.properties[j] == ItemProperties.DecreaseStats)
                         {
-                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            foreach (var stat in m_primStat)
                             {
-                                stat.stats -= item.valueOfItem;
-                                if (stat.stats < 0)
+                                if (item.allStatsEffected[j][item.m_statIndex[j]] == stat.name)
                                 {
-                                    stat.stats = 0;
+                                    stat.stats -= item.valueOfItem;
+                                    if (stat.stats < 0)
+                                    {
+                                        stat.stats = 0;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (item.properties[j] == ItemProperties.IncreaseStats)
-                    {
-                        foreach (var stat in m_primStat)
+                        if (item.properties[j] == ItemProperties.IncreaseStats)
                         {
-                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            foreach (var stat in m_primStat)
                             {
-                                if ((stat.stats * 2) > stat.max)
+                                if (item.allStatsEffected[j][item.m_statIndex[j]] == stat.name)
                                 {
-                                    //Diminishing effects of the stats as it goes over halfway.
-                                    stat.stats += Mathf.Log10((float)item.valueOfItem);
-                                }
-                                else
-                                {
-                                    stat.stats += item.valueOfItem;
+                                    if ((stat.stats * 2) > stat.max)
+                                    {
+                                        //Diminishing effects of the stats as it goes over halfway.
+                                        stat.stats += Mathf.Log10((float)item.valueOfItem);
+                                    }
+                                    else
+                                    {
+                                        stat.stats += item.valueOfItem;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (item.properties[j] == ItemProperties.IncludeStatus)
-                    {
-                        for (int k = 0; k < item.status.Count; k++)
+                        if (item.properties[j] == ItemProperties.IncludeStatus)
                         {
-                            for (int l = 0; l < item.statusNames.Count; l++)
+                            for (int k = 0; k < item.status.Count; k++)
                             {
-                                if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                for (int l = 0; l < item.statusNames.Count; l++)
                                 {
-                                    onPlayer.Add(item.status[k].m_statusEffects[item.status[k].index]);
+                                    if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                    {
+                                        onPlayer.Add(item.status[k].m_statusEffects[item.status[k].index]);
+                                    }
                                 }
-                            }
 
+                            }
                         }
                     }
                 }
@@ -437,50 +450,54 @@ public class Entity : ScriptableObject
     {
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
-            if (item == m_itemsOnPlayer[i].GetItems(item.name) && item.properties.Count != 0)
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
             {
-                for (int j = 0; j < item.properties.Count; j++)
+                itemsEquipped.Remove(item);
+                if (item.properties.Count != 0)
                 {
-                    if (item.properties[j] == ItemProperties.DecreaseStats)
+                    for (int j = 0; j < item.properties.Count; j++)
                     {
-                        foreach (var stat in m_primStat)
+                        if (item.properties[j] == ItemProperties.DecreaseStats)
                         {
-                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
+                            foreach (var stat in m_primStat)
                             {
-                                stat.stats += item.valueOfItem;
-                            }
-                        }
-                    }
-                    if (item.properties[j] == ItemProperties.IncreaseStats)
-                    {
-                        foreach (var stat in m_primStat)
-                        {
-                            if (item.allStatseffected[j][item.m_statIndex[j]] == stat.name)
-                            {
-                                if ((stat.stats * 2) > stat.max)
+                                if (item.allStatsEffected[j][item.m_statIndex[j]] == stat.name)
                                 {
-                                    //Diminishing effects of the stats as it goes over halfway.
-                                    stat.stats -= Mathf.Log10((float)item.valueOfItem);
-                                }
-                                else
-                                {
-                                    stat.stats -= item.valueOfItem;
+                                    stat.stats += item.valueOfItem;
                                 }
                             }
                         }
-                    }
-                    if (item.properties[j] == ItemProperties.IncludeStatus)
-                    {
-                        for (int k = 0; k < item.status.Count; k++)
+                        if (item.properties[j] == ItemProperties.IncreaseStats)
                         {
-                            for (int l = 0; l < item.statusNames.Count; l++)
+                            foreach (var stat in m_primStat)
                             {
-                                if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                if (item.allStatsEffected[j][item.m_statIndex[j]] == stat.name)
                                 {
-                                    onPlayer.Remove(item.status[k].m_statusEffects[item.status[k].index]);
+                                    if ((stat.stats * 2) > stat.max)
+                                    {
+                                        //Diminishing effects of the stats as it goes over halfway.
+                                        stat.stats -= Mathf.Log10((float)item.valueOfItem);
+                                    }
+                                    else
+                                    {
+                                        stat.stats -= item.valueOfItem;
+                                    }
                                 }
                             }
+                        }
+                        if (item.properties[j] == ItemProperties.IncludeStatus)
+                        {
+                            for (int k = 0; k < item.status.Count; k++)
+                            {
+                                for (int l = 0; l < item.statusNames.Count; l++)
+                                {
+                                    if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                    {
+                                        onPlayer.Remove(item.status[k].m_statusEffects[item.status[k].index]);
+                                    }
+                                }
 
+                            }
                         }
                     }
                 }
@@ -502,6 +519,61 @@ public class Entity : ScriptableObject
             }
         }
         return items;
+    }
+    public string GetItemDescription(string name) 
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            foreach (var item in m_itemsOnPlayer[i].m_items)
+            {
+                if (name == item.GetName())
+                {
+                    return item.GetDescription();
+                }
+            }
+
+        }
+        return "";
+    }
+    public double GetItemValue(string name)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            foreach (var item in m_itemsOnPlayer[i].m_items)
+            {
+                if (name == item.GetName())
+                {
+                    return item.GetItemValue();
+                }
+            }
+
+        }
+        return 0;
+    }
+    public double GetDurability(ItemID item) 
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
+            {
+                return m_itemsOnPlayer[i].GetItems(item.name).GetDurability();
+            }
+        }
+        return 0;
+    }
+    public double GetDurability(string name)
+    {
+        for (int i = 0; i < m_itemsOnPlayer.Count; i++)
+        {
+            foreach (var item in m_itemsOnPlayer[i].m_items)
+            {
+                if (name == item.GetName())
+                {
+                    return item.GetDurability();
+                }
+            }
+        }
+        return 0;
     }
     #endregion
     #region Leveling
@@ -551,6 +623,72 @@ public class Entity : ScriptableObject
     public string GetDescription() 
     {
         return m_descriptionEntity;
+    }
+    public string GetCurrentMoveDescription(string moveFind)
+    {
+        for (int i = 0; i < m_currentMoveSets.Count; i++)
+        {
+            if (moveFind != null && moveFind == m_currentMoveSets[i].GetMoves(m_nameOfMovesCurrent[i]).name)
+            {
+                return m_currentMoveSets[i].GetMoves(m_nameOfMovesCurrent[i]).description;
+            }
+        }
+        return "";
+    }
+    public string GetStatusDescription(string status) 
+    {
+        if (StatusEffects.status != null)
+        {
+            for (int i = 0; i < StatusEffects.status.m_statusEffects.Count; i++)
+            {
+                if (status != null && status == StatusEffects.status.m_statusEffects[i].name)
+                {
+                    return StatusEffects.status.m_statusEffects[i].description;
+                }
+            }
+        }
+        return "";
+    }
+    public List<string> GetCurrentStatusDescription()
+    {
+        foreach (var status in onPlayer)
+        {
+            onPlayer.Add(status);
+        }
+        return null;
+    }
+    #endregion
+    #region Stats
+    public List<PrimStatisic> GetPrimStats() 
+    {
+        return m_primStat;
+    }
+    public List<SecStatistic> GetSecStats() 
+    {
+        return m_secStat;
+    }
+    #endregion
+    #region Status
+    public void AddStatus(Status status) 
+    {
+        if (onPlayer == null)
+            onPlayer = new List<Status>();
+        onPlayer.Add(status);
+    }
+    public void DeleteStatus(Status status)
+    {
+        foreach (var item in onPlayer)
+        {
+            if (status == item)
+            {
+                onPlayer.Remove(item);
+                return;
+            }
+        }
+    }
+    public List<Status> GetAllStatus() 
+    {
+        return onPlayer;
     }
     #endregion
     #endregion

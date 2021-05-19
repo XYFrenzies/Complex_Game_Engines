@@ -15,7 +15,7 @@ MonoBehaviour:
   entityMainShow: 0
   entityTypesShow: 0
   entityMoveSetShow: 0
-  entityItemShow: 1
+  entityItemShow: 0
   entityPrimStatShow: 0
   entitySecStatShow: 0
   entityEffectStatShow: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   m_health: 1
   level: 1
   maxLevel: 2
+  currentEXP: 0
   baseEXPYield: 0
   maxEXP: 1
   m_typeEffectiveness:
@@ -48,30 +49,30 @@ MonoBehaviour:
     min: -2147483648
     max: 2147483647
     diminishingReturns: 1
-    typeOfStat: 2
-    showItem: 1
+    typeOfStat: 1
+    showItem: 0
   m_statsEffecting:
   - {fileID: 0}
   m_itemsOnPlayer:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  numOfItemsOnEntity: 0100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  numOfItemsOnEntity: 010000000100000001000000010000000100000001000000
   m_nameOfItems:
   - health Potion
   - Death Potion
-  levelForeachMoveset: 01000000
+  levelForeachMoveset: 
   m_currentMoveSets:
   - {fileID: 0}
   m_learnableMoves:
   - {fileID: 0}
-  m_nameOfMovesCurrent:
-  - None
-  m_nameOfMovesExternal:
-  - None
-  m_learntPerLevel: 0101
-  m_learntExternally: 0000
+  m_nameOfMovesCurrent: []
+  m_nameOfMovesExternal: []
+  m_learntPerLevel: 
+  m_learntExternally: 
   onPlayer: []
-  itemIndex: 00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  itemIndex: 0000000001000000
   hasBeenCreated: 1
+  itemsEquipped: []
+  isHealBlocked: 0
+  isImmuneToDamage: 0
+  isImmuneToStatus: 0
