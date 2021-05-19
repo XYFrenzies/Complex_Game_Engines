@@ -2984,7 +2984,7 @@ MonoBehaviour:
     variation:
     - {fileID: 0}
     m_amountOfItemsForPlayer: 1
-    m_statIndex: 0000000000000000000000000000000000000000
+    m_statIndex: 000000000000000000000000000000000000000000000000
     status:
     - {fileID: 0}
     statusNames:
@@ -3037,6 +3037,7 @@ MonoBehaviour:
     effectiveness: 03000000
     isAPercentage: 0
     showItem: 1
+    m_statIndex: 
   - index: 0
     name: Toxicasdf
     description: This is a status Condition.
@@ -3044,6 +3045,7 @@ MonoBehaviour:
     effectiveness: 01000000
     isAPercentage: 0
     showItem: 0
+    m_statIndex: 
   - index: 0
     name: Toxicsafdfdsa
     description: This is a status Condition.
@@ -3051,6 +3053,7 @@ MonoBehaviour:
     effectiveness: 01000000
     isAPercentage: 0
     showItem: 0
+    m_statIndex: 
   - index: 0
     name: Toxicqw
     description: This is a status Condition.
@@ -3058,6 +3061,7 @@ MonoBehaviour:
     effectiveness: 01000000
     isAPercentage: 0
     showItem: 0
+    m_statIndex: 
   index: 0
 --- !u!114 &1094056714
 MonoBehaviour:
