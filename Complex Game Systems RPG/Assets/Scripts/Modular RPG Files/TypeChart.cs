@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditor;
 //This will have the types of effectiveness and how they will effect each other.
 
 [ExecuteInEditMode]

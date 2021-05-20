@@ -5,14 +5,12 @@ using System;
 
 public class BattleCalc : MonoBehaviour
 {
-    [SerializeField] public Entity m_mainEntity;
+    [SerializeField] public Entity m_mainPlayerEntity;
     [SerializeField] private List<Entity> m_allEntities;
-    private Inventory inventory;
+    //private Inventory inventory;
     public static BattleCalc battleCalc;
-    [SerializeField] private UI_Inventory uiInventory;
+    //[SerializeField] private UI_Inventory uiInventory;
     private bool hasMissed = false;
-    private bool isImmune = false;
-    private bool canNotHeal = false;
     private void Start()
     {
         battleCalc = this;
@@ -23,20 +21,6 @@ public class BattleCalc : MonoBehaviour
                 StatsEffected(Entity);
             }
         }
-        inventory = new Inventory(UseItem);
-        uiInventory.SetInventory(inventory);
-        //ItemWorld.SpawnItemInWorld(new Vector3(20, 20), m_mainEntity.GetAllItemsOnPLayer()[1]);
-        //ItemWorld.SpawnItemInWorld(new Vector3(-20, -20), m_mainEntity.GetAllItemsOnPLayer()[0]);
-    }
-    //When the player interacts with the item on the ground
-    public void PickUpItemInWorld(Collider2D collider)
-    {
-        ItemWorld itemWorld = collider.GetComponent<ItemWorld>();
-        if (itemWorld != null)
-        {
-            inventory.AddItem(itemWorld.GetItem());
-            itemWorld.DestroySelf();
-        }
     }
     public static Entity GetEntity(string m_nameEntity)
     {
@@ -44,12 +28,6 @@ public class BattleCalc : MonoBehaviour
             return null;
         Predicate<Entity> predicate = (Entity entity) => { return entity.m_name == m_nameEntity; };
         return battleCalc.m_allEntities.Find(predicate);
-    }
-    //This is using an item from the inventory.
-    public void UseItem(ItemID item)
-    {
-        if (!item.staticItem)
-        { }
     }
     #region DamageCalc
     //public double Defend(Moves move, Entity defendEntity, Entity attackEntity) { }
@@ -120,17 +98,23 @@ public class BattleCalc : MonoBehaviour
             if (isStatus == true && !isNone)
             {
                 //Adds the Status Condition
-                defendEntity.AddStatus(move.status[0].m_statusEffects[move.status[0].index]);
+                foreach (var statusEffect in StatusEffects.status.m_statusEffects)
+                {
+                    for (int i = 0; i < move.statusNames.Count; i++)
+                    {
+                        if (statusEffect.name == move.statusNames[i][move.statusIndex[i]]) 
+                        {
+                            defendEntity.AddStatus(statusEffect);
+                        }
+                    }
+                }
+
             }
         }
         else
             hasMissed = true;
         Debug.Log("Player did " + damageToDeal + "to 1 player");
         return damageToDeal;
-    }
-    public void ItemAttacks(ItemID item, Entity defendEntity)
-    {
-
     }
     public double AttackItemMove(ItemID item, Moves move, Entity attackEntity, Entity defendEntity)
     {
@@ -197,7 +181,17 @@ public class BattleCalc : MonoBehaviour
         {
             for (int i = 0; i < defendEntity.Count; i++)
             {
-                defendEntity[i].AddStatus(move.status[0].m_statusEffects[move.status[0].index]);
+                //Adds the Status Condition
+                foreach (var statusEffect in StatusEffects.status.m_statusEffects)
+                {
+                    for (int j = 0; j < move.statusNames.Count; j++)
+                    {
+                        if (statusEffect.name == move.statusNames[j][move.statusIndex[j]])
+                        {
+                            defendEntity[i].AddStatus(statusEffect);
+                        }
+                    }
+                }
             }
             //Adds the Status Condition
         }
@@ -263,6 +257,39 @@ public class BattleCalc : MonoBehaviour
         return false;
 
     }
+    public bool CompareStatsLHSisLarger(SecStatistic m_mainSec, SecStatistic m_enemySec)
+    {
+        if (m_mainSec == null || m_enemySec == null)
+            return false;
+        if (m_mainSec.stats > m_enemySec.stats)
+        {
+            return true;
+        }
+        return false;
+
+    }
+    public bool CompareStatsLHSisLarger(PrimStatisic m_mainPrim, SecStatistic m_enemySec)
+    {
+        if (m_mainPrim == null || m_enemySec == null)
+            return false;
+        if (m_mainPrim.stats > m_enemySec.stats)
+        {
+            return true;
+        }
+        return false;
+
+    }
+    public bool CompareStatsLHSisLarger(SecStatistic m_mainSec, PrimStatisic m_enemyPrim)
+    {
+        if (m_mainSec == null || m_enemyPrim == null)
+            return false;
+        if (m_mainSec.stats > m_enemyPrim.stats)
+        {
+            return true;
+        }
+        return false;
+
+    }
     #endregion
     #endregion
     //This is a calculation for the stats that are effecting each other. 
@@ -288,7 +315,7 @@ public class BattleCalc : MonoBehaviour
 
     }
     #endregion
-    public void StatsEffected(Entity m_entity)
+    private void StatsEffected(Entity m_entity)
     {
         List<StatsEffected> stats = m_entity.m_statsEffecting;
         List<PrimStatisic> primStats = m_entity.m_primStat;
@@ -348,7 +375,7 @@ public class BattleCalc : MonoBehaviour
         int typeItrDef = 0;
         while (typeItrAtt < m_moveType.m_typeEffectiveness.Count)
         {
-            attack = m_moveType.m_typeEffectiveness[typeItrAtt].m_types[m_moveType.m_typeEffectiveness[typeItrAtt].typeIndex];
+            attack = m_moveType.m_typeEffectiveness[typeItrAtt][m_moveType.typeIndex[typeItrAtt]];
             defense = m_enemyEntity.m_typeEffectiveness[typeItrDef].m_types[m_enemyEntity.m_typeEffectiveness[typeItrDef].typeIndex];
             m_allTypesCombinedAttack.Add(EffectivenessLibrary(attack, defense));
             typeItrDef++;
@@ -405,7 +432,7 @@ public class BattleCalc : MonoBehaviour
             for (int j = 0; j < entity.m_typeEffectiveness.Count; j++)
             {
                 if (entity.m_typeEffectiveness[i].m_types[entity.m_typeEffectiveness[i].typeIndex]
-                    == move.m_typeEffectiveness[i].m_types[move.m_typeEffectiveness[i].typeIndex])
+                    == move.m_typeEffectiveness[i][move.typeIndex[i]])
                 {
                     if (stabIncrease == 1)
                     {
@@ -465,35 +492,57 @@ public class BattleCalc : MonoBehaviour
     {
         m_entity.isImmuneToStatus = immuneToStatus;
     }
-    public void StatusEffectInc(Entity m_entity)
+    public void StatusEffectInc(Entity m_entity, Status status, int index)
     {
-        //if (!isImmune)
-        //{
-        //    if (m_statusEffecting.effectiveness[i] == HowItEffects.decreaseStat)
-        //    {
-        //        valueToChange = -m_statusEffecting.valueToChange;
-        //    }
-        //}
-        //if (!canNotHeal)
-        //{
-        //    if (m_statusEffecting.effectiveness[i] == HowItEffects.increaseStat)
-        //    {
-        //        valueToChange = m_statusEffecting.valueToChange;
-        //    }
-        //}
-    }
-    public void StatusEffectDec(Entity entity)
-    {
+        foreach (var primStat in m_entity.GetPrimStats())
+        {
+            for (int i = 0; i < status.effectiveness.Count; i++)
+            {
+                if (primStat.name == status.allStatsEffected[index][status.m_statIndexPos[index]])
+                {
+                    primStat.stats += status.valueToChange;
+                }
+            }
 
+        }
+        foreach (var secStat in m_entity.GetSecStats())
+        {
+            if (secStat.name == status.allStatsEffected[index][status.m_statIndexPos[index]])
+            {
+                secStat.stats += status.valueToChange;
+            }
+        }
+        
+    }
+    public void StatusEffectDec(Entity m_entity, Status status, int index)
+    {
+        foreach (var primStat in m_entity.GetPrimStats())
+        {
+            for (int i = 0; i < status.effectiveness.Count; i++)
+            {
+                if (primStat.name == status.allStatsEffected[index][status.m_statIndexPos[index]])
+                {
+                    primStat.stats += status.valueToChange;
+                }
+            }
+
+        }
+        foreach (var secStat in m_entity.GetSecStats())
+        {
+            if (secStat.name == status.allStatsEffected[index][status.m_statIndexPos[index]])
+            {
+                secStat.stats += status.valueToChange;
+            }
+        }
     }
     //Does all the statusEffects on the player.
     public void DoStatus(Entity entity)
     {
         for (int i = 0; i < entity.onPlayer.Count; i++)
         {
-            foreach (var effect in entity.onPlayer[i].effectiveness)
+            for (int j = 0; j < entity.onPlayer[i].effectiveness.Count; j++)
             {
-                switch (effect)
+                switch (entity.onPlayer[i].effectiveness[j])
                 {
                     case HowItEffects.Damage:
                         IsDamaging(entity, entity.onPlayer[i].valueToChange);
@@ -511,29 +560,19 @@ public class BattleCalc : MonoBehaviour
                         IsImmuneToDamage(entity, true);
                         break;
                     case HowItEffects.decreaseStat:
-                        StatusEffectInc(entity);
+                        StatusEffectInc(entity, entity.onPlayer[i], j);
                         break;
                     case HowItEffects.increaseStat:
-                        StatusEffectDec(entity);
+                        StatusEffectDec(entity, entity.onPlayer[i], j);
                         break;
                 }
             }
-
         }
     }
     public double ReturnStatusDamage(Status m_statusEffecting)
     {
-        double dmg = 0;
-        return dmg;
+        return m_statusEffecting.valueToChange;
     }
-    //public double ReturnStatusDamage(string m_status)
-    //{
-
-    //}
-
-
-
-
     #endregion
     //Items
     #region ItemsMath

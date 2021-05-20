@@ -11,7 +11,7 @@ public class Inventory
     {
         this.useItemAction = useItemAction;
         items = new List<ItemID>();
-        foreach (var item in BattleCalc.battleCalc.m_mainEntity.GetAllItemsOnPLayer())
+        foreach (var item in BattleCalc.battleCalc.m_mainPlayerEntity.GetAllItemsOnPLayer())
         {
             AddItem(item);
         }

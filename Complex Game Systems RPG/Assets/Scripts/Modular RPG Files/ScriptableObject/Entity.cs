@@ -386,7 +386,7 @@ public class Entity : ScriptableObject
     {
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
-            if (item == m_itemsOnPlayer[i].GetItems(item.name) )
+            if (item == m_itemsOnPlayer[i].GetItems(item.name))
             {
                 itemsEquipped.Add(item);
                 if (item.properties.Count != 0)
@@ -427,16 +427,15 @@ public class Entity : ScriptableObject
                         }
                         if (item.properties[j] == ItemProperties.IncludeStatus)
                         {
-                            for (int k = 0; k < item.status.Count; k++)
+                            for (int k = 0; k < item.statusNames.Count; k++)
                             {
-                                for (int l = 0; l < item.statusNames.Count; l++)
+                                foreach (var status in StatusEffects.status.m_statusEffects)
                                 {
-                                    if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                    if (item.statusNames[k][item.statusIndex[k]] == status.name)
                                     {
-                                        onPlayer.Add(item.status[k].m_statusEffects[item.status[k].index]);
+                                        onPlayer.Add(status);
                                     }
                                 }
-
                             }
                         }
                     }
@@ -487,16 +486,15 @@ public class Entity : ScriptableObject
                         }
                         if (item.properties[j] == ItemProperties.IncludeStatus)
                         {
-                            for (int k = 0; k < item.status.Count; k++)
+                            for (int k = 0; k < item.statusNames.Count; k++)
                             {
-                                for (int l = 0; l < item.statusNames.Count; l++)
+                                foreach (var status in StatusEffects.status.m_statusEffects)
                                 {
-                                    if (item.status[k].m_statusEffects[item.status[k].index].name == item.statusNames[l])
+                                    if (item.statusNames[k][item.statusIndex[k]] == status.name)
                                     {
-                                        onPlayer.Remove(item.status[k].m_statusEffects[item.status[k].index]);
+                                        onPlayer.Remove(status);
                                     }
                                 }
-
                             }
                         }
                     }
@@ -520,7 +518,7 @@ public class Entity : ScriptableObject
         }
         return items;
     }
-    public string GetItemDescription(string name) 
+    public string GetItemDescription(string name)
     {
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
@@ -550,7 +548,7 @@ public class Entity : ScriptableObject
         }
         return 0;
     }
-    public double GetDurability(ItemID item) 
+    public double GetDurability(ItemID item)
     {
         for (int i = 0; i < m_itemsOnPlayer.Count; i++)
         {
@@ -577,10 +575,19 @@ public class Entity : ScriptableObject
     }
     #endregion
     #region Leveling
-    public float GainExpMath(int a_levelOfEnemy, float a_baseEXPYield, int a_amountOfUnitsInBattle)
+    public float GainExpMath(int a_levelOfEnemy, float a_baseEXPYieldEnemy, int a_amountOfUnitsInBattleAlly)
     {
         float m_mathOfBattle;
-        m_mathOfBattle = ((a_baseEXPYield * a_levelOfEnemy) / (5 * a_amountOfUnitsInBattle)) * ((2 * a_levelOfEnemy + 10) / a_levelOfEnemy + level + 10) + 1;
+        m_mathOfBattle = ((a_baseEXPYieldEnemy * a_levelOfEnemy) / (5 * a_amountOfUnitsInBattleAlly)) 
+            * ((2 * a_levelOfEnemy + 10) / a_levelOfEnemy + level + 10) + 1;
+        return m_mathOfBattle;
+    }
+    public float GainExpMath(int a_levelOfEnemy, float a_baseEXPYieldEnemy, 
+        int a_amountOfUnitsInBattleAlly, int mainEntityLevel)
+    {
+        float m_mathOfBattle;
+        m_mathOfBattle = ((a_baseEXPYieldEnemy * a_levelOfEnemy) / (5 * a_amountOfUnitsInBattleAlly))
+            * ((2 * a_levelOfEnemy + 10) / a_levelOfEnemy + mainEntityLevel + 10) + 1;
         return m_mathOfBattle;
     }
     public int ReturnLevelUp(int a_level, double a_currentEXP)
@@ -592,6 +599,15 @@ public class Entity : ScriptableObject
             a_level += 1;
         }
         return a_level;
+    }
+    //Levels up the entity by 1 stage.
+    public void LevelUpThisEntity() 
+    {
+        level += 1;
+    }
+    public void LevelUpEntity(int amount)
+    {
+        level += amount;
     }
     public double GetMinExp()
     {
@@ -616,11 +632,15 @@ public class Entity : ScriptableObject
     }
     #endregion
     #region GetBaseStats
-    public double GetHealth() 
+    public double GetHealth()
     {
         return m_health;
     }
-    public string GetDescription() 
+    public void IncreaseHealth(double amount)
+    {
+        m_health += amount;
+    }
+    public string GetDescription()
     {
         return m_descriptionEntity;
     }
@@ -635,7 +655,7 @@ public class Entity : ScriptableObject
         }
         return "";
     }
-    public string GetStatusDescription(string status) 
+    public string GetStatusDescription(string status)
     {
         if (StatusEffects.status != null)
         {
@@ -657,19 +677,39 @@ public class Entity : ScriptableObject
         }
         return null;
     }
+    public int GetLevel() 
+    {
+        return level;
+    }
+    public int GetMaxLevel() 
+    {
+        return maxLevel;
+    }
+    public double GetBaseEXPYield() 
+    {
+        return baseEXPYield;
+    }
+    public double CurrentEXP() 
+    {
+        return currentEXP;
+    }
+    public double MaxEXP() 
+    {
+        return maxEXP;
+    }
     #endregion
     #region Stats
-    public List<PrimStatisic> GetPrimStats() 
+    public List<PrimStatisic> GetPrimStats()
     {
         return m_primStat;
     }
-    public List<SecStatistic> GetSecStats() 
+    public List<SecStatistic> GetSecStats()
     {
         return m_secStat;
     }
     #endregion
     #region Status
-    public void AddStatus(Status status) 
+    public void AddStatus(Status status)
     {
         if (onPlayer == null)
             onPlayer = new List<Status>();
@@ -686,7 +726,7 @@ public class Entity : ScriptableObject
             }
         }
     }
-    public List<Status> GetAllStatus() 
+    public List<Status> GetAllStatus()
     {
         return onPlayer;
     }

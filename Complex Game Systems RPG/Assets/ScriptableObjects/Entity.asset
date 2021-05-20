@@ -49,16 +49,15 @@ MonoBehaviour:
     min: -2147483648
     max: 2147483647
     diminishingReturns: 1
-    typeOfStat: 1
+    typeOfStat: 2
     showItem: 0
   m_statsEffecting:
   - {fileID: 0}
   m_itemsOnPlayer:
   - {fileID: 0}
-  - {fileID: 0}
-  numOfItemsOnEntity: 010000000100000001000000010000000100000001000000
+  numOfItemsOnEntity: 0100000001000000
   m_nameOfItems:
-  - health Potion
+  - Health Potion
   - Death Potion
   levelForeachMoveset: 
   m_currentMoveSets:
@@ -70,7 +69,7 @@ MonoBehaviour:
   m_learntPerLevel: 
   m_learntExternally: 
   onPlayer: []
-  itemIndex: 0000000001000000
+  itemIndex: 00000000
   hasBeenCreated: 1
   itemsEquipped: []
   isHealBlocked: 0
