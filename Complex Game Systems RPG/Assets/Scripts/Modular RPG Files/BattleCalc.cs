@@ -26,8 +26,8 @@ public class BattleCalc : MonoBehaviour
     {
         if (battleCalc.m_allEntities == null)
             return null;
-        Predicate<Entity> predicate = (Entity entity) => { return entity.m_name == m_nameEntity; };
-        return battleCalc.m_allEntities.Find(predicate);
+
+        return battleCalc.m_allEntities.Find(entity=>entity.m_name == m_nameEntity);
     }
     #region DamageCalc
     //public double Defend(Moves move, Entity defendEntity, Entity attackEntity) { }

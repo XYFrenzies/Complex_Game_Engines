@@ -108,6 +108,8 @@ public class Entity : ScriptableObject
         {
             level = maxLevel;
         }
+
+        
     }
 
     #region StatFunctions
@@ -707,6 +709,24 @@ public class Entity : ScriptableObject
     {
         return m_secStat;
     }
+    public PrimStatisic GetPrimStats(string primstat)
+    {
+        foreach (var stat in m_primStat)
+        {
+            if (stat.name == primstat)
+                return stat;
+        }
+        return null;
+    }
+    public SecStatistic GetSecStats(string secstat)
+    {
+        foreach (var stat in m_secStat)
+        {
+            if (stat.name == secstat)
+                return stat;
+        }
+        return null;
+    }
     #endregion
     #region Status
     public void AddStatus(Status status)
@@ -729,6 +749,15 @@ public class Entity : ScriptableObject
     public List<Status> GetAllStatus()
     {
         return onPlayer;
+    }
+    public Status GetStatusOnPlayer(string status)
+    {
+        foreach (var statusOnPlayer in onPlayer)
+        {
+            if (status == statusOnPlayer.name)
+                return statusOnPlayer;
+        }
+        return null;
     }
     #endregion
     #endregion
