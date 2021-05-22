@@ -16244,9 +16244,9 @@ MonoBehaviour:
     description: This is an Item.
     properties: 00000000
     itemType: 3
-    m_statIndex: 0000000000000000000000000000000000000000
-    typesindex: 0000000000000000000000000000000000000000
-    statusIndex: 0000000000000000000000000000000000000000
+    m_statIndex: 00000000000000000000000000000000000000000000000000000000
+    typesindex: 00000000000000000000000000000000000000000000000000000000
+    statusIndex: 00000000000000000000000000000000000000000000000000000000
     m_amountOfItemsForPlayer: 1
     sprite: {fileID: 0}
     itemIsSprite: 1
@@ -16265,8 +16265,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSets:
-  - statusIndex: 0000000000000000000000000000000000000000
-    typeIndex: 0000000000000000000000000000000000000000
+  - statusIndex: 00000000000000000000000000000000000000000000000000000000
+    typeIndex: 00000000000000000000000000000000000000000000000000000000
     statsIndex: 0
     increaseStat: 0
     name: Fire Punch
@@ -16293,8 +16293,8 @@ MonoBehaviour:
     isLearntPerLevel: 1
     isLearntExternally: 0
     levelLearnt: 1
-  - statusIndex: 0000000000000000000000000000000000000000
-    typeIndex: 0200000000000000000000000000000000000000
+  - statusIndex: 00000000000000000000000000000000000000000000000000000000
+    typeIndex: 02000000000000000000000000000000000000000000000000000000
     statsIndex: 1
     increaseStat: 0
     name: Razor Leaf
@@ -16321,8 +16321,8 @@ MonoBehaviour:
     isLearntPerLevel: 1
     isLearntExternally: 0
     levelLearnt: 1
-  - statusIndex: 0000000000000000
-    typeIndex: 0100000000000000
+  - statusIndex: 00000000000000000000000000000000
+    typeIndex: 01000000000000000000000000000000
     statsIndex: 0
     increaseStat: 0
     name: Water Gun
@@ -16387,8 +16387,8 @@ MonoBehaviour:
     effectiveness: 01000000
     isAPercentage: 0
     showItem: 0
-    m_statIndexPos: 0000000000000000000000000000000000000000
-    m_statIndexNeg: 0000000000000000000000000000000000000000
+    m_statIndexPos: 00000000000000000000000000000000000000000000000000000000
+    m_statIndexNeg: 00000000000000000000000000000000000000000000000000000000
   index: 0
 --- !u!114 &1518086718
 MonoBehaviour:
@@ -16983,7 +16983,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1643903311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 511334b674a062f43acbb3781a3458fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 37ce4e4835aab194b8ba9c20556b2a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_anim: {fileID: 1643903312}
@@ -16997,8 +16997,8 @@ MonoBehaviour:
   m_mainHealthSlider: {fileID: 1260135722}
   m_defendHealthSlider: {fileID: 1750013156}
   m_defendLevel: {fileID: 71592219}
-  m_defendEntity: {fileID: 11400000, guid: 34e4977dc92ec25449ea7ae2b0e5600b, type: 2}
-  m_mainEntity: {fileID: 11400000, guid: 640e7767d1d695e438b7290e464883f1, type: 2}
+  m_defendEntity: {fileID: 11400000, guid: e1e75f468f08a3545a14580e9fb49a48, type: 2}
+  m_mainEntity: {fileID: 11400000, guid: 3da9dd098e4d2ef4a81d61e749e79be0, type: 2}
 --- !u!1 &1650223890
 GameObject:
   m_ObjectHideFlags: 0
@@ -17684,7 +17684,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1643903314}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InBattleButtons, Assembly-CSharp
         m_MethodName: RunButton
         m_Mode: 1
