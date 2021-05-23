@@ -6,7 +6,7 @@ using System;
 public class BattleCalc : MonoBehaviour
 {
     //[SerializeField] public Entity m_mainPlayerEntity;
-    //[SerializeField] private List<Entity> m_allEntities;
+    [SerializeField] private List<Entity> m_allEntities;
     //private Inventory inventory;
     public static BattleCalc battleCalc;
     //[SerializeField] private UI_Inventory uiInventory;
@@ -14,6 +14,16 @@ public class BattleCalc : MonoBehaviour
     private void Start()
     {
         battleCalc = this;
+        foreach (var entity in m_allEntities)
+        {
+            if (entity.currentMoves.Count <= 0)
+            {
+                for (int i = 0; i < entity.m_nameOfMovesCurrent.Count; i++)
+                {
+                    entity.currentMoves.Add(entity.m_nameOfMovesCurrent[i][entity.currentMoveSetIndex[i]]);
+                }
+            }
+        }
         //Applying all the stat changes to the entities at the beginning.
         //if (m_allEntities != null)
         //{
@@ -222,14 +232,17 @@ public class BattleCalc : MonoBehaviour
     public double GetDefenseStat(string statAttack, Entity m_entity)
     {
         string defense = "";
-
-        for (int i = 0; i < StatsTypeAgainst.instance.m_attack.Count; i++)
+        if (StatsTypeAgainst.instance.m_attack.Count > 1)
         {
-            if (StatsTypeAgainst.instance.m_attack[i][StatsTypeAgainst.instance.indexAttack[i]] == statAttack)
+            for (int i = 0; i < StatsTypeAgainst.instance.m_attack.Count; i++)
             {
-                defense = StatsTypeAgainst.instance.m_defense[i][StatsTypeAgainst.instance.indexDefense[i]];
+                if (StatsTypeAgainst.instance.m_attack[i][StatsTypeAgainst.instance.indexAttack[i]] == statAttack)
+                {
+                    defense = StatsTypeAgainst.instance.m_defense[i][StatsTypeAgainst.instance.indexDefense[i]];
+                }
             }
         }
+
         if (defense != "")
         {
             foreach (var stat in m_entity.GetPrimStats())
@@ -245,7 +258,7 @@ public class BattleCalc : MonoBehaviour
                     return stat.stats;
             }
         }
-        return 0;
+        return 10;
     }
     //Determines who goes first or when someone will attack.
     //Returns true if left side is larger but is false if right is larger.

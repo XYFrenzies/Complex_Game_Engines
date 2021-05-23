@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+
 [RequireComponent(typeof(Items))]
 [RequireComponent(typeof(MoveSets))]
 [RequireComponent(typeof(TypeChart))]
@@ -12,63 +13,68 @@ using System.Linq;
 public class Entity : ScriptableObject
 {
     //DropDownOptions
-    [HideInInspector] public bool entityMainShow;
-    [HideInInspector] public bool entityTypesShow;
-    [HideInInspector] public bool entityMoveSetShow;
-    [HideInInspector] public bool entityItemShow;
-    [HideInInspector] public bool entityPrimStatShow;
-    [HideInInspector] public bool entitySecStatShow;
-    [HideInInspector] public bool entityEffectStatShow;
-    [HideInInspector] public bool entitySpriteOrObj;
-    public bool is2DSprite;
-    public GameObject entityOBJ;
-    public Sprite sprite2D;
+    [SerializeField] [HideInInspector] public bool entityMainShow;
+    [SerializeField] [HideInInspector] public bool entityTypesShow;
+    [SerializeField] [HideInInspector] public bool entityMoveSetShow;
+    [SerializeField] [HideInInspector] public bool entityItemShow;
+    [SerializeField] [HideInInspector] public bool entityPrimStatShow;
+    [SerializeField] [HideInInspector] public bool entitySecStatShow;
+    [SerializeField] [HideInInspector] public bool entityEffectStatShow;
+    [SerializeField] [HideInInspector] public bool entitySpriteOrObj;
+    [SerializeField] public bool is2DSprite;
+    [SerializeField] public GameObject entityOBJ;
+    [SerializeField] public Sprite sprite2D;
     //MainStats
-    public string m_name;
-    public string m_descriptionEntity;
-    public double m_health;
-    public int level;
-    public int maxLevel;
-    public float currentEXP;
-    public float baseEXPYield;
-    public float maxEXP;
+    [SerializeField] public string m_name;
+    [SerializeField] public string m_descriptionEntity;
+    [SerializeField] public double m_health;
+    [SerializeField] public int level;
+    [SerializeField] public int maxLevel;
+    [SerializeField] public float currentEXP;
+    [SerializeField] public float baseEXPYield;
+    [SerializeField] public float maxEXP;
     //TypeEffectiveness
-    public List<List<string>> m_typeEffectiveness;
-    public List<int> typeIndex;
+    [SerializeField] public List<List<string>> m_typeEffectiveness;
+    [SerializeField] public List<int> typeIndex;
     // public List<TypeChart> m_typeEffectiveness;
     //Stats
-    public List<PrimStatisic> m_primStat;
-    public List<SecStatistic> m_secStat;
+    [SerializeField] public List<PrimStatisic> m_primStat;
+    [SerializeField] public List<SecStatistic> m_secStat;
     //public List<StatsEffected> m_statsEffecting;
     //Items and the amount of them
-    public List<Items> m_itemsOnPlayer;
-    public List<int> numOfItemsOnEntity;
-    public List<string> m_nameOfItems;
+    [SerializeField] public List<Items> m_itemsOnPlayer;
+    [SerializeField] public List<int> numOfItemsOnEntity;
+    [SerializeField] public List<string> m_nameOfItems;
     //MoveSets of the entity
-    public List<int> levelForeachMoveset;
-    public List<int> currentMoveSetIndex;
-    public List<int> learnableMoveSetIndex;
-    public List<List<string>> m_nameOfMovesCurrent;
-    public List<List<string>> m_nameOfMovesExternal;
-    public List<bool> m_learntPerLevel;
-    public List<bool> m_learntExternally;
+    [SerializeField] public List<int> levelForeachMoveset;
+    [SerializeField] public List<int> currentMoveSetIndex;
+    [SerializeField] public List<int> learnableMoveSetIndex;
+    [SerializeField] public List<List<string>> m_nameOfMovesCurrent;
+    [SerializeField] public List<string> currentMoves;
+    [SerializeField] public List<List<string>> m_nameOfMovesExternal;
+    [SerializeField] public List<bool> m_learntPerLevel;
+    [SerializeField] public List<bool> m_learntExternally;
     //Status of the entity
-    public List<Status> onPlayer;
-    public List<int> itemIndex;
-    public bool hasBeenCreated = false;
-    public List<ItemID> itemsEquipped;
-    public bool isHealBlocked;
-    public bool isImmuneToDamage;
-    public bool isImmuneToStatus;
-    bool alreadyLoaded = false;
-    public float IDSave;
+    [SerializeField] public List<Status> onPlayer;
+    [SerializeField] public List<int> itemIndex;
+    [SerializeField] public bool hasBeenCreated = false;
+    [SerializeField] public List<ItemID> itemsEquipped;
+    [SerializeField] public bool isHealBlocked;
+    [SerializeField] public bool isImmuneToDamage;
+    [SerializeField] public bool isImmuneToStatus;
+    [SerializeField] bool alreadyLoaded = false;
+    [SerializeField] public float IDSave;
+    [SerializeField] public List<Moves> moveSets;
     private void OnValidate()
     {
+        //#if UNITY_EDITOR
         Load();
+        //#endif
     }
     //When a new version of an scriptableobject is created, the onenable will occur.
     public void OnEnable()
     {
+#if UNITY_EDITOR
         if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !alreadyLoaded)
         {
             Load();
@@ -76,6 +82,8 @@ public class Entity : ScriptableObject
         }
         if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !hasBeenCreated)
         {
+            moveSets = new List<Moves>();
+            currentMoves = new List<string>();
             isHealBlocked = false;
             isImmuneToDamage = false;
             isImmuneToStatus = false;
@@ -112,10 +120,9 @@ public class Entity : ScriptableObject
             AddMoreCurrentMove();
             AddNewLearnableMove();
             //AddNewStatChange();
-
+            SetMoveSets();
             AddPrimStat();
             AddSecStat();
-
             AddMoveset();
         }
         if (currentEXP > maxEXP)
@@ -126,8 +133,18 @@ public class Entity : ScriptableObject
         {
             level = maxLevel;
         }
+#endif
     }
 
+
+
+    public void SetMoveSets()
+    {
+        foreach (var item in MoveSets.moves.m_moveSets)
+        {
+            moveSets.Add(item);
+        }
+    }
     public void Save()
     {
         IDSave = UnityEngine.Random.Range(1, 100);
@@ -197,9 +214,12 @@ public class Entity : ScriptableObject
         m_typeEffectiveness[0] = PlayerPrefsX.GetStringArray("Types").ToList();
         while (m_typeEffectiveness.Count != typeIndex.Count)
         {
-            m_typeEffectiveness.Add(PlayerPrefsX.GetStringArray("Types").ToList());
+            if (m_typeEffectiveness.Count < typeIndex.Count)
+                m_typeEffectiveness.Add(PlayerPrefsX.GetStringArray("Types").ToList());
+            else if (m_typeEffectiveness.Count > typeIndex.Count)
+                m_typeEffectiveness.RemoveAt(m_typeEffectiveness.Count - 1);
         }
-        //Moves
+        ////Moves
         if (m_nameOfMovesCurrent == null || m_nameOfMovesExternal == null)
         {
             m_nameOfMovesCurrent = new List<List<string>>();
@@ -214,8 +234,14 @@ public class Entity : ScriptableObject
         m_nameOfMovesExternal[0] = PlayerPrefsX.GetStringArray("nameOFLearntMoves").ToList();
         while (m_nameOfMovesCurrent.Count != currentMoveSetIndex.Count)
         {
-            m_nameOfMovesCurrent.Add(PlayerPrefsX.GetStringArray("nameOFCurrentMoves").ToList());
-            m_nameOfMovesExternal.Add(PlayerPrefsX.GetStringArray("nameOFLearntMoves").ToList());
+            if (m_nameOfMovesCurrent.Count < currentMoveSetIndex.Count)
+                m_nameOfMovesCurrent.Add(PlayerPrefsX.GetStringArray("nameOFCurrentMoves").ToList());
+            else if (m_nameOfMovesCurrent.Count > currentMoveSetIndex.Count)
+                m_nameOfMovesCurrent.RemoveAt(m_nameOfMovesCurrent.Count - 1);
+            if (m_nameOfMovesExternal.Count < learnableMoveSetIndex.Count)
+                m_nameOfMovesExternal.Add(PlayerPrefsX.GetStringArray("nameOFLearntMoves").ToList());
+            else if (m_nameOfMovesExternal.Count > learnableMoveSetIndex.Count)
+                m_nameOfMovesExternal.RemoveAt(m_nameOfMovesExternal.Count - 1);
         }
         itemIndex = PlayerPrefsX.GetIntArray("itemIndex" + IDSave).ToList();
         numOfItemsOnEntity = PlayerPrefsX.GetIntArray("numberOfItems" + IDSave).ToList();
@@ -238,7 +264,6 @@ public class Entity : ScriptableObject
         //{
         //    m_statsEffecting = new List<StatsEffected>();
         //}
-
         //int amountofChanges = PlayerPrefs.GetInt("AmountOFStatChanges");
         //for (int i = 0; i < amountofChanges; i++)
         //{
@@ -249,6 +274,7 @@ public class Entity : ScriptableObject
         //        PlayerPrefs.GetString("enumstatChanges"));
         //}
     }
+
 
     #region StatFunctions
     //Adds a new primary stat to the entity
@@ -441,16 +467,16 @@ public class Entity : ScriptableObject
     public Moves GetCurrentMoveset(string moveName)
     {
         bool HasBeenFound = false;
-        for (int i = 0; i < m_nameOfMovesCurrent.Count; i++)
+        for (int i = 0; i < currentMoves.Count; i++)
         {
-            if (moveName == m_nameOfMovesCurrent[i][currentMoveSetIndex[i]])
+            if (moveName == currentMoves[i])
             {
                 HasBeenFound = true;
             }
         }
         if (HasBeenFound == true)
         {
-            foreach (var move in MoveSets.moves.m_moveSets)
+            foreach (var move in moveSets)
             {
                 if (move.name == moveName)
                 {

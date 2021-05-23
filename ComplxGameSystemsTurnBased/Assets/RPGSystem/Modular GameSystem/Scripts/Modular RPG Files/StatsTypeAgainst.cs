@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 //This is a stats effectiveness between each other in order to give the 
 //designer an idea of whats effecting what.
 //Monobehaviour class of the stats against each other.
+[Serializable]
 [ExecuteInEditMode]
 [RequireComponent(typeof(Stats))]
 public class StatsTypeAgainst : MonoBehaviour
@@ -19,13 +21,22 @@ public class StatsTypeAgainst : MonoBehaviour
     public List<List<string>> m_other;
     [HideInInspector] public bool hasSavedValues = false;
     public List<bool> isOtherActive;
-    public static StatsTypeAgainst instance;
+    public static StatsTypeAgainst _instance;
+    public static StatsTypeAgainst instance
+    {
+        get 
+        {
+            if (_instance == null)
+                _instance = FindObjectOfType<StatsTypeAgainst>();
+            return _instance;
+        }
+    }
 
     void Update()
     {
         if (Application.isPlaying)
         {
-            instance = this;
+            _instance = this;
             if (m_attack == null || m_defense == null || m_other == null)
             {
                 LoadValues();
@@ -33,7 +44,7 @@ public class StatsTypeAgainst : MonoBehaviour
         }
         if (!Application.isPlaying)
         {
-            instance = this;
+            _instance = this;
             //If the stats type against each is null then it will create a new one.
             //Goes through a loop of all the stats and checks if they exist or not, if they do, then ignore otherwise make new one
             if (hasSavedValues)

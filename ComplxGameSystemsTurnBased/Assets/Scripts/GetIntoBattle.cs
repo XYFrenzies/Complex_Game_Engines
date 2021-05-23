@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GetIntoBattle : MonoBehaviour
 {
-    [SerializeField] private GameObject m_battleScene = null;
-    [SerializeField] private GameObject m_mainScene = null;
     [SerializeField] private int maxRange = 1;
     [SerializeField] private int minRange = 0;
     [SerializeField] private int numToGet = 1;
@@ -13,6 +11,11 @@ public class GetIntoBattle : MonoBehaviour
 
     private int randRange = 0;
     private int saveRange = 0;
+    private void Start()
+    {
+        m_anim.ResetTrigger("FadeOut");
+        m_anim.ResetTrigger("FadeIn");
+    }
     public void OnTriggerStay2D(Collider2D collision)
     {
         randRange = saveRange;

@@ -62,16 +62,29 @@ public class Moves
 [RequireComponent(typeof(StatusEffects))]
 [RequireComponent(typeof(TypeChart))]
 [ExecuteInEditMode]
+[Serializable]
 public class MoveSets : MonoBehaviour
 {
+    public static MoveSets _moves = null;
     public List<Moves> m_moveSets;
     public int moveIndex;
-    public static MoveSets moves;
+    public static MoveSets moves
+    {
+        get 
+        {
+            if (_moves == null)
+            {
+                _moves = FindObjectOfType<MoveSets>();
+            }
+            return _moves;
+        }
+    }
     //When a change occurs, the static variable will be equal to this class.
+
     private void OnValidate()
     {
         if (moves == null)
-            moves = this;
+            _moves = this;
     }
     void LateUpdate()
     {
@@ -96,7 +109,7 @@ public class MoveSets : MonoBehaviour
                 //we get the component of the statsattack and set it to the movesets stats attack
                 if (StatsTypeAgainst.instance == null || m_moveSets[i].statsAttack.Count <= 0)
                 {
-                    StatsTypeAgainst.instance = GetComponent<StatsTypeAgainst>();
+                    StatsTypeAgainst._instance = GetComponent<StatsTypeAgainst>();
                     m_moveSets[i].statsAttack = StatsTypeAgainst.instance.m_attack[0];
                 }
             }
