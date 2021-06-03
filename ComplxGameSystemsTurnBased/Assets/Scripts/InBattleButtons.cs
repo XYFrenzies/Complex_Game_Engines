@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Diagnostics;
 public class InBattleButtons : MonoBehaviour
 {
     [SerializeField] private Animator m_anim = null;
@@ -31,8 +32,8 @@ public class InBattleButtons : MonoBehaviour
     }
     private void Start()
     {
-        //m_mainEntity.Load();
-        //m_defendEntity.Load();
+        m_mainEntity.Load();
+        m_defendEntity.Load();
         m_mainLevel.text = m_mainEntity.GetLevel().ToString();
         m_mainHealth.text = m_mainEntity.GetHealth().ToString() + "/" + saveHealthPlayer.ToString();
         m_defendLevel.text = m_defendEntity.GetLevel().ToString();
@@ -112,12 +113,19 @@ public class InBattleButtons : MonoBehaviour
     {
         //if (BattleCalc.battleCalc.CompareStatsLHSisLarger(m_mainEntity.GetPrimStats("Speed"), m_defendEntity.GetPrimStats("Speed")))
         //{
+        Stopwatch st = new Stopwatch();
+        st.Start();
         double damage = 0;
         double damageEnemy = 0;
             damage = BattleCalc.battleCalc.AttackMove(move, m_mainEntity, m_defendEntity);
             m_defendEntity.m_health -= damage;
+        st.Stop();
+        UnityEngine.Debug.Log("Time to complete main Attack: " + st.Elapsed);
+        st.Start();
         damageEnemy = BattleCalc.battleCalc.AttackMove(m_defendEntity.GetCurrentMoveset("Fire Punch"), m_defendEntity, m_mainEntity);
             m_mainEntity.m_health -= damageEnemy;
+        st.Stop();
+        UnityEngine.Debug.Log("Time to complete enemy and mainAttack: " + st.Elapsed);
         //}
         //else
         //{

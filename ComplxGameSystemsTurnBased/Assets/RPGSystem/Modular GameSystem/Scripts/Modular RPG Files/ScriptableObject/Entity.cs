@@ -68,7 +68,7 @@ public class Entity : ScriptableObject
     private void OnValidate()
     {
         //#if UNITY_EDITOR
-        Load();
+       Load();
         //#endif
     }
     //When a new version of an scriptableobject is created, the onenable will occur.
@@ -77,7 +77,7 @@ public class Entity : ScriptableObject
 #if UNITY_EDITOR
         if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !alreadyLoaded)
         {
-            Load();
+          Load();
             alreadyLoaded = true;
         }
         if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode && !hasBeenCreated)
@@ -191,7 +191,6 @@ public class Entity : ScriptableObject
         PlayerPrefs.Save();
 
     }
-
     public void Load()
     {
         IDSave = PlayerPrefs.GetFloat("IDSave" + IDSave);
@@ -219,6 +218,7 @@ public class Entity : ScriptableObject
             else if (m_typeEffectiveness.Count > typeIndex.Count)
                 m_typeEffectiveness.RemoveAt(m_typeEffectiveness.Count - 1);
         }
+
         ////Moves
         if (m_nameOfMovesCurrent == null || m_nameOfMovesExternal == null)
         {
@@ -230,7 +230,7 @@ public class Entity : ScriptableObject
         currentMoveSetIndex = PlayerPrefsX.GetIntArray("CurrentMovesetIndex" + IDSave).ToList();
         learnableMoveSetIndex = PlayerPrefsX.GetIntArray("LearnableMovesetIndex" + IDSave).ToList();
         levelForeachMoveset = PlayerPrefsX.GetIntArray("numberToLearnMoveset" + IDSave).ToList();
-        m_nameOfMovesCurrent[0] = PlayerPrefsX.GetStringArray("nameOFCurrentMoves").ToList();
+        m_nameOfMovesCurrent[0] = PlayerPrefsX.GetStringArray("CurrentMoveset").ToList();
         m_nameOfMovesExternal[0] = PlayerPrefsX.GetStringArray("nameOFLearntMoves").ToList();
         while (m_nameOfMovesCurrent.Count != currentMoveSetIndex.Count)
         {

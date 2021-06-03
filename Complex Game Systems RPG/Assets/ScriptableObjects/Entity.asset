@@ -59,15 +59,17 @@ MonoBehaviour:
   m_nameOfItems:
   - Health Potion
   - Death Potion
-  levelForeachMoveset: 
+  levelForeachMoveset: 01000000
   m_currentMoveSets:
   - {fileID: 0}
   m_learnableMoves:
   - {fileID: 0}
-  m_nameOfMovesCurrent: []
-  m_nameOfMovesExternal: []
-  m_learntPerLevel: 
-  m_learntExternally: 
+  m_nameOfMovesCurrent:
+  - None
+  m_nameOfMovesExternal:
+  - None
+  m_learntPerLevel: 01
+  m_learntExternally: 00
   onPlayer: []
   itemIndex: 00000000
   hasBeenCreated: 1
